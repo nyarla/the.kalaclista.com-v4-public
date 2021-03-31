@@ -1,0 +1,217 @@
+# Internal
+# =======
+archetypeDir: private/archtypes
+assetsDir: assets
+contentDir: private/content
+dataDir: private/data
+layoutDir: templates
+publishDir: dist
+staticDir: static 
+
+# Entries
+# =======
+metaDataFormat: yaml
+
+defaultContentLanguage: ja
+defaultLanguageCode: ja
+hasCJKLanguage: true
+languageCode: ja
+
+# URL
+# ===
+disablePathToLower: true
+
+permalinks:
+  archives: /:filename/
+  echos: /echos/:year/:month/:day/:filename/
+  home: /:filename/
+  notes: /notes/:slug/
+  posts: /posts/:year/:month/:day/:filename/
+
+paginate: 15
+paginatePath: pages
+
+# Output
+# =======
+disableHugoGeneratorInject: true
+disableKinds:
+  - taxonomy
+  - term
+
+enableRobotsTXT: true
+
+imaging:
+  quality: 100
+
+mediaTypes:
+  application/x-yaml:
+    suffixes:
+      - yaml
+  application/atom+xml:
+    suffixes:
+      - xml
+
+outputFormats:
+  JSONFeed:
+    mediaType: application/json
+    baseName: jsonfeed
+    isPlainText: true
+  Atom:
+    mediaType: application/atom+xml
+    baseName: atom
+    isPainText: false
+  Fixtures:
+    mediaType: application/x-yaml
+    baseName: fixtures
+    isPlainText: true
+
+outputs:
+  home:
+    - HTML
+    - Atom
+    - RSS
+    - JSONFeed
+  section:
+    - HTML
+    - Atom
+    - RSS
+    - JSONFeed
+  page:
+    - HTML
+    - Fixtures
+
+# Content
+# =======
+summaryLength: 140
+
+markup:
+  goldmark:
+    extensions:
+      definitionList: false
+      footnote: false
+      linkify: false
+      strikethrough: true
+      table: true
+      taskList: false
+      typographer: false
+    parser:
+      attribute:
+        block: true
+        title: true
+      autoHeadingID: true
+      autoHeadingIDType: github
+    renderer:
+      unsafe: true
+  highlight:
+    codeFences: true
+    guessSyntax: false
+    tabWidth: 2
+
+pygmentsUseClasses: true
+
+# Varialbes
+# =========
+
+title: カラクリスタ
+
+menu:
+  main:
+    - identifier: root
+      name: 入口
+      title: カラクリスタ
+      url: /
+      weight: -399
+
+    - identifier: home
+      name: 記載
+      title: カラクリスタ
+      url: /
+      weight: -398
+
+    - identifier: posts
+      name: 記事
+      title: カラクリスタ・ブログ
+      url: /posts/
+      weight: -299
+    - identifier: echos
+      name: 雑記
+      title: カラクリスタ・エコーズ
+      url: /echos/
+      weight: -298
+    - identifier: notes
+      name: 記載
+      title: カラクリスタ・ノート
+      url: /notes/
+      weight: -297
+
+    - identifier: nyarla
+      name: 著者
+      title: 著者について
+      url: /nyarla/
+      weight: -199
+    - identifier: policies
+      name: 方針
+      title: この WebSite 運営の方針など
+      url: policies
+      weight: -198
+    - identifier: licenses
+      name: 権利
+      title: この WebSite に関わるライセンスなど
+      url: /licenses/
+      weight: -197
+
+    - identifier: search
+      name: 検索
+      title: カラクリスタ全体の検索
+      url: https://cse.google.com/cse?cx=018101178788962105892:toz3mvb2bhr 
+      weight: -99
+    - identifier: archives
+      name: 記録
+      title: カラクリスタの全記録
+      url: /archives/
+      weight: -98
+
+params:
+  labels:
+    next: 次へ
+    prev: 前へ
+    archive: 過去ログはこちら
+
+  schemaorg:
+    index:
+      home: WebSite
+      tags: WebSite
+      posts: Blog
+      echos: Blog
+      notes: WebSite
+      columns: Blog
+    page:
+      home: WebPage
+      posts: BlogPosting
+      echos: BlogPosting
+      notes: Article
+      columns: Article
+      search: WebPage
+      archives: WebPage
+
+  descriptions:
+    home: 『輝かしい青春』なんて失かった方の『にゃるら』の Webサイトです 
+    posts: 『輝かしい青春』なんて失かった方の『にゃるら』のブログです 
+    echos: 『輝かしい青春』なんて失かった方の『にゃるら』の雑記です 
+    notes: 『輝かしい青春』なんて失かった方の『にゃるら』の Wiki っぽいヤツです 
+    columns: 『輝かしい青春』なんて失かった方の『にゃるら』のコラムです
+
+  cards:
+    item:
+      order:
+        - amazon
+        - rakuten
+        - aliexpress
+        - banggood
+        - gearbest
+      labels:
+        amazon: 'Amazon.co.jp で買う'
+        rakuten: '楽天で探す'
+        aliexpress: 'Aliexpress から輸入する'
+        banggood: 'Banggood で輸入する'
+        gearbest: 'Gearbest で輸入する'

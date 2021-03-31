@@ -1,0 +1,2 @@
+---
+section: '{{ partialCached "data/section.fn" .Page .Page.RelPermalink | chomp }}'
