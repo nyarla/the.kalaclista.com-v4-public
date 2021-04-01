@@ -1,0 +1,11 @@
+{{- $global := index . 0 -}}
+{{- $content := index . 1 -}}
+
+{{- range $found := $content | findRE `\[{2}[^\]]+\]{2}` -}}
+  {{- $out := $found | strings.TrimLeft "[" | strings.TrimRight "]" -}}
+  {{- /* TODO */ -}}
+  {{- $content = replace $content $found $out -}}
+{{- end -}}
+
+{{- $content | safeHTML -}}
+{{/* vim: set ft=gotexttmpl : */}}

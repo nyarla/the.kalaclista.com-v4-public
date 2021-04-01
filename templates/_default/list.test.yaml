@@ -15,3 +15,6 @@ content:
   ruby-extend:
     in: '{{ partial `markup/inline-ruby.fn` `{富士山|ふ|じ|さん}` | chomp }}'
     out: '<ruby>富<rp>（</rp><rt>ふ</rt><rp>）</rp>士<rp>（</rp><rt>じ</rt><rp>）</rp>山<rp>（</rp><rt>さん</rt><rp>）</rp></ruby>'
+  keyword:
+    in: '{{ partial `markup/inline-keyword.fn` (slice . `[[word]]`) | chomp }}'
+    out: 'word'

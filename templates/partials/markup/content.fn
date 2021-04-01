@@ -31,8 +31,11 @@
 
 {{- /* INLINE EXTENSIONS */ -}}
 {{- $content = partial "markup/inline-ruby.fn" $content -}}
+{{- $content = partial "markup/inline-keyword.fn" (slice $global $content) -}}
 {{- /* END OF INLINE EXTENSIONS */ -}}
 
+{{- /* BLOCK EXTENSIONS */ -}}
+{{- /* END OF BLOCK EXTENSIONS */ -}}
 
 {{- /* RESTORE ELEMENTS */ -}}
 
