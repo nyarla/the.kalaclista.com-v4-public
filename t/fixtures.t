@@ -9,7 +9,7 @@ use Kalaclista::Path;
 
 sub fixtures () {
   my $distdir = Kalaclista::Path->distdir;
-  return pathglob([ $distdir->stringify, '**', 'fixtures.yaml' ]);
+  return pathglob([ $distdir->stringify, '**', 'test.yaml' ]);
 }
 
 sub load ($) {
@@ -48,7 +48,7 @@ sub testing_fixtures () {
 
 sub testing_markup () {
   for my $section (qw(posts echos notes)) {
-    my $file = Kalaclista::Path->distdir->child($section, 'fixtures.yaml');
+    my $file = Kalaclista::Path->distdir->child($section, 'test.yaml');
     my $data = load $file;
     my $content = $data->{'content'};
 

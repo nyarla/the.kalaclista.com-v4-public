@@ -60,9 +60,9 @@ outputFormats:
     mediaType: application/atom+xml
     baseName: atom
     isPainText: false
-  Fixtures:
+  Test:
     mediaType: application/x-yaml
-    baseName: fixtures
+    baseName: test
     isPlainText: true
 
 outputs:
@@ -76,10 +76,10 @@ outputs:
     - Atom
     - RSS
     - JSONFeed
-    - Fixtures
+    - Test
   page:
     - HTML
-    - Fixtures
+    - Test
 
 # Content
 # =======
