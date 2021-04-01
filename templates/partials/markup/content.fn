@@ -29,9 +29,9 @@
 
 {{- /* END OF BACKUP ELEMENTS */ -}}
 
-
-
-
+{{- /* INLINE EXTENSIONS */ -}}
+{{- $content = partial "markup/inline-ruby.fn" $content -}}
+{{- /* END OF INLINE EXTENSIONS */ -}}
 
 
 {{- /* RESTORE ELEMENTS */ -}}

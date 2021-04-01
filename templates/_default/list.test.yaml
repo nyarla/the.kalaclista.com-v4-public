@@ -9,3 +9,9 @@ content:
   a:
     in: '{{ partial `markup/content.fn` (slice . `<a href="https://example.com/">hoge</a>`) | chomp }}'
     out: '<a href="https://example.com/">hoge</a>'
+  ruby-basic:
+    in: '{{ partial `markup/inline-ruby.fn` `{こんにちは|hello}` | chomp }}'
+    out: '<ruby>こんにちは<rp>（</rp><rt>hello</rt><rp>）</rp></ruby>'
+  ruby-extend:
+    in: '{{ partial `markup/inline-ruby.fn` `{富士山|ふ|じ|さん}` | chomp }}'
+    out: '<ruby>富<rp>（</rp><rt>ふ</rt><rp>）</rp>士<rp>（</rp><rt>じ</rt><rp>）</rp>山<rp>（</rp><rt>さん</rt><rp>）</rp></ruby>'

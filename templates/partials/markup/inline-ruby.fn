@@ -1,0 +1,24 @@
+{{- $content := . -}}
+
+{{- range $found := $content | findRE `\{[^}]+\}` -}}
+  {{- $out := $found | strings.TrimPrefix `{` | strings.TrimSuffix `}` -}}
+
+  {{- $src := split $out `|` -}}
+  {{- if eq (len $src) 2 -}}
+    {{- $dest := index $src 0 -}}
+    {{- $ruby := index $src 1 -}}
+
+    {{- $out = printf `<ruby>%s<rp>（</rp><rt>%s</rt><rp>）</rp></ruby>` $dest $ruby -}}
+  {{- else -}}
+    {{- $out = printf `<ruby>` -}}
+    {{- range $idx, $char := split (index $src 0) "" -}}
+      {{- $out = printf `%s%s<rp>（</rp><rt>%s</rt><rp>）</rp>` $out $char (index $src (add $idx 1)) -}}
+    {{- end -}}
+    {{- $out = printf `%s</ruby>` $out -}}
+  {{- end -}}
+
+  {{- $content = replace $content $found $out -}}
+{{- end -}}
+
+{{- $content | safeHTML -}}
+{{/* vim: set ft=gotexttmpl : */}}

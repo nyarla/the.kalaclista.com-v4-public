@@ -52,8 +52,8 @@ sub testing_markup () {
     my $data = load $file;
     my $content = $data->{'content'};
 
-    for my $el (qw( pre code a )) {
-      is( $content->{$el}->{'in'}, $content->{$el}->{'out'} );
+    for my $test (sort keys $content->%*) {
+      is( $content->{$test}->{'in'}, $content->{$test}->{'out'} );
     }
   }
 }
