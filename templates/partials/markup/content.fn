@@ -1,0 +1,60 @@
+{{- $global := index . 0 -}}
+{{- $content := index . 1 -}}
+
+{{- /* BACKUP ELEMENTS */ -}}
+
+{{- /* backup `pre` elements */ -}}
+{{- $pre := (slice) -}}
+{{- range $idx, $found := $content | findRE `<pre[^>]*>[\s\S]+?</pre>` -}}
+  {{- $pre = $pre | append $found -}}
+  {{- $content = replace $content $found (printf "<!-- PRE:%d: -->" $idx) -}}
+{{- end -}}
+{{- /* end of `pre` */ -}}
+
+{{- /* backup `code` elements */ -}}
+{{- $code := (slice) -}}
+{{- range $idx, $found := $content | findRE `<code[^>]*>[\s\S]+?</code>` -}}
+  {{- $code = $code | append $found -}}
+  {{- $content = replace $content $found (printf "<!-- CODE:%d: -->" $idx) -}}
+{{- end -}}
+{{- /* end of `code` */ -}}
+
+{{- /* backup `a` elements */ -}}
+{{- $a := (slice) -}}
+{{- range $idx, $found := $content | findRE `<a[^>]*>[\s\S]+?</a>` -}}
+  {{- $a = $a | append $found -}}
+  {{- $content = replace $content $found (printf "<!-- A:%d: -->" $idx) -}}
+{{- end -}}
+{{- /* end of `a` */ -}}
+
+{{- /* END OF BACKUP ELEMENTS */ -}}
+
+
+
+
+
+
+{{- /* RESTORE ELEMENTS */ -}}
+
+{{- /* restore `a` elements */ -}}
+{{- range $idx := seq 0 (sub (len $a) 1) -}}
+  {{- $content = replace $content (printf "<!-- A:%d: -->" $idx) (index $a $idx) -}}
+{{- end -}}
+{{- /* end of `a` */ -}}
+
+{{- /* restore `code` elements */ -}}
+{{- range $idx := seq 0 (sub (len $code) 1) -}}
+  {{- $content = replace $content (printf "<!-- CODE:%d: -->" $idx) (index $code $idx) -}}
+{{- end -}}
+{{- /* end of `code` */ -}}
+
+{{- /* restore `pre` elements */ -}}
+{{- range $idx := seq 0 (sub (len $pre) 1) -}}
+  {{- $content = replace $content (printf "<!-- PRE:%d: -->" $idx) (index $pre $idx) -}}
+{{- end -}}
+{{- /* end of `pre` */ -}}
+
+{{- /* END OF RESTORE ELEMENTS */ -}}
+
+{{- $content | safeHTML -}}
+{{/* vim: set ft=gotexttmpl : */}}

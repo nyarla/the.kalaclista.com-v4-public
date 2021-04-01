@@ -1,0 +1,11 @@
+---
+content:
+  pre:
+    in: "{{ partial `markup/content.fn` (slice . `<pre>hoge</pre>`) | chomp }}"
+    out: "<pre>hoge</pre>"
+  code:
+    in: "{{ partial `markup/content.fn` (slice . `<code>hoge</code>`) | chomp }}"
+    out: "<code>hoge</code>"
+  a:
+    in: '{{ partial `markup/content.fn` (slice . `<a href="https://example.com/">hoge</a>`) | chomp }}'
+    out: '<a href="https://example.com/">hoge</a>'

@@ -1,25 +1,20 @@
 use strict;
 use warnings;
 
-use FindBin;
-
 use Test2::V0;
-use Path::Tiny;
 use Path::Tiny::Glob;
 use YAML::Tiny qw( LoadFile );
 
-sub files () {
-  my $rootdir = path($FindBin::Bin);
-  while (! $rootdir->child('dist')->is_dir) {
-    $rootdir = $rootdir->parent;
-  }
+use Kalaclista::Path;
 
-  return pathglob([ $rootdir->stringify, 'dist', '**', 'fixtures.yaml' ]);
+sub fixtures () {
+  my $distdir = Kalaclista::Path->distdir;
+  return pathglob([ $distdir->stringify, '**', 'fixtures.yaml' ]);
 }
 
 sub load ($) {
-  my $path = shift;
-  return (LoadFile($path->stringify))[0];
+  my $file = shift;
+  return (LoadFile($file->stringify))[0];
 }
 
 sub section ($) {
@@ -29,29 +24,43 @@ sub section ($) {
   }
 
   return $path->basename;
-} 
+}
 
-sub testing_section ($$) {
-  my ( $path, $data ) = @_;
-  my $section = section $path;
+sub testing_fixtures () {
+  my $files = fixtures;
 
-  ok( exists $data->{'section'} );
-  if ( $section ne 'nyarla' && $section ne 'licenses' && $section ne 'policies' ) {
-    is( $data->{'section'}, $section );
-  } else {
-    is( $data->{'section'}, 'home' );
+  while (defined(my $file = $files->next)) {
+    my $data = load $file;
+    my $section = (section $file);
+
+    if ( $file->parent->basename eq $section ) {
+      next;
+    }
+
+    # testing `section`
+    if ( $section eq 'nyarla' || $section eq 'licenses' || $section eq 'policies' ) {
+      is( $data->{'section'}, 'home' );
+    } else {
+      is( $data->{'section'},  $section );
+    }
+  }
+}
+
+sub testing_markup () {
+  for my $section (qw(posts echos notes)) {
+    my $file = Kalaclista::Path->distdir->child($section, 'fixtures.yaml');
+    my $data = load $file;
+    my $content = $data->{'content'};
+
+    for my $el (qw( pre code a )) {
+      is( $content->{$el}->{'in'}, $content->{$el}->{'out'} );
+    }
   }
 }
 
 sub main {
-  my $files = files;
-
-  while (defined(my $file = $files->next)) {
-    my $data = load $file;
-    
-    testing_section $file, $data;
-  }
-
+  testing_fixtures;
+  testing_markup;
   done_testing;
 }
 

@@ -5,8 +5,8 @@ all: clean build
 install:
 	cpm install -L extlib
 
-test:
-	prove -Mlocal::lib=extlib -j15 t/*.t
+test: build
+	prove -Mlocal::lib=extlib -Ilib -j15 t/*.t
 
 clean:
 	test ! -e dist || rm -rf dist
