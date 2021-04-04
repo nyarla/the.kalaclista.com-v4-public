@@ -1,5 +1,5 @@
 ---
-content:
+is:
   pre:
     in: "{{ partial `markup/content.fn` (slice . `<pre>hoge</pre>`) | chomp }}"
     out: "<pre>hoge</pre>"
@@ -10,11 +10,18 @@ content:
     in: '{{ partial `markup/content.fn` (slice . `<a href="https://example.com/">hoge</a>`) | chomp }}'
     out: '<a href="https://example.com/">hoge</a>'
   ruby-basic:
-    in: '{{ partial `markup/inline-ruby.fn` `{こんにちは|hello}` | chomp }}'
-    out: '<ruby>こんにちは<rp>（</rp><rt>hello</rt><rp>）</rp></ruby>'
+    in: "{{ partial `markup/inline-ruby.fn` `{こんにちは|hello}` | chomp }}"
+    out: "<ruby>こんにちは<rp>（</rp><rt>hello</rt><rp>）</rp></ruby>"
   ruby-extend:
-    in: '{{ partial `markup/inline-ruby.fn` `{富士山|ふ|じ|さん}` | chomp }}'
-    out: '<ruby>富<rp>（</rp><rt>ふ</rt><rp>）</rp>士<rp>（</rp><rt>じ</rt><rp>）</rp>山<rp>（</rp><rt>さん</rt><rp>）</rp></ruby>'
+    in: "{{ partial `markup/inline-ruby.fn` `{富士山|ふ|じ|さん}` | chomp }}"
+    out: "<ruby>富<rp>（</rp><rt>ふ</rt><rp>）</rp>士<rp>（</rp><rt>じ</rt><rp>）</rp>山<rp>（</rp><rt>さん</rt><rp>）</rp></ruby>"
   keyword:
-    in: '{{ partial `markup/inline-keyword.fn` (slice . `[[word]]`) | chomp }}'
-    out: 'word'
+    in: "{{ partial `markup/inline-keyword.fn` (slice . `[[word]]`) | chomp }}"
+    out: "word"
+like:
+  image-amp:
+    out: '{{ partial `markup/block-image.fn` (slice . `<p><img src="https://the.kalaclista.com/images/echos/2019/06/10/173617/1.png" alt="test"></p>` false) | chomp }}'
+    re: '<a href="[^"]+"><amp-img src="[^"]+" srcset="[^ ]+ 1x, [^ ]+ 2x" width="\d+" height="\d+" alt="test" layout="responsive"></amp-img></a>'
+  image-feed:
+    out: '{{ partial `markup/block-image.fn` (slice . `<p><img src="https://the.kalaclista.com/images/echos/2019/06/10/173617/1.png" alt="test"></p>` true) | chomp }}'
+    re: '<a href="[^"]+"><img src="[^"]+" srcset="[^ ]+ 1x, [^ ]+ 2x" width="\d+" height="\d+" alt="test" /></a>'

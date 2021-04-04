@@ -50,10 +50,15 @@ sub testing_markup () {
   for my $section (qw(posts echos notes)) {
     my $file = Kalaclista::Path->distdir->child($section, 'test.yaml');
     my $data = load $file;
-    my $content = $data->{'content'};
+    my $is = $data->{'is'};
 
-    for my $test (sort keys $content->%*) {
-      is( $content->{$test}->{'in'}, $content->{$test}->{'out'} );
+    for my $test (sort keys $is->%*) {
+      is( $is->{$test}->{'in'}, $is->{$test}->{'out'} );
+    }
+
+    my $like = $data->{'like'};
+    for my $test (sort keys $like->%*) {
+      like( $like->{$test}->{'out'}, qr{$like->{$test}->{'re'}} );
     }
   }
 }
