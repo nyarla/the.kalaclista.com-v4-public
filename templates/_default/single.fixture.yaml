@@ -1,5 +1,9 @@
 ---
-title: '{{ replace .Page.Title "'" "''"}}'
-permalink: '{{ .Page.RelPermalink }}'
-content: '{{ replace (replace ((partialCached `markup/content.fn` (slice . .Page.Content) .Page.RelPermalink) | chomp) "\n" "") "'" "''" }}'
+# {{ $title := replace .Page.Title `'` `''` }}
+# {{ $content := (partialCached `markup/content.fn` (slice . .Page.Content) .Page.RelPermalink) | chomp }}
+# {{ $content = replace (replace $content "\n" "") `'` `''` }}
+title: "{{ $title }}"
+permalink: "{{ .Page.RelPermalink }}"
+content: "{{ $content }}"
+# prettier-ignore
 unixtime: {{ .Date.Unix }}
