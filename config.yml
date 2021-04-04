@@ -64,6 +64,10 @@ outputFormats:
     mediaType: application/x-yaml
     baseName: test
     isPlainText: true
+  Fixture:
+    mediaType: application/x-yaml
+    baseName: fixture
+    isPlainText: true
 
 outputs:
   home:
@@ -80,6 +84,7 @@ outputs:
   page:
     - HTML
     - Test
+    - Fixture
 
 # Content
 # =======

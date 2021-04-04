@@ -14,3 +14,6 @@ clean:
 
 build:
 	hugo --minify -e production -b 'https://the.kalaclista.com'
+
+tf-idf: build
+	perl -Mlocal::lib=extlib -Ilib scripts/tf-idf.pl

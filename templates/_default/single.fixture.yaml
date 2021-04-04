@@ -1,0 +1,5 @@
+---
+title: '{{ replace .Page.Title "'" "''"}}'
+permalink: '{{ .Page.RelPermalink }}'
+content: '{{ replace (replace ((partialCached `markup/content.fn` (slice . .Page.Content) .Page.RelPermalink) | chomp) "\n" "") "'" "''" }}'
+unixtime: {{ .Date.Unix }}

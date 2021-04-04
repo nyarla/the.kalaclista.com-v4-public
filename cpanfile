@@ -1,6 +1,11 @@
 # vim: ft=perl
-requires 'Path::Tiny',         '>= 0.118';
-requires 'Path::Tiny::Glob',   '>= 0.2.0';
-requires 'Test2::Suite',       '>= 0.000139';
-requires 'Unicode::LineBreak', '>= 2019.001';
-requires 'YAML::Tiny',         '>= 1.73';
+requires 'AnyEvent',                  '>= 0.23';
+requires 'Digest::SHA1',              '>= 2.13';
+requires 'Lingua::JA::NormalizeText', '>= 0.50';
+requires 'Path::Tiny',                '>= 0.118';
+requires 'Path::Tiny::Glob',          '>= 0.2.0';
+requires 'Promise::ES6',              '>= 7.17';
+requires 'Test2::Suite',              '>= 0.000139';
+requires 'Text::TinySegmenter',       '>= 0.01';
+requires 'Unicode::LineBreak',        '>= 2019.001';
+requires 'YAML::Tiny',                '>= 1.73';
