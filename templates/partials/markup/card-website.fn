@@ -1,0 +1,29 @@
+{{- $global := index . 0 -}}
+{{- $content := index . 1 -}}
+
+{{- range $found := $content | findRE `<ul>\s*<li><a[^>]+?>[^>]+</a></li>\s*</ul>` -}}
+  {{- $info := split ($found | replaceRE `<ul>\s*<li><a.*?href="([^"]+)".*?>([^>]+)</a></li>\s*</ul>` "$1\n$2") "\n" -}}
+
+  {{- $url := index $info 0 -}}
+  {{- $title := index $info 1 -}}
+  
+  {{- $key := $url | replaceRE `https?://` `` | replaceRE `[^a-zA-Z0-9\-.]` `` | replaceRE `#.+$` `` -}}
+  {{- $data := default (dict) (index $global.Site.Data.website $key) -}}
+
+  {{- $headline := printf `<h1 class="content__card--title">%s</h1>` (default $title (index $data "title")) -}}
+  {{- $summary := printf `<blockquote><p>%s</p></blockquote>` (default $title (index $data "description")) -}}
+
+  {{- $link := urls.Parse $url -}}
+  {{- if strings.HasSuffix $link.Hostname `amazon.co.jp` -}}
+    {{- $link = urls.Parse (replace ($link.String | replaceRE `&?tag=[a-z]+-22`) ``) `?` `?tag=nyarla-22` -}}
+  {{- end -}}
+
+  {{- $cite := printf `<p><cite>%s</cite></p>` (replace $link.String $link.EscapedPath $link.Path) -}}
+  
+  {{- $card := printf `<aside class="content__card--website"><a href="%s">%s%s%s</a></aside>` $link.String $headline $summary $cite -}}
+
+  {{- $content = replace $content $found $card -}}
+{{- end -}}
+
+{{- $content | safeHTML -}}
+{{/* vim: set ft=gotexttmpl : */}}

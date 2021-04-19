@@ -25,3 +25,6 @@ like:
   image-feed:
     out: '{{ partial `markup/block-image.fn` (slice . `<p><img src="https://the.kalaclista.com/images/echos/2019/06/10/173617/1.png" alt="test"></p>` true) | chomp }}'
     re: '<a href="[^"]+"><img src="[^"]+" srcset="[^ ]+ 1x, [^ ]+ 2x" width="\d+" height="\d+" alt="test" /></a>'
+  card-website:
+    out: '{{ partial `markup/card-website.fn` (slice . `<ul><li><a href="https://the.kalaclista.com/">カラクリスタ</a></li></ul>`) | chomp }}'
+    re: '<aside class="content__card--website"><a href="https?://[^"]+"><h1 class="content__card--title">[^>]+</h1><blockquote><p>[^>]+</p></blockquote><p><cite>https?://[^>]+</cite></p>'

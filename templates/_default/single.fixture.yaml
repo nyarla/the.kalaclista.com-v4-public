@@ -4,6 +4,7 @@
 # {{ $content = replace (replace $content "\n" "") `'` `''` }}
 title: "{{ $title }}"
 permalink: "{{ .Page.RelPermalink }}"
-content: "{{ $content }}"
+# prettier-ignore
+content: '{{ $content }}'
 # prettier-ignore
 unixtime: {{ .Date.Unix }}

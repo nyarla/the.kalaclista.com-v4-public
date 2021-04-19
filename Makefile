@@ -17,3 +17,19 @@ build:
 
 tf-idf: build
 	perl -Mlocal::lib=extlib -Ilib scripts/tf-idf.pl
+
+website:
+	@test -d resources/_website || mkdir -p resources/_website
+	@(pt -e '[\-*+] \[' private/content \
+		| grep '](' \
+		| sed 's/.\+\](//' \
+		| cut -d\) -f 1 \
+		| cut -d\# -f 1 \
+		| grep -v 'amazon.co.jp' | grep -v 'rakuten.co.jp' \
+		| sort | uniq \
+		| grep -P '^http') >resources/_website/links
+	@perl -Mlocal::lib=extlib -Ilib scripts/website.pl
+
+check:
+	perl -Mlocal::lib=extlib -Ilib -c scripts/tf-idf.pl
+	perl -Mlocal::lib=extlib -Ilib -c scripts/website.pl
