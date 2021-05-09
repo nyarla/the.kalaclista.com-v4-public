@@ -8,18 +8,13 @@ use YAML::Tiny qw( LoadFile );
 use Kalaclista::Path;
 
 sub fixtures () {
-  my $distdir = Kalaclista::Path->distdir;
-  return pathglob([ $distdir->stringify, '**', 'test.yaml' ]);
+  my $distdir = Kalaclista::Path->build_dir;
+  return pathglob( [ $distdir->stringify, '**', 'test.yaml' ] );
 }
 
-sub load ($) {
-  my $file = shift;
-  return (LoadFile($file->stringify))[0];
-}
-
-sub section ($) {
+sub dir ($) {
   my $path = shift;
-  while ($path->parent->basename ne 'dist') {
+  while ( $path->parent->basename ne 'build' ) {
     $path = $path->parent;
   }
 
@@ -28,38 +23,31 @@ sub section ($) {
 
 sub testing_fixtures () {
   my $files = fixtures;
+  while ( defined( my $file = $files->next ) ) {
+    my $data = LoadFile( $file->stringify );
+    my $dir  = dir $file;
 
-  while (defined(my $file = $files->next)) {
-    my $data = load $file;
-    my $section = (section $file);
-
-    if ( $file->parent->basename eq $section ) {
-      next;
+    if ( $dir eq q{nyarla} || $dir eq q{licenses} || $dir eq q{policies} ) {
+      is( $data->{'section'}, 'home', $file->stringify );
     }
-
-    # testing `section`
-    if ( $section eq 'nyarla' || $section eq 'licenses' || $section eq 'policies' ) {
-      is( $data->{'section'}, 'home' );
-    } else {
-      is( $data->{'section'},  $section );
+    else {
+      is( $data->{'section'}, $dir, $file->stringify );
     }
   }
 }
 
 sub testing_markup () {
-  for my $section (qw(posts echos notes)) {
-    my $file = Kalaclista::Path->distdir->child($section, 'test.yaml');
-    my $data = load $file;
-    my $is = $data->{'is'};
+  my $file = Kalaclista::Path->build_dir->child('posts/test.yaml');
+  my $data = LoadFile($file);
+  my $is   = $data->{'is'};
 
-    for my $test (sort keys $is->%*) {
-      is( $is->{$test}->{'in'}, $is->{$test}->{'out'} );
-    }
+  for my $test ( sort keys $is->%* ) {
+    is( $is->{$test}->{'in'}, $is->{$test}->{'out'} );
+  }
 
-    my $like = $data->{'like'};
-    for my $test (sort keys $like->%*) {
-      like( $like->{$test}->{'out'}, qr{$like->{$test}->{'re'}} );
-    }
+  my $like = $data->{'like'};
+  for my $test ( sort keys $like->%* ) {
+    like( $like->{$test}->{'out'}, qr{$like->{$test}->{'re'}} );
   }
 }
 

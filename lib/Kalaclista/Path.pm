@@ -10,7 +10,7 @@ sub rootdir {
   my $class   = shift;
   my $rootdir = path($FindBin::Bin);
 
-  while ( !$rootdir->child('dist')->is_dir ) {
+  while ( !$rootdir->child('t')->is_dir ) {
     $rootdir = $rootdir->parent;
   }
 
@@ -20,6 +20,11 @@ sub rootdir {
 sub distdir {
   my $class = shift;
   return $class->rootdir->child('dist');
+}
+
+sub build_dir {
+  my $class = shift;
+  return $class->rootdir->child('build');
 }
 
 1;
