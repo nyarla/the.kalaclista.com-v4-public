@@ -1,5 +1,7 @@
 .PHONY: all clean install pre-build build test serve
 
+JOBS = $(shell cat /proc/cpuinfo | grep processor | tail -n1 | cut -d\  -f2)
+
 all: clean build
 
 clean:
@@ -13,7 +15,7 @@ build:
 	hugo --minify -e production -b 'https://the.kalaclista.com' -d dist
 
 test: pre-build
-	prove -Mlocal::lib=extlib -Ilib -j$(shell cat /proc/cpuinfo | grep processor | tail -n1 | cut -d\  -f2) t/*.t
+	prove -Mlocal::lib=extlib -Ilib -j$(JOBS) t/*.t t/*/*.t
 
 .PHONY: serve install website check
 
