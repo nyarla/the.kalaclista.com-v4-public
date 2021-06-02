@@ -1,0 +1,25 @@
+<!--
+  {{ $global := index . 0 }}
+  {{ $section := index . 1 }}
+  {{ $website := $global.Site }}
+-->
+<nav class="widgets__nav" id="global" aria-label="ナビゲーション">
+  <p id="website__name">
+    <strong>
+      <a href="{{ absURL `/` }}" aria-label="Web サイト名"
+        >{{ $website.Title }}</a
+      >
+    </strong>
+  </p>
+  <div id="website__contents">
+    {{ range $type := (slice "posts" "echos" "notes") }}
+    <!-- {{ $menu := (index $website.Params.menus $type) }} -->
+    {{ if eq $section $type }}
+    <!-- prettier-ignore -->
+    <em><a href="{{ absURL $type }}/" aria-label="{{ $menu.aria }}">{{ $menu.name }}</a></em>
+    {{ else }}
+    <!-- prettier-ignore -->
+    <span><a href="{{ absURL $type }}/" aria-label="{{ $menu.aria }}">{{ $menu.name }}</a></span>
+    {{ end }}{{ end }}
+  </div>
+</nav>

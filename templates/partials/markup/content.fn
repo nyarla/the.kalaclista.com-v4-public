@@ -32,6 +32,8 @@
 {{- /* extends block elements */ -}}
 {{- $content = partial "markup/block-image.fn" (slice $global $content (or $inXML $inJSON)) -}}
 
+{{- $content = partial "markup/card-website.fn" (slice $global $content) -}}
+
 {{- /* restore `a` elements */ -}}
 {{- range $idx := seq 0 (sub (len $a) 1) -}}
   {{- $content = replace $content (printf "<!-- A:%d: -->" $idx) (index $a $idx) -}}

@@ -27,12 +27,7 @@ sub testing_fixtures () {
     my $data = LoadFile( $file->stringify );
     my $dir  = dir $file;
 
-    if ( $dir eq q{nyarla} || $dir eq q{licenses} || $dir eq q{policies} ) {
-      is( $data->{'section'}, 'home', $file->stringify );
-    }
-    else {
-      is( $data->{'section'}, $dir, $file->stringify );
-    }
+    is( $data->{'section'}, $dir, $file->stringify );
   }
 }
 

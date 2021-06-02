@@ -1,4 +1,4 @@
 <!doctype html>
 {{- $section := partialCached "data/section.fn" .Page .Page.Type .Page.RelPermalink | chomp -}} 
-{{- partialCached "containers/index.html" (slice . $section false) .Page.RelPermalink | safeHTML -}}
+{{- partialCached "containers/index.html" (slice . $section true) .Page.RelPermalink | replaceRE `\n` `` | safeHTML -}}
 {{/* vim: set ft=gotexttmpl : */}}

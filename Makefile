@@ -20,7 +20,7 @@ test: pre-build
 .PHONY: serve install website check
 
 serve:
-	hugo serve --minify -D -E -F -e development -b 'http://nixos:1313' --bind 0.0.0.0 --port 1313 --disableLiveReload
+	hugo serve -D -E -F -e development -b 'http://nixos:1313' --bind 0.0.0.0 --port 1313 --disableLiveReload
 
 install:
 	cpm install -L extlib

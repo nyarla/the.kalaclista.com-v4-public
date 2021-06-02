@@ -120,68 +120,30 @@ pygmentsUseClasses: true
 
 title: カラクリスタ
 
-menu:
-  main:
-    - identifier: root
-      name: 入口
-      title: カラクリスタ
-      url: /
-      weight: -399
-
-    - identifier: home
-      name: 記載
-      title: カラクリスタ
-      url: /
-      weight: -398
-
-    - identifier: posts
-      name: 記事
-      title: カラクリスタ・ブログ
-      url: /posts/
-      weight: -299
-    - identifier: echos
-      name: 雑記
-      title: カラクリスタ・エコーズ
-      url: /echos/
-      weight: -298
-    - identifier: notes
-      name: 記載
-      title: カラクリスタ・ノート
-      url: /notes/
-      weight: -297
-
-    - identifier: nyarla
-      name: 著者
-      title: 著者について
-      url: /nyarla/
-      weight: -199
-    - identifier: policies
-      name: 方針
-      title: この WebSite 運営の方針など
-      url: policies
-      weight: -198
-    - identifier: licenses
-      name: 権利
-      title: この WebSite に関わるライセンスなど
-      url: /licenses/
-      weight: -197
-
-    - identifier: search
-      name: 検索
-      title: カラクリスタ全体の検索
-      url: https://cse.google.com/cse?cx=018101178788962105892:toz3mvb2bhr 
-      weight: -99
-    - identifier: archives
-      name: 記録
-      title: カラクリスタの全記録
-      url: /archives/
-      weight: -98
-
 params:
-  labels:
-    next: 次へ
-    prev: 前へ
-    archive: 過去ログはこちら
+  menus:
+    posts:
+      name: ブログ
+      aria: "ブログ記事の一覧へ"
+    echos:
+      name: 日記
+      aria: "日記記事の一覧へ"
+    notes:
+      name: ノート
+      aria: "ノート記事一覧へ"
+    nyarla:
+      name: 筆者
+      aria: "このウェブサイトを運営者について"
+    policies:
+      name: 運営方針
+      aria: "このウェブサイトの基本的な方針について"
+    licenses:
+      name: 権利情報
+      aria: "利用しているライブラリやコンテンツのライセンスについて"
+    search:
+      name: 検索
+      aria: "Google Custom Search による全文検索"
+      url: 'https://cse.google.com/cse?cx=018101178788962105892:toz3mvb2bhr#gsc.tab=0'
 
   schemaorg:
     index:
@@ -200,12 +162,16 @@ params:
       search: WebPage
       archives: WebPage
 
+  titles:
+    posts: カラクリスタ・ブログ
+    echos: カラクリスタ・エコーズ
+    notes: カラクリスタ・ノート
+
   descriptions:
-    home: 『輝かしい青春』なんて失かった方の『にゃるら』の Webサイトです 
-    posts: 『輝かしい青春』なんて失かった方の『にゃるら』のブログです 
-    echos: 『輝かしい青春』なんて失かった方の『にゃるら』の雑記です 
-    notes: 『輝かしい青春』なんて失かった方の『にゃるら』の Wiki っぽいヤツです 
-    columns: 『輝かしい青春』なんて失かった方の『にゃるら』のコラムです
+    home: "『輝かしい青春』なんて失かった方の『[にゃるら](https://the.kalaclista.com/nyarla/)』の Webサイトです。"
+    posts: "『輝かしい青春』なんて失かった方の『[にゃるら](https://the.kalaclista.com/nyarla/)』のブログです。"
+    echos: "『輝かしい青春』なんて失かった方の『[にゃるら](https://the.kalaclista.com/nyarla/)』の日記です。"
+    notes: "『輝かしい青春』なんて失かった方の『[にゃるら](https://the.kalaclista.com/nyarla/)』の Wiki っぽいヤツです。"
 
   cards:
     item:

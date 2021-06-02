@@ -1,0 +1,99 @@
+<!--
+  {{ $global := index . 0 }}
+-->
+
+<article class="entry entry__home">
+  <section class="entry__content">
+    <p>
+      カラクリスタは<a href="{{ absURL `/nyarla/` }}">にゃるらコト岡村直樹</a>
+      が運営する個人 WebSite です。
+    </p>
+    <p>
+      中身としては下記の三つであり、たまに誰かの役に立てるコンテンツを記載できることもあります。
+    </p>
+    <hr />
+    <strong><a href="{{ absURL `/posts/` }}">カラクリスタ・ブログ</a>：</strong>
+    <p>
+      メインコンテンツ。いわゆる個人ブログであり、プログラミングとか社会問題について言及している。
+    </p>なお最近ではワリと気合を入れて書いている記事が多いです。</p>
+
+    <dl>
+      <dt><strong>最近の更新：</strong></dt>
+      <dd>
+        <ul>
+        {{ range $page := first 10 (where $global.Site.RegularPages.ByDate.Reverse `.Type` `posts`) }}
+          {{ $entry := partialCached `data/entry.fn` $global $page.RelPermalink | unmarshal }}
+          <li>
+            <time date="{{ dateFormat `2006-01-02` $entry.date }}">{{ dateFormat `2006-01-02` $entry.date }}：</time>
+            <a href="{{ $entry.url }}">{{ $entry.title }}</a>
+          </li>
+        {{ end }}
+        </ul>
+      </dd>
+    </dl>
+
+    <hr>
+
+    <strong><a href="{{ absURL `/echos/` }}">カラクリスタ・エコーズ</a>：</strong>
+    <p>
+      サブコンテンツ。いわゆる Web
+      日記っぽい雑記であり、カラクリスタ・ブログとあまり差別化できてない。
+    </p>
+    <p>
+      あとワリと気を抜いて書いてたりしますが、たまに気合いが入ってしまう時もあります。
+    </p>
+
+    <dl>
+      <dt><strong>最近の更新：</strong></dt>
+      <dd>
+        <ul>
+        {{ range $page := first 10 (where $global.Site.RegularPages.ByDate.Reverse `.Type` `echos`) }}
+          {{ $entry := partialCached `data/entry.fn` $global $page.RelPermalink | unmarshal }}
+          <li>
+            <time date="{{ dateFormat `2006-01-02` $entry.date }}">{{ dateFormat `2006-01-02` $entry.date }}：</time>
+            <a href="{{ $entry.url }}">{{ $entry.title }}</a>
+          </li>
+        {{ end }}
+        </ul>
+      </dd>
+    </dl>
+
+
+
+    <hr>
+  
+    <strong><a href="{{ absURL `/notes/` }}">カラクリスタ・ノート</a>：</strong>
+    <p>
+      まとめ系コンテンツ。
+      いわゆる Wiki っぽい使い方をしていたり、時間経過で古くならない記事などが入っている。
+    </p>
+    <p>なお方針が定まってなかっていなかった時期もあり、割と混沌としてたりもします。</p>
+    
+    <dl>
+      <dt><strong>最近の更新：</strong></dt>
+      <dd>
+        <ul>
+        {{ range $page := first 10 (where $global.Site.RegularPages.ByDate.Reverse `.Type` `notes`) }}
+          {{ $entry := partialCached `data/entry.fn` $global $page.RelPermalink | unmarshal }}
+          <li>
+            <time date="{{ dateFormat `2006-01-02` $entry.date }}">{{ dateFormat `2006-01-02` $entry.date }}：</time>
+            <a href="{{ $entry.url }}">{{ $entry.title }}</a>
+          </li>
+        {{ end }}
+        </ul>
+      </dd>
+    </dl>
+
+    <hr>
+    <p>ちなみにこのカラクリスタに至って落ち着くまでに色々と歴史があり、
+    ブログシステムを変更したり、ドメインを引っ越したり、サイト名を変えたり、
+    と言ったことをしていたため、
+    昔のコンテンツになればなるほどその当時の文脈でしか分からないコンテンツが増えて行きます。
+    </p>
+    <p>
+      また過去に色々とブログシステムを変えていた影響もあり、
+      未だに修正作業をしているものの記事の見た目やマークアップが崩壊している箇所もあるため、
+      その辺りは適宜『ああ、これは崩壊しているな……』と生暖かい目で大目に見てもらえたら助かります。
+    </p>
+  </section>
+</article>

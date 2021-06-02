@@ -4,8 +4,6 @@
 
 {{- if eq $page.Kind "404" -}}
   {{- $section = "notfound" -}}
-{{- else if and (ne $section "archives") (eq $page.Type "home") -}}
-  {{- $section = "home" -}}
 {{- end -}}
 
 {{- $section -}}

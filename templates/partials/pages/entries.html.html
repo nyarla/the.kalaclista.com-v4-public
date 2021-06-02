@@ -1,0 +1,43 @@
+<!--
+  {{ $global := index . 0 }}
+  {{ $section := index . 1 }}
+  {{ $pages := where $global.Site.RegularPages.ByDate.Reverse ".Type" $section }}
+-->
+
+<article class="entry entry__archives">
+  <header>
+    <h1>
+      <a href="{{ absURL (printf `/%s/` $section) }}"
+        >{{ index $global.Site.Params.titles $section }}</a
+      >
+    </h1>
+  </header>
+  <section class="entry__content">
+    <p>{{ index $global.Site.Params.descriptions $section | markdownify }}</p>
+    <!-- prettier-ignore -->
+    {{ range $idx, $year := seq (int ((index $pages 0).Date.Format `2006`)) 2006 }}
+    <!-- prettier-ignore -->
+    {{ $entries := where $pages ".Date.Year" $year }}
+    <!-- prettier-ignore -->
+    {{ if ne (len $entries) 0 }}
+    <!-- prettier-ignore -->
+    <hr />
+    <p><strong>{{ $year }}年：</strong></p>
+    {{ $month := `` }}
+    <!-- prettier-ignore -->
+    <ul>
+      {{ range $page := $entries }}
+      <!-- prettier-ignore -->
+      {{ $entry := partialCached `data/entry.fn` $global $page.RelPermalink | unmarshal }}
+      <li>
+        <time datetime="{{ dateFormat `2006-01-02` $entry.date }}"
+          >{{ dateFormat `2006-01-02` $entry.date }}：</time
+        >
+        <a href="{{ $entry.url }}">{{ $entry.title }}</a>
+      </li>
+      {{ end }}
+      <!-- prettier-ignore -->
+    </ul>
+    {{ end }} {{ end }}
+  </section>
+</article>

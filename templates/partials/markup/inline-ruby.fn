@@ -1,10 +1,10 @@
 {{- $content := . -}}
 
-{{- range $found := $content | findRE `\{[^}]+\}` -}}
+{{- range $idx, $found := $content | findRE `\{[^}]+?\}` -}}
   {{- $out := $found | strings.TrimPrefix `{` | strings.TrimSuffix `}` -}}
 
   {{- $src := split $out `|` -}}
-  {{- if eq (len $src) 2 -}}
+  {{- if eq ($out | strings.Count `|`) 1 -}}
     {{- $dest := index $src 0 -}}
     {{- $ruby := index $src 1 -}}
 
