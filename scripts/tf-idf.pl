@@ -215,7 +215,7 @@ sub main {
 
       $set->[2]->{$term} = $tfidf;
 
-      $tfidf_size = $tfidf ^ 2;
+      $tfidf_size += $tfidf ^ 2;
     }
   }
   $tfidf_size = sqrt $tfidf_size;
