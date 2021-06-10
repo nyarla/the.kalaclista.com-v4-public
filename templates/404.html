@@ -1,0 +1,133 @@
+<!--
+  {{ $global := . }}
+  {{ $section := `notfound` }}
+  {{ $isIndex := false }}
+  {{ $page := .Page }}
+-->
+<html amp lang="ja">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>404 page not found - {{ .Site.Title }}</title>
+    <meta
+      name="description"
+      content="リクエストされたページは見付かりませんでした"
+    />
+    <meta property="og:title" content="404 not found" />
+    <meta property="og:site_name" content="{{ .Site.Title }}" />
+    <meta property="og:image" content="{{ absURL `/assets/avatar.png` }}" />
+
+    <meta
+      property="og:description"
+      content="リクエストされたページは見付かりませんでした"
+    />
+
+    <meta property="og:profile:first_name" content="Naoki" />
+    <meta property="og:profile:last_name" content="OKAMURA" />
+    <meta property="og:profile:username" content="kalaclista" />
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@kalaclista" />
+    <meta name="twitter:title" content="404 page not found" />
+    <meta
+      name="twitter:description"
+      content="リクエストされたページは見付かりませんでした"
+    />
+    <meta name="twitter:image" content="{{ absURL `/assets/avatar.png` }}" />
+
+    <link rel="manifest" href="{{ absURL `/manifest.webmanifest` }}" />
+    <link rel="icon" href="{{ absURL `/favicon.ico` }}" />
+    <link rel="icon" href="{{ absURL `/icon.svg` }}" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="{{ absURL `/apple-touch-icon.png` }}" />
+
+    <!-- Preload -->
+    <meta http-equiv="x-dns-prefetch-control" content="on" />
+    <link rel="preconnect dns-prefetch" href="//cdn.ampproject.org" />
+    <!-- {{ if hugo.IsProduction }} -->
+    <link rel="preconnect dns-prefetch" href="//googleads.g.doubleclick.net" />
+
+    <link rel="preconnect dns-prefetch" href="//www.google-analytics.com" />
+    <link rel="preconnect dns-prefetch" href="//stats.g.doubleclick.net" />
+    <link rel="preconnect dns-prefetch" href="//www.google.com" />
+    <link rel="preconnect dns-prefetch" href="//www.google.co.jp" />
+    <link
+      rel="preconnect dns-prefetch"
+      href="//pagead2.googlesyndication.com"
+    />
+
+    <link rel="preconnect dns-prefetch" href="//tpc.googlesyndication.com" />
+    <link rel="preconnect dns-prefetch" href="//accounts.google.com" />
+
+    <link rel="preconnect dns-prefetch" href="//www.googletagmanager.com" />
+    <!-- {{ end }} -->
+
+    <link rel="preload" as="script" href="https://cdn.ampproject.org/v0.js" />
+    <!-- {{ if hugo.IsProduction }} -->
+    <link
+      rel="preload"
+      as="script"
+      href="https://cdn.ampproject.org/v0/amp-ad-0.1.js"
+    />
+    <link
+      rel="preload"
+      as="script"
+      href="https://cdn.ampproject.org/v0/amp-analytics-0.1.js"
+    />
+    <!-- {{ end }} -->
+
+    <!-- Custom Elements -->
+    <script async src="https://cdn.ampproject.org/v0.js"></script>
+    <!-- {{ if hugo.IsProduction }} -->
+    <script
+      async
+      custom-element="amp-ad"
+      src="https://cdn.ampproject.org/v0/amp-ad-0.1.js"
+    ></script>
+    <script
+      async
+      custom-element="amp-analytics"
+      src="https://cdn.ampproject.org/v0/amp-analytics-0.1.js"
+    ></script>
+    <!-- {{ end }} -->
+
+    <!-- Stylesheet -->
+    <meta
+      name="viewport"
+      content="width=device-width,minimum-scale=1,initial-scale=1"
+    />
+    <!-- prettier-ignore -->
+    <style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style>
+    <!-- prettier-ignore -->
+    <noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>
+
+    <!-- {{ $base := (resources.Get "scss/base.scss" | resources.ToCSS (dict)).Content }} -->
+    <style amp-custom>
+      {{ $base | safeCSS }}
+    </style>
+  </head>
+  <body data-amp-auto-lightbox-disable>
+    <!-- prettier-ignore -->
+    {{ partialCached `widgets/menu.html.html` (slice $global $section) $section }}
+    <article class="entry entry__archives">
+      <header>
+        <h1>404 page not found</h1>
+      </header>
+      <section class="entry__content">
+        <p>申し分けないんですが、 要求されたページが見付かりませんでした。</p>
+        <p>
+          この URL にあったはずのページはこの Web
+          サイトの歴史的経緯により、行方不明になっている可能性があります。
+        </p>
+        <p>
+          もし断片的なキーワードをお持ちでしたら、
+          <a href="{{ .Site.Params.menus.search.url }}"
+            >Google Custom Search Engine による検索</a
+          >
+          でお探しのページが見付かるかもしれません。
+        </p>
+      </section>
+    </article>
+    <!-- prettier-ignore -->
+    {{ partialCached `widgets/info.html.html` (slice $global $section) $section }}
+  </body>
+</html>
