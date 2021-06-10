@@ -1,6 +1,7 @@
 {{- $global := index . 0 -}}
 {{- $content := index . 1 -}}
 
+
 {{- range $found := $content | findRE `<ul>\s*<li><a[^>]+?>[^>]+</a></li>\s*</ul>` -}}
   {{- $info := split ($found | replaceRE `<ul>\s*<li><a.*?href="([^"]+)".*?>([^>]+)</a></li>\s*</ul>` "$1\n$2") "\n" -}}
 
@@ -15,7 +16,7 @@
 
   {{- $link := urls.Parse $url -}}
   {{- if strings.HasSuffix $link.Hostname `amazon.co.jp` -}}
-    {{- $link = urls.Parse (replace ($link.String | replaceRE `&?tag=[a-z]+-22`) ``) `?` `?tag=nyarla-22` -}}
+    {{- $link = urls.Parse (replace ($link.String | replaceRE `&?tag=[a-z]+-22` ``) `?` `?tag=nyarla-22`) -}}
   {{- end -}}
 
   {{- $cite := printf `<p><cite>%s</cite></p>` (replace $link.String $link.EscapedPath $link.Path) -}}

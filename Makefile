@@ -15,12 +15,12 @@ build:
 	hugo --minify -e production -b 'https://the.kalaclista.com' -d dist
 
 test: pre-build
-	prove -Mlocal::lib=extlib -Ilib -j$(JOBS) t/*.t t/*/*.t
+	prove -Mlocal::lib=extlib -Ilib -j$(JOBS) t/*.t
 
 .PHONY: serve install website check
 
 serve:
-	hugo serve -D -E -F -e development -b 'http://nixos:1313' --bind 0.0.0.0 --port 1313 --disableLiveReload
+	hugo serve --minify -D -E -F -e development -b 'http://nixos:1313' --bind 0.0.0.0 --port 1313 --disableLiveReload
 
 install:
 	cpm install -L extlib

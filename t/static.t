@@ -12,6 +12,7 @@ sub main {
   my $dir = Kalaclista::Path->build_dir;
 
   ok( $dir->child('assets/avatar.svg')->is_file );
+  ok( $dir->child('assets/avatar.png')->is_file );
 
   ok( $dir->child('apple-touch-icon.png')->is_file );
   ok( $dir->child('favicon.ico')->is_file );

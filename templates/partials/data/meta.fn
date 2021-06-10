@@ -1,0 +1,45 @@
+{{ $global := index . 0 }}
+{{ $section := index . 1 }}
+{{ $page := $global.Page }}
+
+{{ $data := (dict) }}
+
+{{ if $page.IsPage }}
+  {{ $entry := partialCached `data/entry.fn` $global $page | unmarshal }}
+
+  {{ if ne $page.Type `home` }}
+    {{ $data = merge $data (dict `siteTitle` (index $global.Site.Params.titles $section)) }}
+  {{ else }}
+    {{ $data = merge $data (dict `siteTitle` $global.Site.Title) }}
+  {{ end }}
+
+  {{ $data = merge $data (dict `combinedTitle` (printf `%s - %s` $entry.title $data.siteTitle)) }}
+  {{ $data = merge $data (dict `title` $entry.title) }}
+  {{ $data = merge $data (dict `summary` (partialCached `data/summary.fn` $entry.content_html $entry.content_html | chomp)) }}
+  {{ $data = merge $data (dict `section` $entry.section) }}
+  {{ $data = merge $data (dict `url` $entry.url) }}
+  {{ $data = merge $data (dict `type` `article`) }}
+  {{ $data = merge $data (dict `datetime` $entry.date_published) }}
+  {{ $data = merge $data (dict `lastmod` $entry.date_modified) }}
+
+
+{{ else if $page.IsHome }}
+  {{ $data = merge $data (dict `combinedTitle` $global.Site.Title) }}
+  {{ $data = merge $data (dict `title` $global.Site.Title) }}
+  {{ $data = merge $data (dict `summary` ($global.Site.Params.descriptions.home | markdownify | plainify | chomp)) }}
+  {{ $data = merge $data (dict `url` $page.Permalink) }}
+  {{ $data = merge $data (dict `type` `website`) }}
+    {{ $data = merge $data (dict `siteTitle` $global.Site.Title) }}
+{{ else }}
+  {{ $data = merge $data (dict `title` (index $global.Site.Params.titles $section)) }}
+  {{ $data = merge $data (dict `combinedTitle` $data.title) }}
+  {{ $data = merge $data (dict `summary` ($global.Site.Params.descriptions.home | markdownify | plainify | chomp)) }}
+  {{ $data = merge $data (dict `section` $section) }}
+  {{ $data = merge $data (dict `url` $page.Permalink) }}
+  {{ $data = merge $data (dict `type` `website`) }}
+  {{ $data = merge $data (dict `siteTitle` (index $global.Site.Params.titles $section)) }}
+{{ end }}
+
+{{ $data | jsonify }}
+
+{{/* vim: set ft=gotexttmpl : */}}

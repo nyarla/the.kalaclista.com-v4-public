@@ -1,0 +1,46 @@
+{{ $global := index . 0 }}
+{{ $section := index . 1 }}
+
+{{ $meta := partial `data/meta.fn` (slice $global $section) | unmarshal }}
+
+{{ $self := (dict) }}
+{{ $self = merge $self $global.Site.Params.jsonld.data.base }}
+{{ $self = merge $self (dict `@id` $meta.url) }}
+{{ $self = merge $self (dict `headline` $meta.title) }}
+
+{{ $item := dict }}
+{{ $item = merge $item (dict `@type` `ListItem`) }}
+{{ $item = merge $item (dict `item` $meta.url) }}
+{{ $item = merge $item (dict `name` $meta.title) }}
+
+{{ $tree := (slice $global.Site.Params.jsonld.items.home) }}
+
+{{ if $global.Page.IsPage }}
+  {{ $self = merge $self (dict `datePublished` $meta.datetime) }}
+  {{ $self = merge $self (dict `dateModified` $meta.lastmod) }}
+  {{ if ne $global.Page.Type `home` }}
+    {{ $self = merge $self (dict `@type` (index (index $global.Site.Params.jsonld.types $section) 1)) }}
+    {{ $self = merge $self (dict `mainEntryOfPage` (index $global.Site.Params.jsonld.root $section)) }}
+
+    {{ $item = merge $item (dict `position` 3) }}
+    {{ $tree = $tree | append (index $global.Site.Params.jsonld.items $section) }}
+    {{ $tree = $tree | append $item }}
+  {{ else }}
+    {{ $self = merge $self (dict `@type` (index $global.Site.Params.jsonld.types.home 1)) }}
+    {{ $self = merge $self (dict `mainEntryOfPage` $global.Site.Params.jsonld.items.home) }}
+
+    {{ $item = merge $item (dict `position` 2) }}
+    {{ $tree = $tree | append $item }}
+  {{ end}}
+{{ else }}
+  {{ if ne $section `home` }}
+    {{ $self = merge $self (dict `@type` (index (index $global.Site.Params.jsonld.types $section) 0)) }}
+    {{ $tree = $tree | append (index $global.Site.Params.jsonld.items $section) }}
+  {{ else }}
+    {{ $self = merge $self (dict `@type` (index $global.Site.Params.jsonld.types.home 0)) }}
+  {{ end }}
+{{ end }}
+
+{{ slice $self $tree | jsonify }}
+
+{{/* vim: set ft=gotexttmpl : */}}

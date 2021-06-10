@@ -145,6 +145,72 @@ params:
       aria: "Google Custom Search による全文検索"
       url: 'https://cse.google.com/cse?cx=018101178788962105892:toz3mvb2bhr#gsc.tab=0'
 
+  jsonld:
+    types:
+      home:
+        - WebSite
+        - WebPage
+      posts:
+        - Blog
+        - BlogPosting
+      echos:
+        - Blog
+        - BlogPosting
+      notes:
+        - WebSite
+        - Article
+    data:
+      base:
+        '@context': https://schema.org
+        '@type': ''
+        '@id': ''
+        'headline': ''
+        image:
+          '@type': 'URL'
+          url: https://the.kalaclista.com/assets/avatar.png
+        author:
+          '@type': Person
+          name: OKAMURA Naoki aka nyarla
+          email: 'nyarla@kalaclista.com'
+        publisher:
+          '@type': Organization
+          name: the.kalaclista.com
+          logo:
+            '@type': ImageObject
+            url:
+              '@type': 'URL'
+              url: https://the.kalaclista.com/assets/avatar.png
+    root:
+      home:
+        '@id': https://the.kalaclista.com/
+      posts:
+        '@id': https://the.kalaclista.com/posts/
+      echos:
+        '@id': https://the.kalaclista.com/echos/
+      notes:
+        '@id': https://the.kalaclista.com/notes/
+    items:
+      home:
+        '@type': ListItem
+        position: 1
+        name: カラクリスタ
+        item: https://the.kalaclista.com/
+      posts:
+        '@type': ListItem
+        position: 2
+        name: カラクリスタ・ブログ
+        item: https://the.kalaclista.com/posts/
+      echos:
+        '@type': ListItem
+        position: 2
+        name: カラクリスタ・エコーズ
+        item: https://the.kalaclista.com/echos/
+      notes:
+        '@type': ListItem
+        position: 2
+        name: カラクリスタ・ノート
+        item: https://the.kalaclista.com/notes/
+
   schemaorg:
     index:
       home: WebSite
@@ -187,3 +253,17 @@ params:
         aliexpress: 'Aliexpress から輸入する'
         banggood: 'Banggood で輸入する'
         gearbest: 'Gearbest で輸入する'
+
+  adsense: -|
+    <aside class="entry__ad">
+    <amp-ad
+      width="100vw"
+      height="320"
+      type="adsense"
+      data-ad-client="ca-pub-1273544194033160"
+      data-ad-slot="2961090128"
+      data-auto-format="rspv"
+      data-full-width="">
+      <div overflow=""></div>
+    </amp-ad>
+    </aside>

@@ -2,6 +2,17 @@
   {{ $global := . }}
   {{ $page := $global.Page }}
   {{ $entry := partialCached `data/entry.fn` $global $page.RelPermalink | unmarshal }}
+
+  {{ $adsense := $global.Site.Params.adsense }}
+  {{ if not hugo.IsProduction }}
+  {{ $adsense = `<aside class="entry__ad"><div style="height: 320px"></div></aside>` }}
+  {{ end }}
+
+  {{ $content := $entry.content_html }}
+
+  {{ if ne $page.Type `home` }}
+  {{ $content = replaceRE `</p>\s*<h1` (printf `</p>%s<h1` $adsense) $entry.content_html 1 }}
+  {{ end }}
 -->
 <article class="entry" aria-label="記事">
   <header>
@@ -20,51 +31,11 @@
     </h1>
   </header>
 
-  <!-- prettier-ignore -->
-  {{ if or (eq $entry.section "posts") (eq $entry.section "echos") (eq $entry.section "notes") }}
-    {{ if hugo.IsProduction }}
-  <aside class="entry__ad" aria-label="広告">
-    <amp-ad
-      width="100vw"
-      height="320"
-      type="adsense"
-      data-ad-client="ca-pub-1273544194033160"
-      data-ad-slot="2961090128"
-      data-auto-format="rspv"
-      data-full-width=""
-    >
-      <div overflow=""></div>
-    </amp-ad>
-  </aside>
-  {{ else }}
-  <aside class="entry__ad">
-    <div style="height: 320px"></div>
-  </aside>
-  {{ end }} {{ end }}
-
   <section class="entry__content" aria-label="記事本文">
-    {{- $entry.content_html | safeHTML -}}
+    {{- $content | safeHTML -}}
   </section>
 
-  <!-- prettier-ignore -->
-  {{ if or (eq $entry.section "posts") (eq $entry.section "echos") (eq $entry.section "notes") }}
-    {{ if hugo.IsProduction }}
-  <aside class="entry__ad entry__ad--bottom" aria-label="広告">
-    <amp-ad
-      width="100vw"
-      height="320"
-      type="adsense"
-      data-ad-client="ca-pub-1273544194033160"
-      data-ad-slot="2961090128"
-      data-auto-format="rspv"
-      data-full-width=""
-    >
-      <div overflow=""></div>
-    </amp-ad>
-  </aside>
-  {{ else }}
-  <aside class="entry__ad entry__ad--bottom">
-    <div style="height: 320px"></div>
-  </aside>
-  {{ end }} {{ end }}
+  <!-- {{ if ne $page.Type `home` }}  -->
+  {{ $adsense | safeHTML }}
+  <!-- {{ end }} -->
 </article>
