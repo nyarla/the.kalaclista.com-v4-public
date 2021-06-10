@@ -21,7 +21,7 @@
 
   {{- $cite := printf `<p><cite>%s</cite></p>` (replace $link.String $link.EscapedPath $link.Path) -}}
   
-  {{- $card := printf `<aside class="content__card--website"><a href="%s">%s%s%s</a></aside>` $link.String $headline $summary $cite -}}
+  {{- $card := printf `<aside class="content__card--website"><a href="%s">%s%s%s</a></aside>` $link.String $headline $cite $summary -}}
 
   {{- $content = replace $content $found $card -}}
 {{- end -}}

@@ -262,6 +262,52 @@ a {
     font-size: 0.9em;
     padding: 0.1em 0.25em;
   }
+
+  .content__card--website {
+    a {
+      display: block;
+
+      background-color: $base06;
+      padding: 0.25em 1em;
+      border-radius: 3px;
+
+      transition: border-color 0.125s;
+      text-decoration: none;
+
+      &:link,
+      &:visited {
+        border: 1px solid $base04;
+      }
+
+      &:hover,
+      &:active {
+        border: 1px solid $base0D;
+      }
+
+      .content__card--title {
+        font-size: 1.2em;
+        margin-bottom: 0;
+        color: $base00;
+      }
+
+      .content__card--title + p {
+        margin: 0;
+      }
+
+      cite {
+        font-style: normal;
+        font-weight: bold;
+        font-size: 0.8em;
+        color: $base0B;
+      }
+
+      blockquote {
+        margin-top: 0.5em;
+        font-size: 0.75em;
+        color: $base02;
+      }
+    }
+  }
 }
 .entry__home .entry__content,
 .entry__archives .entry__content {
