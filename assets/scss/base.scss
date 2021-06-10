@@ -255,6 +255,13 @@ a {
     border-radius: 3px;
     overflow-x: scroll;
   }
+
+  *:not(pre) code {
+    background-color: $base04;
+    border-radius: 3px;
+    font-size: 0.9em;
+    padding: 0.1em 0.25em;
+  }
 }
 .entry__home .entry__content,
 .entry__archives .entry__content {
