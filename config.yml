@@ -240,13 +240,7 @@ params:
     notes: "『輝かしい青春』なんて失かった方の『[にゃるら](https://the.kalaclista.com/nyarla/)』の Wiki っぽいヤツです。"
 
   cards:
-    item:
-      order:
-        - amazon
-        - rakuten
-        - aliexpress
-        - banggood
-        - gearbest
+    affiliate:
       labels:
         amazon: 'Amazon.co.jp で買う'
         rakuten: '楽天で探す'

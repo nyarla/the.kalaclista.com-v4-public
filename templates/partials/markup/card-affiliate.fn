@@ -1,0 +1,68 @@
+{{- $global := index . 0 -}}
+{{- $content := index . 1 -}}
+{{- $isFeed := index . 2 -}}
+
+{{- range $found := $content | findRE `<p><a href="[^"]+">[^<]+</a></p>` -}}
+  {{- $title := $found | replaceRE `<p><a href="[^"]+">([^<]+)</a></p>` `$1` -}}
+  {{- $first := `` -}}
+
+  {{- if isset $global.Site.Data.affiliate $title -}}
+    {{- $data := index $global.Site.Data.affiliate $title -}}
+
+    {{- $lists := `` -}}
+    {{- $thumbnail := (dict) -}}
+
+    {{- range $item := $data -}}
+      {{- $label := index $global.Site.Params.cards.affiliate.labels $item.provider -}}
+
+      {{- $pixel := `` -}}
+      {{- if isset $item `beacon` -}}
+        {{- if $isFeed -}}
+          {{- $pixel = printf `<img src="%s" height="1" width="1" />`  $item.beacon -}}
+        {{- else -}}
+          {{- $pixel = printf `<amp-pixel src="%s" layout="nodisplay"></amp-pixel>`  $item.beacon -}}
+        {{- end -}}
+      {{- end -}}
+
+      {{- $list := printf `<li class="%s"><a href="%s">%s</a>%s</li>` $item.provider $item.link $label $pixel -}}
+      {{- $lists = printf `%s%s` $lists $list -}}
+
+      {{- if eq $first `` -}}
+        {{- $first = $item.link -}}
+      {{- end -}}
+      
+      {{- if and (not (isset $thumbnail `image`)) (isset $item `image`) -}}
+        {{- $thumbnail = merge $thumbnail $item -}}
+      {{- end -}}
+    {{- end -}}
+
+    {{- $lists = printf `<ul>%s</ul>` $lists -}}
+
+    {{- $image := `` -}}
+    {{- if isset $thumbnail `image` -}}
+      {{- $height := index (split $thumbnail.size `x`) 1 -}}
+      {{- $width := index (split $thumbnail.size `x`) 0 -}}
+      {{- $link := $thumbnail.link -}}
+      {{- $src := $thumbnail.image -}}
+
+      {{- if $isFeed -}}
+        {{- $image = printf `<img src="%s" width="%s" height="%s" $src $width $height />` -}}
+      {{- else -}}
+        {{- $image = printf `<amp-img src="%s" width="%s" height="%s" layout="fixed"></amp-img>` $src $width $height -}}
+      {{- end -}}
+      
+      {{- $image = printf `<p><a href="%s">%s</a></p>` $link $image -}}
+    {{- end -}}
+
+    {{- $out := `` -}}
+    {{- $out = printf `%s<h1><a href="%s">%s</a></h1>` $out $first $title -}}
+    {{- $out = printf `%s%s%s` $out $image $lists -}}
+
+    {{- $out = printf `<aside class="content__card--affiliate">%s</aside>` $out -}}
+
+    {{- $content = replace $content $found $out -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $content | safeHTML -}}
+{{/* vim: set ft=gotexttmpl : */}}

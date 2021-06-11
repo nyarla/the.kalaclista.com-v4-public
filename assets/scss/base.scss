@@ -272,6 +272,7 @@ a {
   .content__card--website {
     a {
       display: block;
+      overflow: hidden;
 
       background-color: $base06;
       padding: 0.25em 1em;
@@ -314,6 +315,75 @@ a {
       }
     }
   }
+
+  .content__card--affiliate {
+    margin: 1em 0;
+    background-color: $base06;
+    padding: 0.25em 1em;
+    border-radius: 3px;
+    border: 1px solid $base0B;
+    overflow: hidden;
+
+    h1 {
+      font-size: 1.2em;
+      float: left;
+      a {
+        @include link-color($base00, $base0A);
+        text-decoration: underline;
+      }
+    }
+
+    p {
+      margin: 0.8em 0;
+      padding: 0;
+      float: right;
+    }
+
+    ul {
+      clear: left;
+
+      li {
+        &::before {
+          width: 3px;
+          height: auto;
+          top: 0;
+          bottom: 0;
+          left: -0.5em;
+          border-radius: 3px;
+        }
+
+        &.amazon::before {
+          background-color: $color-amazon;
+        }
+
+        &.rakuten::before {
+          background-color: $color-rakuten;
+        }
+
+        &.aliexpress::before {
+          background-color: $color-rakuten;
+        }
+
+        &.banggood::before {
+          background-color: $color-rakuten;
+        }
+
+        &.gearbest::before {
+          background-color: $color-rakuten;
+        }
+      }
+
+      li a {
+        @include link-color($base02, $base0A);
+      }
+    }
+
+    &::after {
+      display: block;
+      content: "";
+      clear: both;
+    }
+  }
 }
 .entry__home .entry__content,
 .entry__archives .entry__content {
@@ -324,5 +394,20 @@ a {
 
   ul li time {
     font-size: 0.635em;
+  }
+}
+
+@media screen and (max-width: 30em) {
+  .entry__content {
+    .content__card--affiliate {
+      h1,
+      p {
+        float: none;
+      }
+
+      p {
+        text-align: center;
+      }
+    }
   }
 }

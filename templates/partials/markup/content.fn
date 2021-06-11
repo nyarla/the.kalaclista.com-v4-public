@@ -37,6 +37,7 @@
 {{- /* extends block elements */ -}}
 {{- $content = partial "markup/block-image.fn" (slice $global $content (or $inXML $inJSON)) -}}
 {{- $content = partial "markup/card-website.fn" (slice $global $content) -}}
+{{- $content = partial "markup/card-affiliate.fn" (slice $global $content) -}}
 
 {{- /* restore `code` elements */ -}}
 {{- range $idx := seq 0 (sub (len $code) 1) -}}
