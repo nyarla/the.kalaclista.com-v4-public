@@ -5,7 +5,7 @@
 {{ $data := (dict) }}
 
 {{ if $page.IsPage }}
-  {{ $entry := partialCached `data/entry.fn` $global $page | unmarshal }}
+  {{ $entry := partialCached `data/entry.fn` (slice $global $page) $page.RelPermalink | unmarshal }}
 
   {{ if ne $page.Type `home` }}
     {{ $data = merge $data (dict `siteTitle` (index $global.Site.Params.titles $section)) }}

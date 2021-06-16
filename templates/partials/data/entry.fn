@@ -1,5 +1,5 @@
-{{ $global := . }}
-{{ $page := $global.Page }}
+{{ $global := index . 0 }}
+{{ $page := index . 1 }}
 
 {{ $dateFormat := `2006-01-02T15:04:05Z07:00` }}
 {{ $content := partialCached `markup/content.fn` (slice $global $page.Content) $page.Content | chomp }}

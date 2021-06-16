@@ -27,8 +27,7 @@
     <!-- prettier-ignore -->
     <ul>
       {{ range $page := $entries }}
-      <!-- prettier-ignore -->
-      {{ $entry := partialCached `data/entry.fn` $global $page.RelPermalink | unmarshal }}
+      <!-- {{ $entry := partialCached `data/entry.fn` (slice $global $page) $page.RelPermalink | unmarshal }} -->
       <li>
         <time datetime="{{ dateFormat `2006-01-02` $entry.date }}"
           >{{ dateFormat `2006-01-02` $entry.date }}：</time

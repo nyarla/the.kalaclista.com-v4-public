@@ -22,7 +22,7 @@
       <dd>
         <ul>
         {{ range $page := first 10 (where $global.Site.RegularPages.ByDate.Reverse `.Type` `posts`) }}
-          {{ $entry := partialCached `data/entry.fn` $global $page.RelPermalink | unmarshal }}
+          {{ $entry := partialCached `data/entry.fn` (slice $global $page) $page.RelPermalink | unmarshal }}
           <li>
             <time date="{{ dateFormat `2006-01-02` $entry.date }}">{{ dateFormat `2006-01-02` $entry.date }}：</time>
             <a href="{{ $entry.url }}">{{ $entry.title }}</a>
@@ -48,7 +48,7 @@
       <dd>
         <ul>
         {{ range $page := first 10 (where $global.Site.RegularPages.ByDate.Reverse `.Type` `echos`) }}
-          {{ $entry := partialCached `data/entry.fn` $global $page.RelPermalink | unmarshal }}
+          {{ $entry := partialCached `data/entry.fn` (slice $global $page) $page.RelPermalink | unmarshal }}
           <li>
             <time date="{{ dateFormat `2006-01-02` $entry.date }}">{{ dateFormat `2006-01-02` $entry.date }}：</time>
             <a href="{{ $entry.url }}">{{ $entry.title }}</a>
@@ -74,7 +74,7 @@
       <dd>
         <ul>
         {{ range $page := first 10 (where $global.Site.RegularPages.ByDate.Reverse `.Type` `notes`) }}
-          {{ $entry := partialCached `data/entry.fn` $global $page.RelPermalink | unmarshal }}
+          {{ $entry := partialCached `data/entry.fn` (slice $global $page) $page.RelPermalink | unmarshal }}
           <li>
             <time date="{{ dateFormat `2006-01-02` $entry.date }}">{{ dateFormat `2006-01-02` $entry.date }}：</time>
             <a href="{{ $entry.url }}">{{ $entry.title }}</a>
