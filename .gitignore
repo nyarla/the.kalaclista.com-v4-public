@@ -4,3 +4,4 @@ extlib
 private
 resources
 build
+config.dist.yaml

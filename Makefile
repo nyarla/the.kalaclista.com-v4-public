@@ -1,4 +1,4 @@
-.PHONY: all clean install pre-build build test serve
+.PHONY: all clean install pre-build dist test serve
 
 JOBS = $(shell cat /proc/cpuinfo | grep processor | tail -n1 | cut -d\  -f2)
 
@@ -11,8 +11,9 @@ clean:
 pre-build:
 	hugo --minify -e production -b 'https://the.kalaclista.com' -d build
 
-build:
-	hugo --minify -e production -b 'https://the.kalaclista.com' -d dist
+dist:
+	cat config.yml| grep -v '\- Test' | grep -v '\- Fixture' >config.dist.yaml
+	hugo --minify -e production -b 'https://the.kalaclista.com' -d dist --config config.dist.yaml
 
 test: pre-build
 	prove -Mlocal::lib=extlib -Ilib -j$(JOBS) t/*.t
