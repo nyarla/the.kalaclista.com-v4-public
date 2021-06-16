@@ -74,10 +74,10 @@ sub entry_structure_ok {
   my ( $class, $dom, $section ) = @_;
 
   like( $dom->at('.entry header p time')->getAttribute('datetime'),
-    qr(\d{4}-\d{2}-\d{2}) );
+    qr(^\d{4}-\d{2}-\d{2}$) );
 
   like( $dom->at('.entry header p time')->textContent(),
-    qr(\d{4}-\d{2}-\d{2}) );
+    qr(^\d{4}-\d{2}-\d{2}$) );
 
   is( $dom->at('.entry header p span a')->getAttribute('href'),
     'https://the.kalaclista.com/nyarla/' );
@@ -86,7 +86,7 @@ sub entry_structure_ok {
 
   like(
     $dom->at('.entry header h1 a')->getAttribute('href'),
-    qr{^https://the.kalaclista.com/${section}/}
+    qr<^https://the.kalaclista.com/[^/]+/(?:\d{4}/\d{2}/\d{2}/\d{6}/|[^/]+/)$>,
   );
 
   ok( scalar( $dom->find('.entry__ad')->@* ) > 0 );
@@ -229,13 +229,13 @@ sub meta_ogp_ok {
     like(
       $dom->at('meta[property="og:article:published_time"]')
         ->getAttribute('content'),
-      qr<\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:[+-]\d{2}:\d{2}|Z)>
+      qr<^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:[+-]\d{2}:\d{2}|Z)$>
     );
 
     like(
       $dom->at('meta[property="og:article:modified_time"]')
         ->getAttribute('content'),
-      qr<\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:[+-]\d{2}:\d{2}|Z)>
+      qr<^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:[+-]\d{2}:\d{2}|Z)$>
     );
 
     is( $dom->at('meta[property="og:article:author"]')->getAttribute('content'),

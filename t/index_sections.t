@@ -35,11 +35,12 @@ sub main {
     for my $item ( $dom->find('entry entry__content ul li a')->@* ) {
       if ( $section ne 'notes' ) {
         like( $item->getAttribute('href'),
-          qr(https://the.kalaclista.com/${section}/\d{4}/\d{2}/\d{2}/\d{6}/) );
+          qr(^https://the.kalaclista.com/${section}/\d{4}/\d{2}/\d{2}/\d{6}/$)
+        );
       }
       else {
         like( $item->getAttribute('href'),
-          qr(https://the.kalaclista.com/${section}/[^/]+/) );
+          qr(^https://the.kalaclista.com/${section}/[^/]+/$) );
       }
     }
   }

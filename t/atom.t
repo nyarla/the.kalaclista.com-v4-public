@@ -59,18 +59,18 @@ sub testing_entry {
   if ( $section eq q{} ) {
     like(
       $entry->at('link')->getAttribute('href'),
-      qr<https://the.kalaclista.com/[^/]+/(?:\d{4}/\d{2}/\d{2}/\d{6}/|[^/]+)>,
+qr<^https://the.kalaclista.com/[^/]+/(?:\d{4}/\d{2}/\d{2}/\d{6}/|[^/]+/)$>,
     );
   }
   else {
     if ( $section ne 'notes' ) {
       like( $entry->at('link')->getAttribute('href'),
-        qr<https://the.kalaclista.com/${section}/\d{4}/\d{2}/\d{2}/\d{6}/> );
+        qr<^https://the.kalaclista.com/${section}/\d{4}/\d{2}/\d{2}/\d{6}/$> );
     }
     else {
       like(
         $entry->at('link')->getAttribute('href'),
-        qr<https://the.kalaclista.com/${section}/[^/]+/>
+        qr<^https://the.kalaclista.com/${section}/[^/]+/$>
       );
     }
   }
@@ -85,9 +85,9 @@ sub testing_entry {
   );
 
   like( $entry->at('published')->textContent,
-    qr<\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:[-+]\d{2}:\d{2}|Z)> );
+    qr<^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:[-+]\d{2}:\d{2}|Z)$> );
   like( $entry->at('lastmod')->textContent,
-    qr<\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:[-+]\d{2}:\d{2}|Z)> );
+    qr<^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:[-+]\d{2}:\d{2}|Z)$> );
 
 }
 

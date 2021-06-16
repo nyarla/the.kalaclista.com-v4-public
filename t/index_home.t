@@ -38,17 +38,17 @@ sub main {
 
   for my $item ( $lists->[0]->find('li a')->@* ) {
     like( $item->getAttribute('href'),
-      qr(^https://the.kalaclista.com/posts/\d{4}/\d{2}/\d{2}/\d{6}/) );
+      qr(^https://the.kalaclista.com/posts/\d{4}/\d{2}/\d{2}/\d{6}/$) );
   }
 
   for my $item ( $lists->[1]->find('li a')->@* ) {
     like( $item->getAttribute('href'),
-      qr(^https://the.kalaclista.com/echos/\d{4}/\d{2}/\d{2}/\d{6}/) );
+      qr(^https://the.kalaclista.com/echos/\d{4}/\d{2}/\d{2}/\d{6}/$) );
   }
 
   for my $item ( $lists->[2]->find('li a')->@* ) {
     like( $item->getAttribute('href'),
-      qr(^https://the.kalaclista.com/notes/[^/]+/) );
+      qr(^https://the.kalaclista.com/notes/[^/]+/$) );
   }
 
   done_testing;
