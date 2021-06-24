@@ -1,0 +1,2 @@
+{{- partial `data/jsonfeed.fn` . | unmarshal | jsonify -}}
+{{/* vim: set ft=gotexttmpl : */}}

@@ -242,22 +242,33 @@ params:
   cards:
     affiliate:
       labels:
-        amazon: 'Amazon.co.jp で買う'
-        rakuten: '楽天で探す'
         aliexpress: 'Aliexpress から輸入する'
+        amazon: 'Amazon.co.jp で買う'
         banggood: 'Banggood で輸入する'
         gearbest: 'Gearbest で輸入する'
+        rakuten: '楽天で探す'
 
-  adsense: -|
-    <aside class="entry__ad">
-    <amp-ad
-      width="100vw"
-      height="320"
-      type="adsense"
-      data-ad-client="ca-pub-1273544194033160"
-      data-ad-slot="2961090128"
-      data-auto-format="rspv"
-      data-full-width="">
-      <div overflow=""></div>
-    </amp-ad>
-    </aside>
+  ads:
+    production:
+      <aside class="entry__ad">
+      <amp-ad
+        width="100vw"
+        height="320"
+        type="adsense"
+        data-ad-client="ca-pub-1273544194033160"
+        data-ad-slot="2961090128"
+        data-auto-format="rspv"
+        data-full-width="">
+        <div overflow=""></div>
+      </amp-ad>
+      </aside>
+    development:
+      <aside class="entry__ad">
+        <div style="height&#58; 320px"></div>
+      </aside>
+
+  jsonfeed:
+    author:
+      name: OKAMURA Naoki aka nyarla
+      url: https://the.kalaclista.com/nyarla/
+      avatar: https://the.kalaclista.com/assets/avatar.png

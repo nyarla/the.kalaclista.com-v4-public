@@ -1,0 +1,33 @@
+{{ $global := . }}
+{{ $section := partialCached "data/section.fn" .Page .Page.Type .Page.RelPermalink | chomp }} 
+{{ $meta := partial `data/meta.fn` (slice $global $section) | unmarshal }}
+{{ $feed := `jsonfeed.json` }}
+{{ if ne $section `home` }}
+  {{ $feed = printf `%s/%s` $section $feed }}
+{{ end }}
+
+{{ $jsonfeed := (dict) }}
+{{ $jsonfeed = merge $jsonfeed (dict "version" "https://jsonfeed.org/version/1.1") }}
+{{ $jsonfeed = merge $jsonfeed (dict "title" $meta.title) }}
+{{ $jsonfeed = merge $jsonfeed (dict "description" $meta.summary) }}
+{{ $jsonfeed = merge $jsonfeed (dict "icon" (absURL `/icon-512.png`)) }}
+{{ $jsonfeed = merge $jsonfeed (dict "favicon" (absURL `/favicon.ico`)) }}
+{{ $jsonfeed = merge $jsonfeed (dict "home_page_url" .Page.Permalink) }}
+{{ $jsonfeed = merge $jsonfeed (dict "feed_url" (absURL $feed)) }}
+{{ $jsonfeed = merge $jsonfeed (dict "authors" (slice .Site.Params.jsonfeed.author)) }}
+{{ $jsonfeed = merge $jsonfeed (dict "language" "ja_JP") }}
+
+{{ $pages := where .Site.RegularPages.ByDate.Reverse `.Type` `!=` `home` }}
+{{ if ne $section `home` }}
+  {{ $pages = where $pages `.Type` $section }}
+{{ end }}
+
+{{ $items := (slice) }}
+{{ range $page := first 5 $pages }}
+  {{ $items = $items | append (partialCached `data/entry.fn` (slice $global $page) $page.RelPermalink | unmarshal) }}
+{{ end }}
+
+{{ $jsonfeed = merge $jsonfeed (dict "items" $items) }}
+
+{{ $jsonfeed | jsonify }}
+{{/* vim: set ft=gotexttmpl : */}}
