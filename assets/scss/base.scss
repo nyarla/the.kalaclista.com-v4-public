@@ -361,15 +361,15 @@ a {
         }
 
         &.aliexpress::before {
-          background-color: $color-rakuten;
+          background-color: $color-aliexpress;
         }
 
         &.banggood::before {
-          background-color: $color-rakuten;
+          background-color: $color-banggood;
         }
 
         &.gearbest::before {
-          background-color: $color-rakuten;
+          background-color: $color-gearbest;
         }
       }
 
