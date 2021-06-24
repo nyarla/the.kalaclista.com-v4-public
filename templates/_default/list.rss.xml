@@ -1,0 +1,39 @@
+{{- `<?xml version="1.0" encoding="utf-8" standalone="yes" ?>` | safeHTML -}}
+<!--
+{{ $global := . }}
+{{ $section := partialCached "data/section.fn" .Page .Page.Type .Page.RelPermalink | chomp }} 
+{{ $meta := partial `data/meta.fn` (slice . $section) | unmarshal }}
+{{ $feed := `index.xml` }}
+{{ if ne $section `home` }}
+  {{ $feed = printf `%s/%s` $section $feed }}
+{{ end }}
+{{ $pages := where .Site.RegularPages.ByDate.Reverse `.Type` `!=` `home` }}
+{{ if ne $section `home` }}
+  {{ $pages = where $pages `.Type` $section }}
+{{ end }}
+-->
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{{ $meta.title }}</title>
+    <link>{{ .Page.Permalink }}</link>
+    <atom:link href="{{ absURL $feed }}" type="application/rss+xml"/>
+    <description>{{ $meta.summary }}</description>
+    <managingEditor>OKAMURA Naoki aka nyarla</managingEditor>
+    <webMaster>OKAMURA Naoki aka nyarla</webMaster>
+    <copyright>(c) 2006-2021 OKAMURA Naoki</copyright>
+    <lastBuildDate
+      >{{ (index $pages 0).Date.Format `Mon, 02 Jan 2006 15:04:05 -0700` }}</lastBuildDate>
+      <!-- {{ range $item := first 5 $pages }} -->
+      <!-- {{ $entry := partialCached `data/entry.fn` (slice $global $item) $item.RelPermalink | unmarshal }} -->
+      <item>
+        <title>{{ $entry.title }}</title>
+        <link>{{ $entry.url }}</link>
+        <pubDate
+      >{{ dateFormat `Mon, 02 Jan 2006 15:04:05 -0700` $entry.date_published }}</pubDate>
+        <author>OKAMURA Naoki aka nyarla nyarla@kalaclista.com</author>
+        <guid>{{ $entry.url }}</guid>
+        <description>{{ $entry.content_html }}</description>
+      </item>
+      <!-- {{ end }}  -->
+  </channel>
+</rss>
