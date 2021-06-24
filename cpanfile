@@ -12,4 +12,5 @@ requires 'Test2::Suite',              0;
 requires 'Text::TinySegmenter',       0;
 requires 'Time::Moment',              0;
 requires 'Unicode::LineBreak',        0;
+requires 'XML::DOM::Lite',            0;
 requires 'YAML::Tiny',                0;
