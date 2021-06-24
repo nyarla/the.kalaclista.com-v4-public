@@ -29,8 +29,8 @@
       {{ range $page := $entries }}
       <!-- {{ $entry := partialCached `data/entry.fn` (slice $global $page) $page.RelPermalink | unmarshal }} -->
       <li>
-        <time datetime="{{ dateFormat `2006-01-02` $entry.date }}"
-          >{{ dateFormat `2006-01-02` $entry.date }}：</time
+        <time datetime="{{ dateFormat `2006-01-02` $entry.date_published }}"
+          >{{ dateFormat `2006-01-02` $entry.date_published }}：</time
         >
         <a href="{{ $entry.url }}">{{ $entry.title }}</a>
       </li>

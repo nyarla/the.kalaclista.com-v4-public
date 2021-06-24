@@ -11,12 +11,12 @@
 
 {{ $entry = merge $entry (dict `title` $page.Title) }}
 {{ $entry = merge $entry (dict `content_html` $content) }}
+{{ $entry = merge $entry (dict `summary` (partialCached `data/summary.fn` $content $content)) }}
+{{ $entry = merge $entry (dict `authors` (slice $global.Site.Params.jsonfeed.author)) }}
+{{ $entry = merge $entry (dict `language` "ja_JP") }}
 
-{{ $entry = merge $entry (dict `date` ($page.Date.Format $dateFormat)) }}
 {{ $entry = merge $entry (dict `date_published` ($page.Date.Format $dateFormat)) }}
 {{ $entry = merge $entry (dict `date_modified` ($page.Lastmod.Format $dateFormat)) }}
-
-{{ $entry = merge $entry (dict `section` (partialCached `data/section.fn` $page $page.Type $page.RelPermalink | chomp)) }}
 
 {{ $entry | jsonify }}
 {{/* vim: set ft=gotexttmpl : */}}

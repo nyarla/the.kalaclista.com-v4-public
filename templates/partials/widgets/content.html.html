@@ -3,15 +3,9 @@
   {{ $page := $global.Page }}
   {{ $entry := partialCached `data/entry.fn` $global $page.RelPermalink | unmarshal }}
 
-  {{ $adsense := $global.Site.Params.adsense }}
-  {{ if not hugo.IsProduction }}
-  {{ $adsense = `<aside class="entry__ad"><div style="height: 320px"></div></aside>` }}
-  {{ end }}
-
-  {{ $content := $entry.content_html }}
-
-  {{ if ne $page.Type `home` }}
-  {{ $content = replaceRE `</p>\s*<h1` (printf `</p>%s<h1` $adsense) $entry.content_html 1 }}
+  {{ $ads := $global.Site.Params.ads.development }}
+  {{ if hugo.IsProduction }}
+    {{ $ads = $global.Site.Params.ads.production }}
   {{ end }}
 -->
 <article class="entry" aria-label="記事">
@@ -19,8 +13,8 @@
     <p>
       <time
         aria-label="日付"
-        datetime="{{ dateFormat `2006-01-02` $entry.date }}"
-        >{{ dateFormat `2006-01-02` $entry.date }}</time
+        datetime="{{ dateFormat `2006-01-02` $entry.date_published }}"
+        >{{ dateFormat `2006-01-02` $entry.date_published }}</time
       >
       <span
         >by <a aria-label="著者" href="{{ absURL `/nyarla/` }}">@nyarla</a>
@@ -32,10 +26,10 @@
   </header>
 
   <section class="entry__content" aria-label="記事本文">
-    {{- $content | safeHTML -}}
+    {{- $entry.content_html | safeHTML -}}
   </section>
 
   <!-- {{ if ne $page.Type `home` }}  -->
-  {{ $adsense | safeHTML }}
+  {{ $ads | safeHTML }}
   <!-- {{ end }} -->
 </article>
