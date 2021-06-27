@@ -8,5 +8,5 @@
   {{- $content = (printf "%s・・・" (substr $content 0 140)) -}}
 {{- end -}}
 
-{{- $content -}}
+{{- return $content -}}
 {{/* vim: set ft=gotexttmpl : */}}

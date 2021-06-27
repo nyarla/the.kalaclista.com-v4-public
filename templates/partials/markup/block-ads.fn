@@ -1,0 +1,25 @@
+{{- $global := index . 0 -}}
+{{- $content := index . 1 -}}
+{{- $inFeed := index . 2 -}}
+
+{{- if not $inFeed -}}
+  {{- $h1 := (slice) -}}
+  {{- $ads := $global.Site.Params.ads.development -}}
+  {{- if hugo.IsProduction -}}
+    {{- $ads = $global.Site.Params.ads.production -}}
+  {{- end -}}
+
+  {{- range $idx, $found := $content | findRE `<h1[^>]+>` -}}
+    {{- $h1 = $h1 | append $found -}}
+    {{- $content = replace $content $found (printf `<!-- H1:%d: -->` $idx) 1 -}}
+  {{- end -}}
+
+  {{- $content = replace $content `<!-- H1:1: -->` (printf `%s%s` $ads (index $h1 1)) -}}
+
+  {{- range $idx, $src := $h1 -}}
+    {{ $content = replace $content (printf `<!-- H1:%d: -->` $idx) $src 1 }}
+  {{- end -}}
+{{- end -}}
+
+{{- return $content  -}}
+{{/* vim: set ft=gotexttmpl : */}}

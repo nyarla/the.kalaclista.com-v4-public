@@ -1,5 +1,5 @@
 ---
-section: '{{ partialCached "data/section.fn" .Page .Page.RelPermalink | chomp }}'
+section: '{{ partialCached "data/section.fn" .Page .Page.RelPermalink }}'
 is:
   pre:
     in: "{{ partial `markup/content.fn` (slice . `<pre>hoge</pre>`) | chomp }}"

@@ -20,5 +20,5 @@
   {{- $content = replace $content $found $out -}}
 {{- end -}}
 
-{{- $content | safeHTML -}}
+{{- return $content  -}}
 {{/* vim: set ft=gotexttmpl : */}}

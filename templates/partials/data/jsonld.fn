@@ -1,7 +1,7 @@
 {{ $global := index . 0 }}
 {{ $section := index . 1 }}
 
-{{ $meta := partial `data/meta.fn` (slice $global $section) | unmarshal }}
+{{ $meta := partial `data/meta.fn` (slice $global $section) }}
 
 {{ $self := (dict) }}
 {{ $self = merge $self $global.Site.Params.jsonld.data.base }}
@@ -41,6 +41,6 @@
   {{ end }}
 {{ end }}
 
-{{ slice $self $tree | jsonify }}
+{{ return (slice $self $tree) }}
 
 {{/* vim: set ft=gotexttmpl : */}}

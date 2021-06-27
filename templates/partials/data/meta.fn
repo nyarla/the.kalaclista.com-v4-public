@@ -5,7 +5,7 @@
 {{ $data := (dict) }}
 
 {{ if $page.IsPage }}
-  {{ $entry := partialCached `data/entry.fn` (slice $global $page) $page.RelPermalink | unmarshal }}
+  {{ $entry := partialCached `data/entry.fn` (slice $global $page) $page.RelPermalink  }}
 
   {{ if ne $page.Type `home` }}
     {{ $data = merge $data (dict `siteTitle` (index $global.Site.Params.titles $section)) }}
@@ -38,6 +38,6 @@
   {{ $data = merge $data (dict `siteTitle` (index $global.Site.Params.titles $section)) }}
 {{ end }}
 
-{{ $data | jsonify }}
+{{ return $data }}
 
 {{/* vim: set ft=gotexttmpl : */}}

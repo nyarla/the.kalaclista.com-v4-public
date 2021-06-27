@@ -33,5 +33,5 @@
   {{- $content = replace $content $found $tag -}}
 {{- end -}}
 
-{{- $content | safeHTML -}}
+{{- return $content -}}
 {{/* vim: set ft=gotexttmpl : */}}

@@ -1,7 +1,7 @@
 <!--
   {{ $global := . }}
   {{ $page := $global.Page }}
-  {{ $entry := partialCached `data/entry.fn` $global $page.RelPermalink | unmarshal }}
+  {{ $entry := partialCached `data/entry.fn` $global $page.RelPermalink }}
 
   {{ $ads := $global.Site.Params.ads.development }}
   {{ if hugo.IsProduction }}

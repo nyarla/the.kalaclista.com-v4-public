@@ -18,5 +18,5 @@
 {{ $entry = merge $entry (dict `date_published` ($page.Date.Format $dateFormat)) }}
 {{ $entry = merge $entry (dict `date_modified` ($page.Lastmod.Format $dateFormat)) }}
 
-{{ $entry | jsonify }}
+{{ return $entry }}
 {{/* vim: set ft=gotexttmpl : */}}

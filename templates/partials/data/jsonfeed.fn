@@ -1,6 +1,6 @@
 {{ $global := . }}
-{{ $section := partialCached "data/section.fn" .Page .Page.Type .Page.RelPermalink | chomp }} 
-{{ $meta := partial `data/meta.fn` (slice $global $section) | unmarshal }}
+{{ $section := partialCached "data/section.fn" .Page .Page.Type .Page.RelPermalink }} 
+{{ $meta := partial `data/meta.fn` (slice $global $section) }}
 {{ $feed := `jsonfeed.json` }}
 {{ if ne $section `home` }}
   {{ $feed = printf `%s/%s` $section $feed }}
@@ -24,10 +24,10 @@
 
 {{ $items := (slice) }}
 {{ range $page := first 5 $pages }}
-  {{ $items = $items | append (partialCached `data/entry.fn` (slice $global $page) $page.RelPermalink | unmarshal) }}
+  {{ $items = $items | append (partialCached `data/entry.fn` (slice $global $page) $page.RelPermalink) }}
 {{ end }}
 
 {{ $jsonfeed = merge $jsonfeed (dict "items" $items) }}
 
-{{ $jsonfeed | jsonify }}
+{{ return $jsonfeed }}
 {{/* vim: set ft=gotexttmpl : */}}

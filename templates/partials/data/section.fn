@@ -6,6 +6,6 @@
   {{- $section = "notfound" -}}
 {{- end -}}
 
-{{- $section -}}
+{{- return $section -}}
 
 {{/* vim: set ft=gotexttmpl : */}}

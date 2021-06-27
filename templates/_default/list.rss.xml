@@ -1,8 +1,8 @@
 {{- `<?xml version="1.0" encoding="utf-8" standalone="yes" ?>` | safeHTML -}}
 <!--
 {{ $global := . }}
-{{ $section := partialCached "data/section.fn" .Page .Page.Type .Page.RelPermalink | chomp }} 
-{{ $meta := partial `data/meta.fn` (slice . $section) | unmarshal }}
+{{ $section := partialCached "data/section.fn" .Page .Page.Type .Page.RelPermalink  }} 
+{{ $meta := partial `data/meta.fn` (slice . $section) }}
 {{ $feed := `index.xml` }}
 {{ if ne $section `home` }}
   {{ $feed = printf `%s/%s` $section $feed }}
@@ -24,7 +24,7 @@
     <lastBuildDate
       >{{ (index $pages 0).Date.Format `Mon, 02 Jan 2006 15:04:05 -0700` }}</lastBuildDate>
       <!-- {{ range $item := first 5 $pages }} -->
-      <!-- {{ $entry := partialCached `data/entry.fn` (slice $global $item) $item.RelPermalink | unmarshal }} -->
+      <!-- {{ $entry := partialCached `data/entry.fn` (slice $global $item) $item.RelPermalink }} -->
       <item>
         <title>{{ $entry.title }}</title>
         <link>{{ $entry.url }}</link>

@@ -3,7 +3,7 @@
   {{ $section := index . 1 }}
   {{ $isIndex := index . 2 }}
   {{ $page := $global.Page }}
-  {{ $meta := partial `data/meta.fn` (slice $global $section) | unmarshal }}
+  {{ $meta := partial `data/meta.fn` (slice $global $section) }}
 -->
 <html amp lang="ja">
   <head>
@@ -43,7 +43,7 @@
     <meta name="twitter:image" content="{{ absURL `/assets/avatar.png` }}" />
 
     <!-- prettier-ignore -->
-    <script type="application/json+ld">{{ partial `data/jsonld.fn` (slice $global $section) | unmarshal | jsonify }}</script>
+    <script type="application/json+ld">{{ partial `data/jsonld.fn` (slice $global $section)  | jsonify }}</script>
 
     <link rel="manifest" href="{{ absURL `/manifest.webmanifest` }}" />
     <link rel="icon" href="{{ absURL `/favicon.ico` }}" />

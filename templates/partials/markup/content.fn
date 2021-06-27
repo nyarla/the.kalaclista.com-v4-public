@@ -35,6 +35,7 @@
 {{- end -}}
 
 {{- /* extends block elements */ -}}
+{{- $content = partial "markup/block-ads.fn" (slice $global $content (or $inXML $inJSON)) -}}
 {{- $content = partial "markup/block-image.fn" (slice $global $content (or $inXML $inJSON)) -}}
 {{- $content = partial "markup/card-website.fn" (slice $global $content) -}}
 {{- $content = partial "markup/card-affiliate.fn" (slice $global $content) -}}
@@ -49,5 +50,5 @@
   {{- $content = replace $content (printf "<!-- PRE:%d: -->" $idx) (index $pre $idx) -}}
 {{- end -}}
 
-{{- $content | safeHTML -}}
+{{- return $content -}}
 {{/* vim: set ft=gotexttmpl : */}}

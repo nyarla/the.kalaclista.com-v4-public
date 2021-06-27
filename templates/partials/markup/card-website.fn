@@ -26,5 +26,5 @@
   {{- $content = replace $content $found $card -}}
 {{- end -}}
 
-{{- $content | safeHTML -}}
+{{- return $content -}}
 {{/* vim: set ft=gotexttmpl : */}}
