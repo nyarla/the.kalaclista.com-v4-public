@@ -398,6 +398,10 @@ a {
 }
 
 @media screen and (max-width: 30em) {
+  .entry {
+    font-size: 90%;
+  }
+
   .entry__content {
     .content__card--affiliate {
       h1,
@@ -409,5 +413,11 @@ a {
         text-align: center;
       }
     }
+  }
+}
+
+@media screen and (max-width: 20em) {
+  .entry {
+    font-size: 85%;
   }
 }
