@@ -18,6 +18,9 @@ dist:
 test: pre-build
 	prove -Mlocal::lib=extlib -Ilib -j$(JOBS) t/*.t
 
+up: dist
+	rsync -crvz -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" dist/ nyarla@nyarla.sakura.ne.jp:/home/nyarla/www/the.kalaclista.com/
+
 .PHONY: serve install website check
 
 serve:
