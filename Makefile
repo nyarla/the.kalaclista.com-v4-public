@@ -19,7 +19,7 @@ test: pre-build
 	prove -Mlocal::lib=extlib -Ilib -j$(JOBS) t/*.t
 
 up: clean dist
-	rsync --dry-run -crvz -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
+	rsync -crvz -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
 	  dist/ \
 	  nyarla@nyarla.sakura.ne.jp:/home/nyarla/www/the.kalaclista.com/ \
 	  | head --lines=-3 | tail --lines=+2 >resources/_gen/purge.txt
