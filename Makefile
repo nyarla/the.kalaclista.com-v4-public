@@ -5,25 +5,27 @@ JOBS = $(shell cat /proc/cpuinfo | grep processor | tail -n1 | cut -d\  -f2)
 all: clean build
 
 clean:
-	(test ! -e build || rm -rf build) && (test -e build || mkdir -p build)
-	(test ! -e dist || rm -rf dist) && (test -e dist || mkdir -p dist)
+	@(test ! -e build || rm -rf build) && (test -e build || mkdir -p build)
+	@(test ! -e dist || rm -rf dist) && (test -e dist || mkdir -p dist)
 
 pre-build:
 	hugo --minify -e production -b 'https://the.kalaclista.com' -d build
 
 dist:
-	cat config.yml| grep -v '\- Test' | grep -v '\- Fixture' >config.dist.yaml
-	hugo --minify -e production -b 'https://the.kalaclista.com' -d dist --config config.dist.yaml
+	@cat config.yml| grep -v '\- Test' | grep -v '\- Fixture' >config.dist.yaml
+	@hugo --minify -e production -b 'https://the.kalaclista.com' -d dist --config config.dist.yaml
 
 test: pre-build
 	prove -Mlocal::lib=extlib -Ilib -j$(JOBS) t/*.t
 
 up: clean dist
-	rsync -crvz -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
+	@rsync -crvz -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
 	  dist/ \
 	  nyarla@nyarla.sakura.ne.jp:/home/nyarla/www/the.kalaclista.com/ \
 	  | head --lines=-3 | tail --lines=+2 >resources/_gen/purge.txt
-	bash scripts/purge_cache.sh
+	@echo Updated:
+	@cat resources/_gen/purge.txt
+	@bash scripts/purge_cache.sh
 
 .PHONY: serve install website check
 
