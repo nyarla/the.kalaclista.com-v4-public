@@ -299,7 +299,8 @@ sub meta_twittercard_ok {
 sub meta_jsonld_ok {
   my ( $class, $dom, $section, $isPermalink ) = @_;
 
-  my $json = $dom->at('script[type="application/json+ld"]')->textContent;
+  my $json = $dom->at('script[type="application/ld+json"]')->textContent;
+
   my $data = decode_json($json);
 
   is( ref($data), 'ARRAY' );

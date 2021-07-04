@@ -43,7 +43,7 @@
     <meta name="twitter:image" content="{{ absURL `/assets/avatar.png` }}" />
 
     <!-- prettier-ignore -->
-    <script type="application/json+ld">{{ partial `data/jsonld.fn` (slice $global $section)  | jsonify }}</script>
+    <script type="application/ld+json">{{ partial `data/jsonld.fn` (slice $global $section) | jsonify | safeJS }}</script>
 
     <link rel="manifest" href="{{ absURL `/manifest.webmanifest` }}" />
     <link rel="icon" href="{{ absURL `/favicon.ico` }}" />
