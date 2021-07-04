@@ -2,7 +2,7 @@
 {{- $content := index . 1 -}}
 {{- $inFeed := index . 2 -}}
 
-{{- if not $inFeed -}}
+{{- if and (not $inFeed) (ne $global.Page.Type `home`) -}}
   {{- $h1 := (slice) -}}
   {{- $ads := $global.Site.Params.ads.development -}}
   {{- if hugo.IsProduction -}}
