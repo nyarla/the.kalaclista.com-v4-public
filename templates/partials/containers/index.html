@@ -130,5 +130,17 @@
     <!-- {{ end }} -->
     <!-- prettier-ignore -->
     {{ partialCached `widgets/info.html.html` (slice $global $section) $section }}
+    <amp-analytics type="gtag" data-credentials="include">
+      <script type="application/json">
+        {
+          "vars": {
+            "gtag_id": "UA-158600592-1",
+            "config": {
+              "UA-158600592-1": { "groups": "default" }
+            }
+          }
+        }
+      </script>
+    </amp-analytics>
   </body>
 </html>
