@@ -50,3 +50,13 @@ website:
 check:
 	perl -Mlocal::lib=extlib -Ilib -c scripts/tf-idf.pl
 	perl -Mlocal::lib=extlib -Ilib -c scripts/website.pl
+
+.PHONY: posts echos
+
+posts:
+	hugo new posts/$(shell date +%Y/%m/%d/%H%M%S.md)
+	nvim private/content/posts/$(shell date +%Y/%m/%d/%H%M%S.md)
+
+echos:
+	hugo new echos/$(shell date +%Y/%m/%d/%H%M%S.md)
+	nvim private/content/echos/$(shell date +%Y/%m/%d/%H%M%S.md)
