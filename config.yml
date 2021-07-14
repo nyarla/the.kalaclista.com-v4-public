@@ -210,6 +210,9 @@ params:
         position: 2
         name: カラクリスタ・ノート
         item: https://the.kalaclista.com/notes/
+    breadcrumb:
+      '@context': https://schema.org
+      '@type': BreadcrumbList
 
   schemaorg:
     index:

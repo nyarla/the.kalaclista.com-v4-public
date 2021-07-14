@@ -41,6 +41,8 @@
   {{ end }}
 {{ end }}
 
-{{ return (slice $self $tree) }}
+{{ $breadcrumb := merge $global.Site.Params.jsonld.breadcrumb (dict `itemListElement` $tree) }}
+
+{{ return (slice $self $breadcrumb) }}
 
 {{/* vim: set ft=gotexttmpl : */}}

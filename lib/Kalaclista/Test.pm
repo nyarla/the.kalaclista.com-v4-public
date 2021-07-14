@@ -306,7 +306,13 @@ sub meta_jsonld_ok {
   is( ref($data), 'ARRAY' );
 
   my $self = $data->[0];
-  my $tree = $data->[1];
+  
+  my $breadcrumb = $data->[1];
+
+  is( $breadcrumb->{'@context'}, 'https://schema.org' );
+  is( $breadcrumb->{'@type'}, 'BreadcrumbList' );
+
+  my $tree = $breadcrumb->{'itemListElement'};
 
   my $title = $dom->at('meta[property="og:title"]')->getAttribute('content');
   utf8::decode($title);
