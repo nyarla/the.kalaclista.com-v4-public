@@ -1,2 +1,2 @@
 ErrorDocument 404 /404.html
-Header set Cache-Control "s-maxage=86400"
+Header set Cache-Control "max-age=7200"

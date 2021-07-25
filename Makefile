@@ -10,10 +10,12 @@ clean:
 
 pre-build:
 	hugo --minify -e production -b 'https://the.kalaclista.com' -d build
+	@bash scripts/htaccess.sh build
 
 dist:
 	@cat config.yml| grep -v '\- Test' | grep -v '\- Fixture' >config.dist.yaml
 	@hugo --minify -e production -b 'https://the.kalaclista.com' -d dist --config config.dist.yaml
+	@bash scripts/htaccess.sh dist
 
 test: pre-build
 	prove -Mlocal::lib=extlib -Ilib -j$(JOBS) t/*.t
@@ -46,6 +48,12 @@ website:
 		| sort | uniq \
 		| grep -P '^http') >resources/_website/links
 	@perl -Mlocal::lib=extlib -Ilib scripts/website.pl
+
+amazon:
+	@cat - | perl -Mlocal::lib=extlib -Ilib scripts/affiliate.pl amazon
+
+rakuten:
+	@cat - | perl -Mlocal::lib=extlib -Ilib scripts/affiliate.pl rakuten
 
 check:
 	perl -Mlocal::lib=extlib -Ilib -c scripts/tf-idf.pl
