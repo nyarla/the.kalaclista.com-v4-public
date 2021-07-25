@@ -26,6 +26,8 @@ sub main {
   Kalaclista::Test->meta_twittercard_ok($dom);
   Kalaclista::Test->meta_jsonld_ok( $dom, 'home', 0 );
 
+  Kalaclista::Test->meta_alternate_ok( $dom, 'home' );
+
   is( $dom->at('.entry__content p:first-child a')->getAttribute('href'),
     'https://the.kalaclista.com/nyarla/' );
 

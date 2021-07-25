@@ -306,11 +306,11 @@ sub meta_jsonld_ok {
   is( ref($data), 'ARRAY' );
 
   my $self = $data->[0];
-  
+
   my $breadcrumb = $data->[1];
 
   is( $breadcrumb->{'@context'}, 'https://schema.org' );
-  is( $breadcrumb->{'@type'}, 'BreadcrumbList' );
+  is( $breadcrumb->{'@type'},    'BreadcrumbList' );
 
   my $tree = $breadcrumb->{'itemListElement'};
 
@@ -448,6 +448,67 @@ sub meta_jsonld_ok {
       is( $tree, [$root] );
     }
   }
+}
+
+sub meta_alternate_ok {
+  my ( $class, $dom, $section ) = @_;
+
+  my $prefix = "/${section}/";
+  if ( $section eq q{home} ) {
+    $prefix = q{/};
+  }
+
+  my $label = q{};
+
+  if ( $section eq q{home} ) {
+    $label = q{カラクリスタ};
+  }
+  elsif ( $section eq q{posts} ) {
+    $label = q{カラクリスタ・ブログ};
+  }
+  elsif ( $section eq q{echos} ) {
+    $label = q{カラクリスタ・エコーズ};
+  }
+  elsif ( $section eq q{notes} ) {
+    $label = q{カラクリスタ・ノート};
+  }
+
+  my $feed = $dom->at('link[rel="alternate"][type="application/rss+xml"]');
+
+  ok($feed);
+  is( $feed->getAttribute('href'),
+    "https://the.kalaclista.com${prefix}index.xml" );
+
+  my $title = $feed->getAttribute('title');
+  utf8::decode($title);
+
+  is( $title, "${label}の RSS フィード" );
+
+  $feed  = undef;
+  $title = undef;
+  $feed  = $dom->at('link[rel="alternate"][type="application/atom+xml"]');
+
+  ok($feed);
+  is( $feed->getAttribute('href'),
+    "https://the.kalaclista.com${prefix}atom.xml" );
+
+  $title = $feed->getAttribute('title');
+  utf8::decode($title);
+
+  is( $title, "${label}の Atom フィード" );
+
+  $feed  = undef;
+  $title = undef;
+  $feed  = $dom->at('link[rel="alternate"][type="application/feed+json"]');
+
+  ok($feed);
+  is( $feed->getAttribute('href'),
+    "https://the.kalaclista.com${prefix}jsonfeed.json" );
+
+  $title = $feed->getAttribute('title');
+  utf8::decode($title);
+
+  is( $title, "${label}の JSON フィード" );
 }
 
 1;

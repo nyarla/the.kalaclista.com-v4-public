@@ -26,6 +26,7 @@ sub main {
     Kalaclista::Test->meta_ogp_ok( $dom, $section, 0 );
     Kalaclista::Test->meta_twittercard_ok($dom);
     Kalaclista::Test->meta_jsonld_ok( $dom, $section, 0 );
+    Kalaclista::Test->meta_alternate_ok( $dom, $section );
 
     is(
       $dom->at('header h1 a')->getAttribute('href'),

@@ -45,6 +45,31 @@
     <!-- prettier-ignore -->
     <script type="application/ld+json">{{ partial `data/jsonld.fn` (slice $global $section) | jsonify | safeJS }}</script>
 
+    <!--
+      {{ $prefix := `` }}
+      {{ if and (ne $section `home`) (ne $page.Type `home`) }}
+        {{ $prefix = $section }}
+      {{ end }}
+    -->
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      href="{{ absURL (printf `%s/index.xml` $prefix) }}"
+      title="{{ printf `%sの RSS フィード` $meta.siteTitle }}"
+    />
+    <link
+      rel="alternate"
+      type="application/atom+xml"
+      href="{{ absURL (printf `%s/atom.xml` $prefix) }}"
+      title="{{ printf `%sの Atom フィード` $meta.siteTitle }}"
+    />
+    <link
+      rel="alternate"
+      type="application/feed+json"
+      href="{{ absURL (printf `%s/jsonfeed.json` $prefix) }}"
+      title="{{ printf `%sの JSON フィード` $meta.siteTitle }}"
+    />
+
     <link rel="manifest" href="{{ absURL `/manifest.webmanifest` }}" />
     <link rel="icon" href="{{ absURL `/favicon.ico` }}" />
     <link rel="icon" href="{{ absURL `/icon.svg` }}" type="image/svg+xml" />

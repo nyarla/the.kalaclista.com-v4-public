@@ -16,6 +16,7 @@ sub main {
     Kalaclista::Test->meta_utf8_ok($dom);
     Kalaclista::Test->meta_icons_ok($dom);
     Kalaclista::Test->meta_manifest_ok($dom);
+    Kalaclista::Test->meta_alternate_ok( $dom, 'posts' );
 
     Kalaclista::Test->meta_canonical_ok( $dom,
       Kalaclista::Path->build_dir->stringify,
