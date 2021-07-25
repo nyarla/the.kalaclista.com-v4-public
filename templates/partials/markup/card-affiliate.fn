@@ -28,20 +28,21 @@
       {{- end -}}
       
       {{- if and (not (isset $thumbnail `image`)) (isset $item `image`) -}}
-        {{- $thumbnail = merge $thumbnail $item -}}
+        {{- $thumbnail = $item -}}
       {{- end -}}
     {{- end -}}
 
     {{- $lists = printf `<ul>%s</ul>` $lists -}}
 
     {{- $image := `` -}}
+    
     {{- if isset $thumbnail `image` -}}
       {{- $height := index (split $thumbnail.size `x`) 1 -}}
       {{- $width := index (split $thumbnail.size `x`) 0 -}}
       {{- $link := $thumbnail.link -}}
       {{- $src := $thumbnail.image -}}
 
-      {{- $image = printf `<img src="%s" width="%s" height="%s" $src $width $height />` -}} 
+      {{- $image = printf `<img src="%s" width="%s" height="%s" />` $src $width $height -}} 
       {{- $image = printf `<p><a href="%s">%s</a></p>` $link $image -}}
     {{- end -}}
 
