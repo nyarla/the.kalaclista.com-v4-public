@@ -252,13 +252,12 @@ params:
         rakuten: '楽天で探す'
 
   ads:
-    production: ""
     inside:
       <aside class="entry__ad">
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-format="fluid"
-             data-ad-layout-key="-gr-d+28-66+7m"
+             data-ad-layout-key="-gr-d+2d-6d+7k"
              data-ad-client="ca-pub-1273544194033160"
              data-ad-slot="5004342069"></ins>
         <script>
