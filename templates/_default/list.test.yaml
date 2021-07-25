@@ -20,12 +20,9 @@ is:
     in: "{{ partial `markup/inline-keyword.fn` (slice . `[[word]]`) | chomp }}"
     out: "word"
 like:
-  image-amp:
-    out: '{{ partial `markup/block-image.fn` (slice . `<p><img src="https://the.kalaclista.com/images/echos/2019/06/10/173617/1.png" alt="test"></p>` false) | chomp }}'
-    re: '^<a href="[^"]+"><amp-img src="[^"]+" srcset="[^ ]+ 1x, [^ ]+ 2x" width="\d+" height="\d+" alt="test" layout="responsive"></amp-img></a>$'
-  image-feed:
+  image:
     out: '{{ partial `markup/block-image.fn` (slice . `<p><img src="https://the.kalaclista.com/images/echos/2019/06/10/173617/1.png" alt="test"></p>` true) | chomp }}'
-    re: '^<a href="[^"]+"><img src="[^"]+" srcset="[^ ]+ 1x, [^ ]+ 2x" width="\d+" height="\d+" alt="test" /></a>$'
+    re: '^<p class="img"><a href="[^"]+"><img src="[^"]+" srcset="[^ ]+ 1x, [^ ]+ 2x" width="\d+" height="\d+" alt="test" /></a></p>$'
   card-website:
     out: '{{ partial `markup/card-website.fn` (slice . `<ul><li><a href="https://the.kalaclista.com/">カラクリスタ</a></li></ul>`) | chomp }}'
     re: '^<aside class="content__card--website"><a href="https?://[^"]+"><h1 class="content__card--title">[^>]+</h1><p><cite>https?://[^>]+</cite></p><blockquote><p>[^>]+</p></blockquote></a></aside>$'

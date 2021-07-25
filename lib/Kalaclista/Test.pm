@@ -156,11 +156,11 @@ sub meta_preload_scripts_ok {
   is( $dom->at('meta[http-equiv]')->getAttribute('content'), 'on' );
 
   my @domains = (
-    '//cdn.ampproject.org',            '//googleads.g.doubleclick.net',
-    '//www.google-analytics.com',      '//stats.g.doubleclick.net',
-    '//www.google.com',                '//www.google.co.jp',
-    '//pagead2.googlesyndication.com', '//tpc.googlesyndication.com',
-    '//accounts.google.com',           '//www.googletagmanager.com',
+    '//googleads.g.doubleclick.net', '//www.google-analytics.com',
+    '//stats.g.doubleclick.net',     '//www.google.com',
+    '//www.google.co.jp',            '//pagead2.googlesyndication.com',
+    '//tpc.googlesyndication.com',   '//accounts.google.com',
+    '//www.googletagmanager.com',
   );
 
   my $preConnect  = $dom->find('link[rel*="preconnect"]');
@@ -171,19 +171,6 @@ sub meta_preload_scripts_ok {
     is( $dnsPrefetch->[$idx]->getAttribute('href'), $domains[$idx] );
   }
 
-  my @preloads = (
-    'https://cdn.ampproject.org/v0.js',
-    'https://cdn.ampproject.org/v0/amp-ad-0.1.js',
-    'https://cdn.ampproject.org/v0/amp-analytics-0.1.js',
-  );
-
-  my $preload     = $dom->find('link[rel="preload"][as="script"]');
-  my $scriptAsync = $dom->find('script[async]');
-
-  for my $idx ( 0 .. ( scalar(@preloads) - 1 ) ) {
-    is( $preload->[$idx]->getAttribute('href'),    $preloads[$idx] );
-    is( $scriptAsync->[$idx]->getAttribute('src'), $preloads[$idx] );
-  }
 }
 
 sub meta_ogp_ok {

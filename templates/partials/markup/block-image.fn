@@ -20,12 +20,7 @@
     {{- $size := printf `width="%d" height="%d"` $small.Width $small.Height -}}
     {{- $attr := printf `%s %s %s %s` $src $srcset $size $alt -}}
 
-    {{- if not $inFeed -}}
-      {{- $format := `<a href="%s"><amp-img %s layout="responsive"></amp-img></a>` -}}
-      {{- $tag = printf $format $origin $attr -}}
-    {{- else -}}
-      {{- $tag = printf `<a href="%s"><img %s /></a>` $origin $attr -}}
-    {{- end -}}
+    {{- $tag = printf `<p class="img"><a href="%s"><img %s /></a></p>` $origin $attr -}}
   {{- else -}}
     {{- $tag = `<p><em>Image file is not found</em></p>` -}}
   {{- end -}}

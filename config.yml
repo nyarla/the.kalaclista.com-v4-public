@@ -252,18 +252,30 @@ params:
         rakuten: '楽天で探す'
 
   ads:
-    production:
+    production: ""
+    inside:
       <aside class="entry__ad">
-      <amp-ad
-        width="100vw"
-        height="320"
-        type="adsense"
-        data-ad-client="ca-pub-1273544194033160"
-        data-ad-slot="2961090128"
-        data-auto-format="rspv"
-        data-full-width="">
-        <div overflow=""></div>
-      </amp-ad>
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-format="fluid"
+             data-ad-layout-key="-gr-d+28-66+7m"
+             data-ad-client="ca-pub-1273544194033160"
+             data-ad-slot="5004342069"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+      </aside>
+    outside:
+      <aside class="entry__ad">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-format="fluid"
+             data-ad-layout-key="-gw+4+1v-73+7f"
+             data-ad-client="ca-pub-1273544194033160"
+             data-ad-slot="7658425566"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
       </aside>
     development:
       <aside class="entry__ad">

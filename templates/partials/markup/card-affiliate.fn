@@ -17,11 +17,7 @@
 
       {{- $pixel := `` -}}
       {{- if isset $item `beacon` -}}
-        {{- if $isFeed -}}
-          {{- $pixel = printf `<img src="%s" height="1" width="1" />`  $item.beacon -}}
-        {{- else -}}
-          {{- $pixel = printf `<amp-pixel src="%s" layout="nodisplay"></amp-pixel>`  $item.beacon -}}
-        {{- end -}}
+        {{- $pixel = printf `<img src="%s" height="1" width="1" />`  $item.beacon -}}
       {{- end -}}
 
       {{- $list := printf `<li class="%s"><a href="%s">%s</a>%s</li>` $item.provider $item.link $label $pixel -}}
@@ -45,12 +41,7 @@
       {{- $link := $thumbnail.link -}}
       {{- $src := $thumbnail.image -}}
 
-      {{- if $isFeed -}}
-        {{- $image = printf `<img src="%s" width="%s" height="%s" $src $width $height />` -}}
-      {{- else -}}
-        {{- $image = printf `<amp-img src="%s" width="%s" height="%s" layout="fixed"></amp-img>` $src $width $height -}}
-      {{- end -}}
-      
+      {{- $image = printf `<img src="%s" width="%s" height="%s" $src $width $height />` -}} 
       {{- $image = printf `<p><a href="%s">%s</a></p>` $link $image -}}
     {{- end -}}
 

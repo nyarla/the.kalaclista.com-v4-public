@@ -6,7 +6,7 @@
   {{- $h1 := (slice) -}}
   {{- $ads := $global.Site.Params.ads.development -}}
   {{- if hugo.IsProduction -}}
-    {{- $ads = $global.Site.Params.ads.production -}}
+    {{- $ads = $global.Site.Params.ads.inside -}}
   {{- end -}}
 
   {{- range $idx, $found := $content | findRE `<h1[^>]+>` -}}

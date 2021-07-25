@@ -142,7 +142,7 @@ a {
   #profile__infomation {
     text-align: center;
 
-    amp-img {
+    img {
       margin: 0 auto;
       width: 256px;
       height: 256px;
@@ -264,9 +264,11 @@ a {
     padding: 0.1em 0.25em;
   }
 
-  amp-img {
+  p.img > a > img {
     border-radius: 3px;
     border: 1px solid $base06;
+    height: auto;
+    max-width: 100%;
   }
 
   .content__card--website {

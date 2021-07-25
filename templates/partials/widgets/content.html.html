@@ -5,7 +5,7 @@
 
   {{ $ads := $global.Site.Params.ads.development }}
   {{ if hugo.IsProduction }}
-    {{ $ads = $global.Site.Params.ads.production }}
+    {{ $ads = $global.Site.Params.ads.outside }}
   {{ end }}
 -->
 <article class="entry" aria-label="記事">
