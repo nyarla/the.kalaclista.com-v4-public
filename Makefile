@@ -1,4 +1,4 @@
-.PHONY: all clean install pre-build dist test serve
+.PHONY: all clean install pre-build dist test serve tokenize tfidf
 
 JOBS = $(shell cat /proc/cpuinfo | grep processor | tail -n1 | cut -d\  -f2)
 
@@ -19,6 +19,28 @@ dist:
 
 test: pre-build
 	prove -Mlocal::lib=extlib -Ilib -j$(JOBS) t/*.t
+
+tokenize: pre-build
+	@echo tokenize entries...
+	@find build -type f -name 'fixture.yaml' \
+		| xargs -I[] -P$(JOBS) bash scripts/tokenize.sh '[]'
+
+terms:
+	@echo count all terms...
+	@perl -Mlocal::lib=extlib -Ilib scripts/terms.pl
+
+tfidf:
+	@echo calcurate TF-IDF...
+	@find resources/_tokens -type f -name '*.yaml' \
+		| grep -P 'posts|echos|notes' \
+		| xargs -I[] -P$(JOBS) bash scripts/tf-idf.sh '[]' ;
+
+scores:
+	@echo calcurate scores...
+	@perl -Mlocal::lib=extlib -Ilib scripts/scores.pl
+
+related: tokenize terms tfidf scores
+	perl -Mlocal::lib=extlib -Ilib scripts/merge.pl
 
 up: clean dist
 	@rsync -crvz -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
