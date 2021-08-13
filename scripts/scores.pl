@@ -7,8 +7,9 @@ use utf8;
 use YAML::XS qw( LoadFile DumpFile Dump );
 use Path::Tiny;
 use Path::Tiny::Glob;
+use Future::AsyncAwait;
 
-sub scoring {
+async sub scoring {
   my ( $dest, $data, $termTo, $entries ) = @_;
 
   my @terms = grep { defined($_) } (
@@ -76,7 +77,7 @@ sub datafy {
   return \@entries;
 }
 
-sub main {
+async sub main {
   my $termTo  = LoadFile('resources/_tfidf/termTo.yaml');
   my $files   = pathglob( [ 'resources/_tfidf/data', '**', '*.yaml' ] );
   my $entries = {};
@@ -86,6 +87,8 @@ sub main {
     $entries->{ $data->{'link'} } = $data;
   }
 
+  my @awaits;
+
   for my $key ( sort { $a cmp $b } keys $entries->%* ) {
     my $data = $entries->{$key};
     my $dest = $data->{'link'};
@@ -93,10 +96,12 @@ sub main {
     $dest = "resources/_tfidf/score/${dest}.yaml";
 
     print $key, "\n";
-    scoring( $dest, $data, $termTo, $entries );
+    push @awaits, scoring( $dest, $data, $termTo, $entries );
   }
+
+  $_->get() for @awaits;
 
   exit 0;
 }
 
-main(@ARGV);
+main(@ARGV)->get();
