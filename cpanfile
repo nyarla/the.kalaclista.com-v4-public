@@ -8,5 +8,6 @@ requires 'Path::Tiny',                      0;
 requires 'Path::Tiny::Glob',                0;
 requires 'Text::MeCab',                     0;
 requires 'URI',                             0;
+requires 'URI::Fetch',                      0;
 requires 'XML::DOM::Lite',                  0;
 requires 'YAML::XS',                        0;

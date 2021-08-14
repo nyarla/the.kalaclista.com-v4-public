@@ -1,6 +1,7 @@
 .PHONY: all clean install pre-build dist test serve tokenize tfidf
 
 JOBS = $(shell cat /proc/cpuinfo | grep processor | tail -n1 | cut -d\  -f2)
+LIB = 	-I/run/current-system/sw/lib/perl5/site_perl/5.34.0
 
 all: clean build
 
@@ -37,9 +38,11 @@ scores:
 	@echo calcurate scores...
 	@perl -Mlocal::lib=extlib -Ilib scripts/scores.pl
 
-
 related: tokenize terms tfidf scores
 	perl -Mlocal::lib=extlib -Ilib scripts/merge.pl
+
+webdata:
+	perl -Mlocal::lib=extlib -Ilib $(LIB) scripts/webdata.pl
 
 up: clean related dist
 	@rsync -crvz -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
@@ -56,29 +59,14 @@ serve:
 	hugo serve --minify -D -E -F -e development -b 'http://nixos:1313' --bind 0.0.0.0 --port 1313 --disableLiveReload
 
 install:
-	env PERL_TEXT_MECAB_ENCODING=utf-8 cpm install -L extlib
-
-website:
-	@test -d resources/_website || mkdir -p resources/_website
-	@(pt -e '[\-*+] \[' private/content \
-		| grep '](' \
-		| sed 's/.\+\](//' \
-		| cut -d\) -f 1 \
-		| cut -d\# -f 1 \
-		| grep -v 'amazon.co.jp' | grep -v 'rakuten.co.jp' \
-		| sort | uniq \
-		| grep -P '^http') >resources/_website/links
-	@perl -Mlocal::lib=extlib -Ilib scripts/website.pl
+	env 	PERL_TEXT_MECAB_ENCODING=utf-8 \
+	cpm install -L extlib
 
 amazon:
 	@cat - | perl -Mlocal::lib=extlib -Ilib scripts/affiliate.pl amazon
 
 rakuten:
 	@cat - | perl -Mlocal::lib=extlib -Ilib scripts/affiliate.pl rakuten
-
-check:
-	perl -Mlocal::lib=extlib -Ilib -c scripts/tf-idf.pl
-	perl -Mlocal::lib=extlib -Ilib -c scripts/website.pl
 
 .PHONY: posts echos
 

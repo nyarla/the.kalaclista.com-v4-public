@@ -11,8 +11,8 @@
   {{- $key := $url | replaceRE `https?://` `` | replaceRE `[^a-zA-Z0-9\-.]` `` | replaceRE `#.+$` `` -}}
   {{- $data := default (dict) (index $global.Site.Data.website $key) -}}
 
-  {{- $headline := printf `<h1 class="content__card--title">%s</h1>` (default $title (index $data "title")) -}}
-  {{- $summary := printf `<blockquote><p>%s</p></blockquote>` (default $title (index $data "description")) -}}
+  {{- $headline := printf `<h1 class="content__card--title">%s</h1>` (default $title (index $data "Title")) -}}
+  {{- $summary := printf `<blockquote><p>%s</p></blockquote>` (default $title (index $data "Description")) -}}
 
   {{- $link := urls.Parse $url -}}
   {{- if strings.HasSuffix $link.Hostname `amazon.co.jp` -}}
