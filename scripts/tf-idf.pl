@@ -4,12 +4,15 @@ use strict;
 use warnings;
 
 use Path::Tiny;
+use Path::Tiny::Glob;
 use YAML::XS qw( LoadFile DumpFile Dump );
+use Parallel::Fork::BossWorkerAsync;
 
-sub main {
-  my $data  = LoadFile(shift);
-  my $dest  = shift;
-  my $terms = LoadFile("resources/_tfidf/terms.yaml");
+our $terms = LoadFile("resources/_tfidf/terms.yaml");
+
+sub process {
+  my $data = LoadFile(shift);
+  my $dest = shift;
 
   my $size = 0;
   for my $term ( keys $data->{'terms'}->%* ) {
@@ -33,10 +36,45 @@ sub main {
       $data->{'tfidf'}->{$term} / sqrt $size;
   }
 
+  delete $data->{'tfidf'};
+  delete $data->{'terms'};
+
   path($dest)->parent->mkpath;
   DumpFile( $dest, $data );
 
-  exit 0;
+  return { dest => $dest };
+}
+
+sub main {
+  my $files = pathglob( [ 'resources/_tokens', '*', '**', '*.yaml' ] );
+  my @tasks;
+
+  while ( defined( my $file = $files->next ) ) {
+    my $path = $file->stringify;
+    my $dest = $path;
+    $dest =~ s{_tokens}{_tfidf/data};
+
+    push @tasks, [ $path, $dest ];
+  }
+
+  my $bw = Parallel::Fork::BossWorkerAsync->new(
+    work_handler  => sub { return process( $_[0]->@* ) },
+    handle_result => sub { return $_[0] },
+    worker_count  => 15,
+  );
+
+  $bw->add_work(@tasks);
+  while ( $bw->pending ) {
+    my $ref = $bw->get_result;
+    if ( $ref->{'ERROR'} ) {
+      print STDERR $ref->{'ERROR'}, "\n";
+    }
+    else {
+      print $ref->{'dest'}, "\n";
+    }
+  }
+
+  $bw->shut_down();
 }
 
 main(@ARGV);

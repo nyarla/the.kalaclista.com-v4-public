@@ -7,10 +7,13 @@ use utf8;
 use YAML::XS qw( LoadFile DumpFile Dump );
 use Path::Tiny;
 use Path::Tiny::Glob;
-use Future::AsyncAwait;
+use Parallel::Fork::BossWorkerAsync;
 
-async sub scoring {
-  my ( $dest, $data, $termTo, $entries ) = @_;
+our $termTo;
+our $entries;
+
+sub scoring {
+  my ( $dest, $data ) = @_;
 
   my @terms = grep { defined($_) } (
     sort { $data->{'normalized'}->{$b} <=> $data->{'normalized'}->{$a} }
@@ -56,6 +59,8 @@ async sub scoring {
 
   path($dest)->parent->mkpath;
   DumpFile( $dest, datafy( \@nearly ) );
+
+  return { key => $data->{'link'} };
 }
 
 sub datafy {
@@ -77,31 +82,45 @@ sub datafy {
   return \@entries;
 }
 
-async sub main {
-  my $termTo  = LoadFile('resources/_tfidf/termTo.yaml');
-  my $files   = pathglob( [ 'resources/_tfidf/data', '**', '*.yaml' ] );
-  my $entries = {};
+sub main {
+  my $files = pathglob( [ 'resources/_tfidf/data', '**', '*.yaml' ] );
+  $termTo = LoadFile('resources/_tfidf/termTo.yaml');
   while ( defined( my $file = $files->next ) ) {
     my $data = LoadFile( $file->stringify );
 
     $entries->{ $data->{'link'} } = $data;
   }
 
-  my @awaits;
-
+  my @tasks;
   for my $key ( sort { $a cmp $b } keys $entries->%* ) {
     my $data = $entries->{$key};
     my $dest = $data->{'link'};
     $dest =~ s{^/|/$}{}g;
     $dest = "resources/_tfidf/score/${dest}.yaml";
 
-    print $key, "\n";
-    push @awaits, scoring( $dest, $data, $termTo, $entries );
+    push @tasks, [ $dest, $data ];
   }
 
-  $_->get() for @awaits;
+  my $bw = Parallel::Fork::BossWorkerAsync->new(
+    work_handler  => sub { return scoring( $_[0]->@* ) },
+    handle_result => sub { return $_[0] },
+    worker_count  => 15,
+  );
+
+  $bw->add_work(@tasks);
+  while ( $bw->pending ) {
+    my $ref = $bw->get_result;
+    if ( $ref->{'ERROR'} ) {
+      print STDERR $ref->{'ERROR'}, "\n";
+    }
+    else {
+      print $ref->{'key'}, "\n";
+    }
+  }
+
+  $bw->shut_down();
 
   exit 0;
 }
 
-main(@ARGV)->get();
+main(@ARGV);

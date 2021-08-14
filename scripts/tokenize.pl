@@ -5,10 +5,17 @@ use warnings;
 use utf8;
 
 use Lingua::JA::NormalizeText;
-use Text::TinySegmenter;
-use YAML::XS qw(LoadFile Dump DumpFile);
+use Parallel::Fork::BossWorkerAsync;
+use Path::Tiny::Glob;
 use Path::Tiny;
-use IPC::Open2 qw(open2);
+use Text::MeCab;
+use YAML::XS qw(LoadFile Dump DumpFile);
+
+my $mecab = Text::MeCab->new(
+  rcfile      => $ENV{'HOME'} . '/.config/mecab/dicrc',
+  dicdir      => $ENV{'HOME'} . '/.config/mecab',
+  node_format => "%m",
+);
 
 my $normalizer = Lingua::JA::NormalizeText->new(
   qw(
@@ -84,34 +91,20 @@ sub segment {
   my $text = shift;
   return if ( $text eq q{} );
 
-  my $pid =
-    open2( my $out, my $in, q{ mecab -d "${HOME}/.config/mecab" -F '%m\n'} );
-
-  utf8::encode($text);
-
-  $in->print($text);
-  close($in);
-
   my @terms;
-  while ( defined( my $term = <$out> ) ) {
-    utf8::decode($term);
-    chomp($term);
 
-    if ( $term eq q{EOS} ) {
-      next;
+  for ( my $node = $mecab->parse($text) ; $node ; $node = $node->next ) {
+    if ( defined( my $term = $node->surface ) ) {
+      utf8::decode($term);
+      push @terms, $term;
     }
-
-    push @terms, $term;
   }
-
-  close($out);
 
   return @terms;
 }
 
-sub main {
+sub process {
   my ( $path, $dest ) = @_;
-  print $path, "\n";
 
   my $src  = LoadFile($path);
   my $text = plainify( $src->{'content'} );
@@ -129,7 +122,40 @@ sub main {
     }
   );
 
-  exit 0;
+  return { path => $dest };
+}
+
+sub main {
+  my $files = pathglob( [ 'build/*', '**', 'fixture.yaml' ] );
+  my @tasks;
+  while ( defined( my $file = $files->next ) ) {
+    my $path = $file->stringify;
+    my $dest = $path;
+    $dest =~ s{build/}{resources/_tokens/};
+    $dest =~ s{/fixture}{};
+
+    push @tasks, [ $path, $dest ];
+  }
+
+  my $bw = Parallel::Fork::BossWorkerAsync->new(
+    work_handler  => sub { return process( $_[0]->@* ) },
+    handle_result => sub { return $_[0] },
+    worker_count  => 15,
+  );
+
+  $bw->add_work(@tasks);
+  while ( $bw->pending ) {
+    my $ref = $bw->get_result;
+    if ( $ref->{'ERROR'} ) {
+      print STDERR $ref->{'ERROR'}, "\n";
+    }
+    else {
+      print $ref->{'path'}, "\n";
+    }
+  }
+
+  $bw->shut_down();
+
 }
 
 main(@ARGV);

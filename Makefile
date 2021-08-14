@@ -5,6 +5,8 @@ JOBS = $(shell cat /proc/cpuinfo | grep processor | tail -n1 | cut -d\  -f2)
 all: clean build
 
 clean:
+	@(test ! -e resources/_tfidf  || rm -rf resources/_tfidf)
+	@(test ! -e resources/_tokens || rm -rf resources/_tokens)
 	@(test ! -e build || rm -rf build) && (test -e build || mkdir -p build)
 	@(test ! -e dist || rm -rf dist) && (test -e dist || mkdir -p dist)
 
@@ -21,9 +23,7 @@ test: pre-build
 	prove -Mlocal::lib=extlib -Ilib -j$(JOBS) t/*.t
 
 tokenize: pre-build
-	@echo tokenize entries...
-	@find build -type f -name 'fixture.yaml' \
-		| xargs -I[] -P$(JOBS) bash scripts/tokenize.sh '[]'
+	@perl -Mlocal::lib=extlib -Ilib scripts/tokenize.pl
 
 terms:
 	@echo count all terms...
@@ -31,13 +31,12 @@ terms:
 
 tfidf:
 	@echo calcurate TF-IDF...
-	@find resources/_tokens -type f -name '*.yaml' \
-		| grep -P 'posts|echos|notes' \
-		| xargs -I[] -P$(JOBS) bash scripts/tf-idf.sh '[]' ;
+	@perl -Mlocal::lib=extlib -Ilib scripts/tf-idf.pl
 
 scores:
 	@echo calcurate scores...
 	@perl -Mlocal::lib=extlib -Ilib scripts/scores.pl
+
 
 related: tokenize terms tfidf scores
 	perl -Mlocal::lib=extlib -Ilib scripts/merge.pl
@@ -57,7 +56,7 @@ serve:
 	hugo serve --minify -D -E -F -e development -b 'http://nixos:1313' --bind 0.0.0.0 --port 1313 --disableLiveReload
 
 install:
-	cpm install -L extlib
+	env PERL_TEXT_MECAB_ENCODING=utf-8 cpm install -L extlib
 
 website:
 	@test -d resources/_website || mkdir -p resources/_website

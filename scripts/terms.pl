@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use YAML::Tiny qw( LoadFile DumpFile );
+use YAML::XS qw( LoadFile DumpFile );
 use Path::Tiny;
 use Path::Tiny::Glob;
 
