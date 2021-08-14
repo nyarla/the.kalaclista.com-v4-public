@@ -32,4 +32,22 @@
   <!-- {{ if ne $page.Type `home` }}  -->
   {{ $ads | safeHTML }}
   <!-- {{ end }} -->
+
+  <!-- {{ with (index $global.Site.Data.related $page.RelPermalink) }} -->
+  <aside class="entry__related">
+    <section class="entry__content">
+      <h1>似たような記事一覧</h1>
+      <ul>
+        <!-- {{ range $data := . }} -->
+        <li>
+          <time datetime="{{ dateFormat `2006-01-02` $data.UnixTime }}"
+            >{{ dateFormat `2006-01-02` $data.UnixTime }}：</time
+          >
+          <a href="{{ absURL $data.RelPermalink }}">{{ $data.Title }}</a>
+        </li>
+        <!-- {{ end }} -->
+      </ul>
+    </section>
+  </aside>
+  <!-- {{ end }} -->
 </article>

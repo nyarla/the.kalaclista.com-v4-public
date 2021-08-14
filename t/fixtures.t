@@ -3,7 +3,7 @@ use warnings;
 
 use Test2::V0;
 use Path::Tiny::Glob;
-use YAML::Tiny qw( LoadFile );
+use YAML::XS qw( LoadFile );
 
 use Kalaclista::Path;
 

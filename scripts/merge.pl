@@ -27,3 +27,5 @@ sub main {
 
   DumpFile( "private/data/related.yaml", $out );
 }
+
+main;

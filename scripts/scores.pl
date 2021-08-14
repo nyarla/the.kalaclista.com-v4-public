@@ -75,7 +75,7 @@ sub datafy {
       {
       RelPermalink => $data->{'permalink'},
       Title        => $data->{'title'},
-      Unixtime     => $data->{'unixtime'},
+      UnixTime     => $data->{'unixtime'},
       };
   }
 
