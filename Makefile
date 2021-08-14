@@ -41,7 +41,7 @@ scores:
 related: tokenize terms tfidf scores
 	perl -Mlocal::lib=extlib -Ilib scripts/merge.pl
 
-up: clean dist
+up: clean related dist
 	@rsync -crvz -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
 	  dist/ \
 	  nyarla@nyarla.sakura.ne.jp:/home/nyarla/www/the.kalaclista.com/ \
