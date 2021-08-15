@@ -62,6 +62,10 @@ install:
 	env 	PERL_TEXT_MECAB_ENCODING=utf-8 \
 	cpm install -L extlib
 
+reinstall:
+	rm -rf extlib
+	$(MAKE) install
+
 amazon:
 	@cat - | perl -Mlocal::lib=extlib -Ilib scripts/affiliate.pl amazon
 
