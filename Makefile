@@ -56,10 +56,10 @@ related: tokenize terms tfidf scoring
 .PHONY: extract webdata
 
 extract:
-	@perl -Mlocal::lib=extlib -Ilib scripts/webdata-extract.pl
+	@perl scripts/webdata-extract.pl
 
 webdata:
-	@perl -Mlocal::lib=extlib -Ilib scripts/webdata-fetch.pl
+	@perl scripts/webdata-fetch.pl
 
 .PHONY: webfont
 
