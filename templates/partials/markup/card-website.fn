@@ -1,6 +1,10 @@
 {{- $global := index . 0 -}}
 {{- $content := index . 1 -}}
 
+{{ $website := (dict) }}
+{{ if isset $global.Site.Data "website" }}
+  {{ $website = $global.Site.Data.website }}
+{{ end }}
 
 {{- range $found := $content | findRE `<ul>\s*<li><a[^>]+?>[^>]+</a></li>\s*</ul>` -}}
   {{- $info := split ($found | replaceRE `<ul>\s*<li><a.*?href="([^"]+)".*?>([^>]+)</a></li>\s*</ul>` "$1\n$2") "\n" -}}
@@ -9,7 +13,7 @@
   {{- $title := index $info 1 -}}
   
   {{- $key := $url | replaceRE `https?://` `` | replaceRE `[^a-zA-Z0-9\-.]` `` | replaceRE `#.+$` `` -}}
-  {{- $data := default (dict) (index $global.Site.Data.website $key) -}}
+  {{- $data := default (dict) (index $website $key) -}}
 
   {{- $headline := printf `<h1 class="content__card--title">%s</h1>` (default $title (index $data "Title")) -}}
   {{- $summary := printf `<blockquote><p>%s</p></blockquote>` (default $title (index $data "Description")) -}}

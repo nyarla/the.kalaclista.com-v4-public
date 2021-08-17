@@ -1,7 +1,7 @@
-.PHONY: all clean install pre-build dist test serve tokenize tfidf
-
 JOBS = $(shell cat /proc/cpuinfo | grep processor | tail -n1 | cut -d\  -f2)
-LIB = 	-I/run/current-system/sw/lib/perl5/site_perl/5.34.0
+NIX = nix-shell -I nixpkgs=/etc/nixpkgs
+
+.PHONY: clean pre-build dist test up
 
 all: clean build
 
@@ -21,32 +21,7 @@ dist:
 	@bash scripts/htaccess.sh dist
 
 test: pre-build
-	prove -Mlocal::lib=extlib -Ilib -j$(JOBS) t/*.t
-
-tokenize: pre-build
-	@perl -Mlocal::lib=extlib -Ilib scripts/tokenize.pl
-
-terms:
-	@echo count all terms...
-	@perl -Mlocal::lib=extlib -Ilib scripts/terms.pl
-
-tfidf:
-	@echo calcurate TF-IDF...
-	@perl -Mlocal::lib=extlib -Ilib scripts/tf-idf.pl
-
-scores:
-	@echo calcurate scores...
-	@perl -Mlocal::lib=extlib -Ilib scripts/scores.pl
-
-related: tokenize terms tfidf scores
-	perl -Mlocal::lib=extlib -Ilib scripts/merge.pl
-
-webdata:
-	@perl -Mlocal::lib=extlib -Ilib $(LIB) scripts/webdata.pl
-
-webfont:
-	@perl -Mlocal::lib=extlib -Ilib scripts/webfont.pl
-	@nix-shell -I nixpkgs=/etc/nixpkgs -p python3Packages.fonttools -p python3Packages.brotli --run "bash scripts/webfont.sh"
+	@prove -Ilib -j$(JOBS) t/*.t
 
 up: clean related webfont dist
 	@rsync -crvz -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
@@ -57,26 +32,59 @@ up: clean related webfont dist
 	@cat resources/_gen/purge.txt
 	@bash scripts/purge_cache.sh
 
-.PHONY: serve install website check
+.PHONY: tokenize terms tfidf scoring related
+
+tokenize: pre-build
+	@perl scripts/related-tokenize.pl
+
+terms:
+	@echo count all terms...
+	@perl scripts/related-terms.pl
+
+tfidf:
+	@echo calcurate TF-IDF...
+	@perl scripts/related-tfidf.pl
+
+scoring:
+	@echo calcurate scores...
+	@perl scripts/related-scoring.pl
+
+related: tokenize terms tfidf scoring
+	@echo generate related.yaml
+	@perl scripts/related-merge.pl
+
+.PHONY: extract webdata
+
+extract:
+	@perl -Mlocal::lib=extlib -Ilib scripts/webdata-extract.pl
+
+webdata:
+	@perl -Mlocal::lib=extlib -Ilib scripts/webdata-fetch.pl
+
+.PHONY: webfont
+
+webfont:
+	@perl scripts/webfont.pl
+	@bash scripts/webfont.sh
+
+.PHONY: edit serve check cpan-deps cpan-nix
+
+edit:
+	@$(NIX) --run "env SHELL=zsh nvim ."
 
 serve:
 	hugo serve --minify -D -E -F -e development -b 'http://nixos:1313' --bind 0.0.0.0 --port 1313 --disableLiveReload
 
-install:
-	env 	PERL_TEXT_MECAB_ENCODING=utf-8 \
-	cpm install -L extlib
+check:
+	find scripts -type f -name '*.pl' -exec perl -c {} \;
 
-reinstall:
-	rm -rf extlib
-	$(MAKE) install
+cpan-deps:
+	@perl scripts/cpanfile-deps.pl 2>/dev/null
 
-amazon:
-	@cat - | perl -Mlocal::lib=extlib -Ilib scripts/affiliate.pl amazon
+cpan-nix: cpan-deps
+	@perl scripts/cpanfile-nix.pl 2>/dev/null
 
-rakuten:
-	@cat - | perl -Mlocal::lib=extlib -Ilib scripts/affiliate.pl rakuten
-
-.PHONY: posts echos
+.PHONY: posts echos amazon rakuten
 
 posts:
 	hugo new posts/$(shell date +%Y/%m/%d/%H%M%S.md)
@@ -85,3 +93,9 @@ posts:
 echos:
 	hugo new echos/$(shell date +%Y/%m/%d/%H%M%S.md)
 	nvim private/content/echos/$(shell date +%Y/%m/%d/%H%M%S.md)
+
+amazon:
+	@cat - | perl scripts/edit-affiliate.pl amazon
+
+rakuten:
+	@cat - | perl scripts/edit-affiliate.pl rakuten
