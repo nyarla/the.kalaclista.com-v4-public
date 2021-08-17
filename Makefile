@@ -42,9 +42,13 @@ related: tokenize terms tfidf scores
 	perl -Mlocal::lib=extlib -Ilib scripts/merge.pl
 
 webdata:
-	perl -Mlocal::lib=extlib -Ilib $(LIB) scripts/webdata.pl
+	@perl -Mlocal::lib=extlib -Ilib $(LIB) scripts/webdata.pl
 
-up: clean related dist
+webfont:
+	@perl -Mlocal::lib=extlib -Ilib scripts/webfont.pl
+	@nix-shell -I nixpkgs=/etc/nixpkgs -p python3Packages.fonttools -p python3Packages.brotli --run "bash scripts/webfont.sh"
+
+up: clean related webfont dist
 	@rsync -crvz -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
 	  dist/ \
 	  nyarla@nyarla.sakura.ne.jp:/home/nyarla/www/the.kalaclista.com/ \

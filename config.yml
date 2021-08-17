@@ -1,6 +1,6 @@
 # Internal
 # =======
-archetypeDir: private/archtypes
+archetypeDir: archetypes
 assetsDir: assets
 contentDir: private/content
 dataDir: private/data

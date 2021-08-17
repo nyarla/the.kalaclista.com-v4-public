@@ -1,15 +1,16 @@
 @import "normalize";
 @import "colors";
 @import "chroma";
+@import "fonts";
 
 @mixin font-sans {
-  font-family: "YuGothic", "Yu Gothic Medium", "Yu Gothic";
+  font-family: "Mamelon", "YuGothic", "Yu Gothic Medium", "Yu Gothic";
   font-weight: 400;
   font-feature-settings: "palt";
 }
 
 @mixin font-sans-bold {
-  font-family: "YuGothic" "Yu Gothic Medium", "Yu Gothic";
+  font-family: "Mamelon", "YuGothic" "Yu Gothic Medium", "Yu Gothic";
   font-weight: 900;
   font-feature-settings: "palt";
 }
@@ -251,6 +252,11 @@ a {
     dd + dt {
       margin-top: 0.25em;
     }
+  }
+
+  pre,
+  *:not(pre) > code {
+    font-family: "Inconsolata", monospace;
   }
 
   pre {

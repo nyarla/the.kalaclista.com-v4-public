@@ -6,3 +6,4 @@ resources
 build
 config.dist.yaml
 .env
+static/assets/*.subset.woff2
