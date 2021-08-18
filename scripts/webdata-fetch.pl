@@ -8,6 +8,7 @@ use Encode::Guess;
 use Encode;
 use HTML5::DOM;
 use JSON::XS qw( decode_json );
+use LWP::Protocol::Net::Curl;
 use LWP::UserAgent;
 use Parallel::Fork::BossWorkerAsync;
 use Path::Tiny::Glob;
@@ -67,6 +68,14 @@ sub fix_encoding {
 
   if ( $name =~ m{utf.*?8}i ) {
     return 'utf8';
+  }
+
+  if ( $name =~ m{us-ascii}i ) {
+    return 'iso-8859-1';
+  }
+
+  if ( $name =~ m{ISO-*}i ) {
+    return lc $name;
   }
 
   return $name;

@@ -19,6 +19,22 @@ let
     };
   };
 
+  TestHTTPServer = buildPerlPackage {
+    pname = "Test-HTTP-Server";
+    version = "0.04";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/N/NE/NEILB/Test-HTTP-Server-0.04.tar.gz";
+      sha256 =
+        "3ad2a469944558cfb704213309ca646348c575e3bd712c3a73a7b2b1895bc815";
+    };
+    propagatedBuildInputs = [ URI ];
+    meta = {
+      homepage = "https://github.com/neilb/Test-HTTP-Server";
+      description = "Simple forking http server";
+      license = with lib.licenses; [ artistic1 gpl1Plus ];
+    };
+  };
+
   XMLDOMLite = buildPerlPackage {
     pname = "XML-DOM-Lite";
     version = "0.16";
@@ -42,36 +58,6 @@ let
     meta = {
       homepage = "https://github.com/tokuhirom/Class-ErrorHandler";
       description = "Base class for error handling";
-      license = with lib.licenses; [ artistic1 gpl1Plus ];
-    };
-  };
-
-  LWP = buildPerlPackage {
-    pname = "libwww-perl";
-    version = "6.55";
-    src = fetchurl {
-      url = "mirror://cpan/authors/id/O/OA/OALDERS/libwww-perl-6.55.tar.gz";
-      sha256 =
-        "c1d0d3a44a039b136ebac7336f576e3f5c232347e8221abd69ceb4108e85c920";
-    };
-    buildInputs = [ HTTPDaemon TestFatal TestNeeds TestRequiresInternet ];
-    propagatedBuildInputs = [
-      EncodeLocale
-      FileListing
-      HTMLParser
-      HTTPCookies
-      HTTPDate
-      HTTPMessage
-      HTTPNegotiate
-      LWPMediaTypes
-      NetHTTP
-      TryTiny
-      URI
-      WWWRobotRules
-    ];
-    meta = {
-      homepage = "https://github.com/libwww-perl/libwww-perl";
-      description = "The World-Wide Web library for Perl";
       license = with lib.licenses; [ artistic1 gpl1Plus ];
     };
   };
@@ -130,24 +116,6 @@ let
     };
   };
 
-  multidimensional = buildPerlPackage {
-    pname = "multidimensional";
-    version = "0.014";
-    src = fetchurl {
-      url =
-        "mirror://cpan/authors/id/I/IL/ILMARI/multidimensional-0.014.tar.gz";
-      sha256 =
-        "12eb14317447bd15ab9799677db9eda20e784d8b113e44a5f6f11f529e862c5f";
-    };
-    buildInputs = [ ExtUtilsDepends ];
-    propagatedBuildInputs = [ BHooksOPCheck ];
-    meta = {
-      homepage = "https://github.com/ilmari/multidimensional";
-      description = "Disables multidimensional array emulation";
-      license = with lib.licenses; [ artistic1 gpl1Plus ];
-    };
-  };
-
   barewordfilehandles = buildPerlPackage {
     pname = "bareword-filehandles";
     version = "0.007";
@@ -162,6 +130,24 @@ let
     meta = {
       homepage = "https://github.com/ilmari/bareword-filehandles";
       description = "Disables bareword filehandles";
+      license = with lib.licenses; [ artistic1 gpl1Plus ];
+    };
+  };
+
+  multidimensional = buildPerlPackage {
+    pname = "multidimensional";
+    version = "0.014";
+    src = fetchurl {
+      url =
+        "mirror://cpan/authors/id/I/IL/ILMARI/multidimensional-0.014.tar.gz";
+      sha256 =
+        "12eb14317447bd15ab9799677db9eda20e784d8b113e44a5f6f11f529e862c5f";
+    };
+    buildInputs = [ ExtUtilsDepends ];
+    propagatedBuildInputs = [ BHooksOPCheck ];
+    meta = {
+      homepage = "https://github.com/ilmari/multidimensional";
+      description = "Disables multidimensional array emulation";
       license = with lib.licenses; [ artistic1 gpl1Plus ];
     };
   };
@@ -216,20 +202,6 @@ let
     };
   };
 
-  ConvertMoji = buildPerlPackage {
-    pname = "Convert-Moji";
-    version = "0.11";
-    src = fetchurl {
-      url = "mirror://cpan/authors/id/B/BK/BKB/Convert-Moji-0.11.tar.gz";
-      sha256 =
-        "28de563d202fc7cfa229cb7122c9a784a30a3210eb2fe5e6009cfca2130e85d5";
-    };
-    meta = {
-      description = "Convert between alphabets";
-      license = with lib.licenses; [ artistic1 gpl1Plus ];
-    };
-  };
-
   TextTestBase = buildPerlModule {
     pname = "Text-TestBase";
     version = "0.13";
@@ -247,19 +219,16 @@ let
     };
   };
 
-  LinguaJARegularUnicode = buildPerlModule {
-    pname = "Lingua-JA-Regular-Unicode";
-    version = "0.13";
+  ConvertMoji = buildPerlPackage {
+    pname = "Convert-Moji";
+    version = "0.11";
     src = fetchurl {
-      url =
-        "mirror://cpan/authors/id/T/TO/TOKUHIROM/Lingua-JA-Regular-Unicode-0.13.tar.gz";
+      url = "mirror://cpan/authors/id/B/BK/BKB/Convert-Moji-0.11.tar.gz";
       sha256 =
-        "a81d6caa4c0d9e08a03b6b9028ab38be7370ecef3e7bf97e9810af4d5aa60b2f";
+        "28de563d202fc7cfa229cb7122c9a784a30a3210eb2fe5e6009cfca2130e85d5";
     };
-    buildInputs = [ ModuleBuildTiny TextTestBase ];
     meta = {
-      homepage = "https://github.com/tokuhirom/Lingua-JA-Regular-Unicode";
-      description = "Convert japanese chars";
+      description = "Convert between alphabets";
       license = with lib.licenses; [ artistic1 gpl1Plus ];
     };
   };
@@ -295,6 +264,23 @@ let
     };
   };
 
+  LinguaJARegularUnicode = buildPerlModule {
+    pname = "Lingua-JA-Regular-Unicode";
+    version = "0.13";
+    src = fetchurl {
+      url =
+        "mirror://cpan/authors/id/T/TO/TOKUHIROM/Lingua-JA-Regular-Unicode-0.13.tar.gz";
+      sha256 =
+        "a81d6caa4c0d9e08a03b6b9028ab38be7370ecef3e7bf97e9810af4d5aa60b2f";
+    };
+    buildInputs = [ ModuleBuildTiny TextTestBase ];
+    meta = {
+      homepage = "https://github.com/tokuhirom/Lingua-JA-Regular-Unicode";
+      description = "Convert japanese chars";
+      license = with lib.licenses; [ artistic1 gpl1Plus ];
+    };
+  };
+
   LinguaJANormalizeText = buildPerlModule {
     pname = "Lingua-JA-NormalizeText";
     version = "0.50";
@@ -315,6 +301,74 @@ let
     meta = {
       homepage = "https://github.com/pawa-/Lingua-JA-NormalizeText";
       description = "All-in-One Japanese text normalizer";
+      license = with lib.licenses; [ artistic1 gpl1Plus ];
+    };
+  };
+
+  NetCurl = buildPerlPackage {
+    pname = "Net-Curl";
+    version = "0.49";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/S/SY/SYP/Net-Curl-0.49.tar.gz";
+      sha256 =
+        "53b5a367db278adfc8fc83d393064e3d5f3de5682186829ddac0683c07b4a199";
+    };
+    buildInputs = [ pkgs.curlFull ];
+    postPatch = ''
+      rm t/51-crash-destroy-with-callbacks.t 
+      rm t/53-crash-destroy-with-callbacks-multi.t 
+    '';
+    meta = {
+      homepage = "https://github.com/sparky/perl-Net-Curl";
+      description = "Perl interface for libcurl";
+      license = lib.licenses.mit;
+    };
+  };
+
+  LWP = buildPerlPackage {
+    pname = "libwww-perl";
+    version = "6.56";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/O/OA/OALDERS/libwww-perl-6.56.tar.gz";
+      sha256 =
+        "94362e68e5c6782f3987a9dec6adc409d20e28665dbf28ff47d1d701443ce7ce";
+    };
+    buildInputs = [ HTTPDaemon TestFatal TestNeeds TestRequiresInternet ];
+    propagatedBuildInputs = [
+      EncodeLocale
+      FileListing
+      HTMLParser
+      HTTPCookies
+      HTTPDate
+      HTTPMessage
+      HTTPNegotiate
+      LWPMediaTypes
+      NetHTTP
+      TryTiny
+      URI
+      WWWRobotRules
+    ];
+    meta = {
+      homepage = "https://github.com/libwww-perl/libwww-perl";
+      description = "The World-Wide Web library for Perl";
+      license = with lib.licenses; [ artistic1 gpl1Plus ];
+    };
+  };
+
+  LWPProtocolNetCurl = buildPerlPackage {
+    pname = "LWP-Protocol-Net-Curl";
+    version = "0.026";
+    src = fetchurl {
+      url =
+        "mirror://cpan/authors/id/S/SY/SYP/LWP-Protocol-Net-Curl-0.026.tar.gz";
+      sha256 =
+        "eef6fe35152f51e86f4e5d6737d71c78a66495810ea5608b71820698f91011bd";
+    };
+    buildInputs = [ HTTPMessage TestHTTPServer ];
+    propagatedBuildInputs = [ HTTPDate LWP NetCurl URI ];
+    meta = {
+      homepage = "https://github.com/creaktive/LWP-Protocol-Net-Curl";
+      description = "The power of libcurl in the palm of your hands!";
       license = with lib.licenses; [ artistic1 gpl1Plus ];
     };
   };
@@ -371,6 +425,7 @@ in [
   JSONXS
   LWP
   LWPMediaTypes
+  LWPProtocolNetCurl
   LinguaJAMoji
   LinguaJANormalizeText
   ListLazy
@@ -384,6 +439,7 @@ in [
   Moo
   MooXHandlesVia
   MooXTypesMooseLike
+  NetCurl
   NetHTTP
   PadWalker
   ParallelForkBossWorkerAsync
@@ -400,6 +456,7 @@ in [
   TestDifferences
   TestException
   TestFatal
+  TestHTTPServer
   TestLeakTrace
   TestMemoryCycle
   TestNeeds
