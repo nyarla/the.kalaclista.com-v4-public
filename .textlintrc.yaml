@@ -1,0 +1,43 @@
+rules:
+  sentence-length:
+    max: 140
+  max-ten:
+    max: 5
+  max-kanji-continuous-len:
+    max: 6
+    allow:
+      - 自立支援医療制度
+  preset-jtf-style: true
+  no-mix-dearu-desumasu:
+    preferInHeader": ""
+    preferInBody": "ですます"
+    preferInList": "である"
+    strict": true
+  ja-no-mixed-period:
+    periodMark: "。"
+    allowPeriodMarks:
+      - "："
+      - "、"
+    forceAppendPeriod: true
+  no-dropping-the-ra: true
+  no-doubled-conjunction: true
+  no-doubled-joshi:
+    min_interval: 1
+  no-nfd: true
+  "@textlint-rule/no-invalid-control-character": true
+  no-zero-width-spaces: true
+  no-exclamation-question-mark:
+    allowHalfWidthExclamation: false
+    allowHalfWidthQuestion: false
+    allowFullWidthExclamation: true
+    allowFullWidthQuestion: true
+    allow: []
+  ja-no-successive-word:
+    allowOnomatopee: true
+  ja-no-abusage: true
+  ja-no-redundant-expression: true
+  ja-unnatural-alphabet: true
+  "@textlint-rule/textlint-rule-no-unmatched-pair": true
+  prh:
+    rulePaths:
+      - .prh.yaml

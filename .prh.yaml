@@ -1,0 +1,11 @@
+version: 1
+rules:
+  # プログラミング言語
+  - expected: JavaScript
+  - expected: TypeScript
+
+  # 単語表現
+  - expected: Webカード
+    patterns:
+      - Web Card
+      - Webcard
