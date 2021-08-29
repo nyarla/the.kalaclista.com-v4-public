@@ -9,3 +9,9 @@ rules:
     patterns:
       - Web Card
       - Webcard
+
+  # 誤字・脱字
+  - expected: とりあえず
+    patterns:
+      - とりえず
+      - とりあず
