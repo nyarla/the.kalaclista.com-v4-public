@@ -88,11 +88,11 @@ cpan-nix: cpan-deps
 
 posts:
 	hugo new posts/$(shell date +%Y/%m/%d/%H%M%S.md)
-	nvim private/content/posts/$(shell date +%Y/%m/%d/%H%M%S.md)
+	$(NIX) --run "env SHELL=zsh nvim private/content/posts/$(shell date +%Y/%m/%d/%H%M%S.md)"
 
 echos:
 	hugo new echos/$(shell date +%Y/%m/%d/%H%M%S.md)
-	nvim private/content/echos/$(shell date +%Y/%m/%d/%H%M%S.md)
+	$(NIX) --run "env SHELL=zsh nvim private/content/echos/$(shell date +%Y/%m/%d/%H%M%S.md)"
 
 amazon:
 	@cat - | perl scripts/edit-affiliate.pl amazon
