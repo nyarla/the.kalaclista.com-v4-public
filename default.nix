@@ -12,5 +12,5 @@ in mkShell rec {
     python3Packages.brotli
     python3Packages.fonttools
   ] ++ cpanModules
-    ++ (with perlPackages; [ LWPProtocolhttps IOSocketSSL NetSSLeay ]);
+    ++ (with perlPackages; [ LWPProtocolhttps IOSocketSSL NetSSLeay PerlTidy ]);
 }
