@@ -15,7 +15,7 @@ sub process {
   my $dest = shift;
 
   my $size = 0;
-  for my $term ( keys $data->{'terms'}->%* ) {
+  for my $term ( sort keys $data->{'terms'}->%* ) {
     if ( !exists $terms->{$term} ) {
       next;
     }
@@ -30,7 +30,7 @@ sub process {
     $size += $tfidf * $tfidf;
   }
 
-  for my $term ( keys $data->{'tfidf'}->%* ) {
+  for my $term ( sort keys $data->{'tfidf'}->%* ) {
     $data->{'normalized'} //= {};
     $data->{'normalized'}->{$term} =
       $data->{'tfidf'}->{$term} / sqrt $size;

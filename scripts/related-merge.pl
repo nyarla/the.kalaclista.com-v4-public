@@ -22,8 +22,12 @@ sub main {
     my $data = LoadFile( $file->stringify );
     my $link = linkify( $file->stringify );
 
-    $out->{$link} =
-      [ sort { $b->{'UnixTime'} cmp $a->{'UnixTime'} } $data->@* ];
+    $out->{$link} = [
+      sort {
+             $b->{'UnixTime'} <=> $a->{'UnixTime'}
+          || $a->{'Title'} cmp $b->{'Title'}
+      } $data->@*
+    ];
   }
 
   DumpFile( "private/data/related.yaml", $out );

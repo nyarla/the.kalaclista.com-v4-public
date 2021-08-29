@@ -18,13 +18,17 @@ sub main {
     my $link = $data->{'link'};
     utf8::decode($link);
 
-    for my $term ( keys $data->{'terms'}->%* ) {
+    for my $term ( sort keys $data->{'terms'}->%* ) {
       $terms{$term} //= 0;
       $terms{$term}++;
 
       $termTo{$term} //= [];
       push $termTo{$term}->@*, $link;
     }
+  }
+
+  for my $term ( keys %termTo ) {
+    $termTo{$term} = [ sort { $b cmp $a } $termTo{$term}->@* ];
   }
 
   path("resources/_tfidf")->mkpath;
