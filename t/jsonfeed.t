@@ -3,7 +3,7 @@ use warnings;
 use utf8;
 
 use Test2::V0;
-use JSON::Tiny qw( decode_json );
+use JSON::XS qw( decode_json );
 
 use Kalaclista::Path;
 

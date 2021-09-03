@@ -5,7 +5,7 @@ package Kalaclista::Test;
 
 use HTML5::DOM;
 use URI::Escape;
-use JSON::Tiny qw(decode_json);
+use JSON::XS qw(decode_json);
 
 use Test2::V0;
 
