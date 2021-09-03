@@ -45,7 +45,7 @@ sub main {
   my $bw = Parallel::Fork::BossWorkerAsync->new(
     work_handler  => sub { return extract( $_[0]->@* ) },
     handle_result => sub { return $_[0] },
-    worker_count  => 15,
+    worker_count  => 31,
   );
 
   $bw->add_work(@tasks);

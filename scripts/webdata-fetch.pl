@@ -397,7 +397,7 @@ sub main {
 
       return {};
     },
-    worker_count   => 15,
+    worker_count   => 31,
     global_timeout => 10,
   );
 

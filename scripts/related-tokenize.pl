@@ -28,7 +28,7 @@ my $normalizer = Lingua::JA::NormalizeText->new(
     all_dakuon_normalize square2katakana
     circled2kana circled2kanji
     decompose_parenthesized_kanji
-  ),
+    ),
 );
 
 sub permalinkify {
@@ -140,7 +140,7 @@ sub main {
   my $bw = Parallel::Fork::BossWorkerAsync->new(
     work_handler  => sub { return process( $_[0]->@* ) },
     handle_result => sub { return $_[0] },
-    worker_count  => 15,
+    worker_count  => 31,
   );
 
   $bw->add_work(@tasks);
