@@ -10,8 +10,24 @@ rules:
       - Web Card
       - Webcard
 
+  - expected: 方達
+    patterns:
+      - 方たち
+
   # 誤字・脱字
   - expected: とりあえず
     patterns:
       - とりえず
       - とりあず
+  - expected: あります
+    patterns:
+      - あるます
+  - expected: どうすべきか
+    patterns:
+      - どうすべか
+  - expected: 言うのも
+    patterns:
+      - 言いのも
+  - expected: 先にも
+    patterns:
+      - 先にの
