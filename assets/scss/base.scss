@@ -218,14 +218,20 @@ a {
     }
   }
 
+  ul,
+  ol {
+    padding-left: 1em;
+    li {
+      margin: 0.125em 0 0.125em 0.5em;
+    }
+  }
+
   ul {
-    padding-left: 0.5em;
     list-style: none;
 
     li {
       position: relative;
       line-height: 1.414em;
-      margin: 0.25em 0;
     }
 
     li::before {
