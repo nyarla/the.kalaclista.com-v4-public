@@ -67,10 +67,13 @@ webfont:
 	@perl scripts/webfont.pl
 	@bash scripts/webfont.sh
 
-.PHONY: edit serve check cpan-deps cpan-nix
+.PHONY: edit shell serve check cpan-deps cpan-nix
 
 edit:
 	@$(NIX) --run "env SHELL=zsh nvim ."
+
+shell:
+	@$(NIX) --run "env SHELL=zsh zsh"
 
 serve:
 	hugo serve --minify -D -E -F -e development -b 'http://nixos:1313' --bind 0.0.0.0 --port 1313 --disableLiveReload
