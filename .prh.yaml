@@ -31,3 +31,6 @@ rules:
   - expected: 先にも
     patterns:
       - 先にの
+  - expected: イヤーピース
+    patterns:
+      - イヤピース
