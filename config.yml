@@ -278,7 +278,7 @@ params:
       </aside>
     development:
       <aside class="entry__ad">
-        <div style="height&#58; 320px"></div>
+        <div style="height&#58; 140px; border&#58; 1px solid &#35;ccc ;"></div>
       </aside>
 
   jsonfeed:
