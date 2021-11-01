@@ -23,7 +23,9 @@ dist:
 test: pre-build
 	@prove -Ilib -j$(JOBS) t/*.t
 
-up: clean related webfont dist
+build: clean related webfont dist
+
+up: build
 	@rsync -crvz -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
 	  dist/ \
 	  nyarla@nyarla.sakura.ne.jp:/home/nyarla/www/the.kalaclista.com/ \
@@ -68,9 +70,6 @@ webfont:
 	@bash scripts/webfont.sh
 
 .PHONY: edit shell serve check cpan-deps cpan-nix
-
-edit:
-	@$(NIX) --run "env SHELL=zsh nvim ."
 
 shell:
 	@$(NIX) --run "env SHELL=zsh zsh"
