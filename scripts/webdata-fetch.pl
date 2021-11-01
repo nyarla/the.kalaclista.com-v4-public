@@ -20,8 +20,9 @@ use YAML::XS qw( LoadFile Dump DumpFile );
 my $ua =
 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:90.0) Gecko/20100101 Firefox/90.0';
 my $client = LWP::UserAgent->new(
-  agent   => $ua,
-  timeout => 5,
+  agent        => $ua,
+  timeout      => 10,
+  max_redirect => 10,
 );
 my $parser =
   HTML5::DOM->new( { encoding => 'utf8', utf8 => 0, ignore_doctype => 1 } );
@@ -295,9 +296,14 @@ sub fetch {
     if ( exists $data->{'Error'} ) {
       $data->{'LastModified'} = 0;
     }
+
+    if ( $data->{'Permalink'} ne $url ) {
+      $url = $data->{'Permalink'};
+      $data->{'UpdatedRequired'} = 1;
+    }
   }
 
-  if ( $data->{'Gone'} ) {
+  if ( $data->{'Gone'} == 1 ) {
     goto LAST;
   }
 
@@ -323,32 +329,12 @@ sub fetch {
     goto LAST;
   }
 
-  if ( ( 301 <= $res->status <= 303 )
-    || ( 307 <= $res->status <= 308 ) )
-  {
-    my $count = 0;
-    while ( $count < 5
-      && ( defined( $res = URI::Fetch->fetch( $res->uri, %options ) ) ) )
-    {
-      if ( !( 301 <= $res->status <= 303 )
-        && !( 307 <= $res->status <= 308 ) )
-      {
-        last;
-      }
-    }
-
-    if ( !defined $res ) {
-      $data->{'Gone'} = 1;
-      goto LAST;
-    }
-
-    if ( $res->status == 200 || $res->status == 304 ) {
-      $data->{'Permalink'}       = $res->uri;
-      $data->{'UpdatedRequired'} = 1;
-    }
+  if ( $res->uri ne $url ) {
+    $data->{'UpdatedRequired'} = 1;
+    $data->{'Permalink'}       = $res->uri;
   }
 
-  if ( $data->{'Gone'} ) {
+  if ( $data->{'Gone'} == 1 ) {
     goto LAST;
   }
 
@@ -357,7 +343,7 @@ sub fetch {
     $data->{'LastUpdated'}  = time;
     fill( $data, $res );
   }
-  elsif ( $res->status == 304 ) {
+  elsif ( $res->status =~ m{^3} ) {
     $data->{'LastUpdated'} = time;
     fill( $data, $res );
   }
@@ -397,8 +383,7 @@ sub main {
 
       return {};
     },
-    worker_count   => 31,
-    global_timeout => 10,
+    worker_count => 31,
   );
 
   $bw->add_work(@tasks);

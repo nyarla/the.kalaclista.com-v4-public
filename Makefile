@@ -6,8 +6,7 @@ NIX = nix-shell -I nixpkgs=/etc/nixpkgs
 all: clean build
 
 clean:
-	@(test ! -e resources/_tfidf  || rm -rf resources/_tfidf)
-	@(test ! -e resources/_tokens || rm -rf resources/_tokens)
+	@rm -rf resources/*
 	@(test ! -e build || rm -rf build) && (test -e build || mkdir -p build)
 	@(test ! -e dist || rm -rf dist) && (test -e dist || mkdir -p dist)
 
@@ -57,7 +56,7 @@ related: tokenize terms tfidf scoring
 
 .PHONY: extract webdata
 
-extract:
+extract: clean pre-build
 	@perl scripts/webdata-extract.pl
 
 webdata:
