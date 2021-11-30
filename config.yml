@@ -12,10 +12,10 @@ staticDir: static
 # =======
 metaDataFormat: yaml
 
-defaultContentLanguage: ja
-defaultLanguageCode: ja
+defaultContentLanguage: en
+defaultLanguageCode: en
 hasCJKLanguage: true
-languageCode: ja
+languageCode: en
 
 # URL
 # ===
@@ -124,25 +124,18 @@ params:
   menus:
     posts:
       name: ブログ
-      aria: "ブログ記事の一覧へ"
     echos:
       name: 日記
-      aria: "日記記事の一覧へ"
     notes:
-      name: ノート
-      aria: "ノート記事一覧へ"
+      name: メモ帳
     nyarla:
       name: 筆者
-      aria: "このウェブサイトを運営者について"
     policies:
       name: 運営方針
-      aria: "このウェブサイトの基本的な方針について"
     licenses:
       name: 権利情報
-      aria: "利用しているライブラリやコンテンツのライセンスについて"
     search:
       name: 検索
-      aria: "Google Custom Search による全文検索"
       url: 'https://cse.google.com/cse?cx=018101178788962105892:toz3mvb2bhr#gsc.tab=0'
 
   jsonld:

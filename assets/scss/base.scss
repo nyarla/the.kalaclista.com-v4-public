@@ -4,14 +4,14 @@
 @import "fonts";
 
 @mixin font-sans {
-  font-family: "Mamelon", "YuGothic", "Yu Gothic Medium", "Yu Gothic";
-  font-weight: 400;
+  font-family: sans-serif;
+  font-weight: 300;
   font-feature-settings: "palt";
 }
 
 @mixin font-sans-bold {
-  font-family: "Mamelon", "YuGothic" "Yu Gothic Medium", "Yu Gothic";
-  font-weight: 900;
+  font-family: sans-serif;
+  font-weight: 800;
   font-feature-settings: "palt";
 }
 
@@ -33,14 +33,18 @@
 
 html,
 body {
-  background-color: $base05;
+  background-color: $base06;
   color: $base01;
   @include font-sans();
   min-height: 101%;
 }
 
+body {
+  font-size: 1.25em;
+}
+
 a {
-  @include link-color($base0D, $base0A);
+  @include link-color($base00, $base03);
   text-decoration: underline solid;
 }
 
@@ -49,90 +53,117 @@ a {
 }
 
 #global,
-#website__informations,
+#profile,
+#menu,
+#copyright,
 .entry {
   margin: 0 auto;
   padding: 0 1.5em;
-  max-width: 40em;
+  max-width: 30em;
 }
+
 #global {
-  position: relative;
+  p {
+    margin: 5em 0;
 
-  #website__name strong {
-    @include font-sans-bold();
-
-    display: inline-block;
-    margin: 4em 0;
-
-    & a {
-      @include link-color($base00, $base0A);
-      text-decoration: none;
-    }
-  }
-
-  #website__contents {
-    position: absolute;
-    top: 4em;
-    right: 1.5em;
-
-    & span,
-    & em {
-      margin-left: 0.5em;
-    }
-
-    & em {
-      font-style: normal;
-      & a {
-        @include link-color($base0C, $base0A);
-        text-decoration-thickness: 2px;
-      }
+    a {
+      @include link-color($base00, $base03);
     }
   }
 }
 
-#website__informations {
-  text-align: right;
-  display: flex;
-  margin-top: 4em;
-  margin-bottom: 4em;
+#profile {
+  margin: 5em auto 0 auto;
 
-  & div:first-child {
-    align-self: flex-start;
-    width: 3em;
-    text-align: left;
+  figure {
+    margin: 0;
+
+    p {
+      float: left;
+      margin: 0 1em 1em 0;
+    }
+
+    figcaption {
+      margin-bottom: 0.5em;
+    }
   }
 
-  & div:last-child {
-    align-self: flex-end;
-    text-align: right;
-    width: 100%;
+  .entry__content {
+    p {
+      margin: 0;
+      font-size: 0.75em;
+    }
+  }
 
-    & span,
-    & em {
+  nav p {
+    font-size: 0.75em;
+
+    a {
+      margin-right: 0.5em;
+    }
+  }
+}
+
+#menu {
+  margin-bottom: 5em;
+
+  hr {
+    margin-bottom: 0.5em;
+  }
+
+  p {
+    font-size: 0.75em;
+  }
+
+  p.kind {
+    float: left;
+    margin-left: 4.5%;
+    width: 45%;
+    text-align: left;
+    a {
+      margin-right: 0.5em;
+    }
+  }
+
+  p.links {
+    float: right;
+    margin-right: 4.5%;
+    width: 45%;
+    text-align: right;
+    a {
       margin-left: 0.5em;
     }
+  }
 
-    & em {
-      font-style: normal;
-
-      & a {
-        @include link-color($base0C, $base0A);
-        text-decoration-thickness: 2px;
-      }
-    }
+  &::after {
+    display: block;
+    content: "";
+    clear: both;
   }
 }
 
 .entry {
   header {
     p {
+      display: flex;
+      flex-direction: row;
       font-size: 0.865em;
-      text-align: right;
+
+      time,
+      span {
+        display: block;
+        width: 50%;
+      }
+
+      span {
+        text-align: right;
+      }
     }
     h1 {
       a {
         @include link-color($base00, $base0A);
         text-decoration: none;
+        line-height: 1.414em;
       }
     }
   }
@@ -153,6 +184,15 @@ a {
       height: 256px;
       border: none;
     }
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 1em 0;
   }
 
   h1 {
@@ -239,10 +279,10 @@ a {
       position: absolute;
       content: "";
       width: 0.5em;
-      height: 0.125em;
+      height: 2px;
       border-radius: 100%;
       background-color: $base0B;
-      top: 0.6035em;
+      top: 0.75em;
       left: -0.875em;
     }
   }
@@ -403,40 +443,73 @@ a {
     }
   }
 }
-.entry__home .entry__content,
-.entry__archives .entry__content,
-.entry__related .entry__content {
-  ul li a,
-  ul li time {
-    display: block;
-  }
 
-  ul li time {
-    font-size: 0.635em;
+#copyright {
+  margin-top: 5em;
+  margin-bottom: 5em;
+
+  text-align: center;
+  font-size: 0.75em;
+}
+
+.entry__home,
+.entry__archives,
+.entry__related {
+  .entry__content {
+    .archives {
+      li {
+        margin-bottom: 1em;
+        font-size: 0.75em;
+
+        a:last-child {
+          display: block;
+          font-size: 1.25em;
+          line-height: 1.727em;
+        }
+      }
+    }
   }
 }
 
-@media screen and (max-width: 30em) {
-  .entry {
-    font-size: 90%;
-  }
-
-  .entry__content {
-    .content__card--affiliate {
-      h1,
-      p {
-        float: none;
-      }
-
+@media screen and (max-width: 37.5em) {
+  #profile {
+    figure {
       p {
         text-align: center;
+        float: none;
+      }
+    }
+
+    .entry__content {
+      p {
+        display: inline;
+      }
+    }
+  }
+
+  #menu {
+    hr {
+      margin: 2em auto;
+    }
+
+    p.kind,
+    p.links {
+      float: none;
+      margin-left: 0;
+      margin-right: 0;
+      width: 100%;
+      text-align: left;
+
+      a {
+        margin-left: 0em;
+        margin-right: 0.5em;
       }
     }
   }
 }
 
 @media screen and (max-width: 20em) {
-  .entry {
-    font-size: 85%;
+  body {
+    font-size: 1em;
   }
 }

@@ -8,17 +8,15 @@
     {{ $ads = $global.Site.Params.ads.outside }}
   {{ end }}
 -->
-<article class="entry" aria-label="記事">
+<article class="entry">
   <header>
     <p>
-      <time
-        aria-label="日付"
-        datetime="{{ dateFormat `2006-01-02` $entry.date_published }}"
-        >{{ dateFormat `2006-01-02` $entry.date_published }}</time
+      <time datetime="{{ dateFormat `2006-01-02` $entry.date_published }}"
+        >{{ dateFormat `2006年1月2日` $entry.date_published }}</time
       >
-      <span
-        >by <a aria-label="著者" href="{{ absURL `/nyarla/` }}">@nyarla</a>
-      </span>
+      <!-- prettier-ignore -->
+      <span>読了まで：約{{ div (strings.RuneCount ($entry.content_html | safeHTML | plainify )) 500 }}分</span
+      >
     </p>
     <h1 aria-label="記事タイトル">
       <a href="{{ $entry.url }}">{{ $entry.title | safeHTML }}</a>
@@ -37,13 +35,16 @@
   <aside class="entry__related">
     <section class="entry__content">
       <h1>似たような記事一覧</h1>
-      <ul>
-        <!-- {{ range $data := . }} -->
+      <ul class="archives">
+        <!-- {{ range $entry := . }} -->
+        <!-- {{ $section := partial `data/section.fn` $entry }} -->
         <li>
-          <time datetime="{{ dateFormat `2006-01-02` $data.UnixTime }}"
-            >{{ dateFormat `2006-01-02` $data.UnixTime }}：</time
+          <time datetime="{{ dateFormat `2006-01-02` $entry.UnixTime }}"
+            >{{ dateFormat `2006-01-02` $entry.UnixTime }}：</time
           >
-          <a href="{{ absURL $data.RelPermalink }}">{{ $data.Title }}</a>
+          （<a href="{{ absURL (printf `/%s/` $section) }}"
+            >{{ (index $global.Site.Params.menus $section).name }}</a
+          >） <a href="{{ absURL $entry.RelPermalink }}">{{ $entry.Title }}</a>
         </li>
         <!-- {{ end }} -->
       </ul>

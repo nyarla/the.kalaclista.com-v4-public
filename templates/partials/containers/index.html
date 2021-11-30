@@ -13,14 +13,6 @@
       rel="preload"
       as="font"
       type="font/woff2"
-      href="{{ absURL `/assets/Mamelon.subset.woff2` }}"
-      crossorigin
-    />
-
-    <link
-      rel="preload"
-      as="font"
-      type="font/woff2"
       href="{{ absURL `/assets/Inconsolata.subset.woff2` }}"
       crossorigin
     />
@@ -120,17 +112,23 @@
   </head>
   <body>
     <!-- prettier-ignore -->
-    {{ partialCached `widgets/menu.html.html` (slice $global $section) $section }}
-    <!-- {{ if $isIndex }} -->
-    <!-- {{ if eq $section `home` }} -->
-    {{ partialCached `pages/home.html.html` (slice $global $section) $section }}
-    <!-- {{ else }} -->
-    <!-- prettier-ignore -->
-    {{ partialCached `pages/entries.html.html` (slice $global $section) $section }}
-    <!-- {{ end }} -->
-    <!-- {{ else }} -->
-    {{ partialCached `widgets/content.html.html` $global $page.Content }}
-    <!-- {{ end }} -->
+    {{ partialCached `widgets/title.html.html` $global.Site true }}
+    {{ partialCached `widgets/profile.html.html` true true }}
+    {{ partialCached `widgets/menu.html.html` true true }}
+    <main>
+      <!-- {{ if $isIndex }} -->
+      <!-- {{ if eq $section `home` }} -->
+      {{ partialCached `pages/home.html.html` (slice $global $section) $section
+      }}
+      <!-- {{ else }} -->
+      <!-- prettier-ignore -->
+      {{ partial `pages/entries.html.html` (slice $global $section) }}
+      <!-- {{ end }} -->
+      <!-- {{ else }} -->
+      {{ partialCached `widgets/content.html.html` $global $page.Content }}
+      <!-- {{ end }} -->
+      <!-- prettier-ignore -->
+    </main>
     <!-- prettier-ignore -->
     {{ partialCached `widgets/info.html.html` (slice $global $section) $section }}
 

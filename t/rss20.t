@@ -6,6 +6,7 @@ use Test2::V0;
 use XML::DOM::Lite qw(Parser);
 
 use Kalaclista::Path;
+use Kalaclista::Test qw(relpath_is is_entries is_notes is_posts is_echos);
 
 sub testing_feed {
   my ( $xml, $section ) = @_;
@@ -14,32 +15,41 @@ sub testing_feed {
   ok( $xml->selectSingleNode('//rss/channel/description')
       ->firstChild->nodeValue );
 
-  my $URI = "https://the.kalaclista.com";
-
-  if ( $section ne q{} ) {
-    $URI = "${URI}/${section}";
-  }
-
-  is( $xml->selectSingleNode('//rss/channel/link')->firstChild->nodeValue,
-    "${URI}/" );
-
-  is( $xml->selectSingleNode('//rss/channel/atom:link')->getAttribute('href'),
-    "${URI}/index.xml" );
-
-  is( $xml->selectSingleNode('//rss/channel/atom:link')->getAttribute('type'),
-    "application/rss+xml" );
-
   is(
     $xml->selectSingleNode('//rss/channel/managingEditor')
       ->firstChild->nodeValue,
-    "OKAMURA Naoki aka nyarla"
+    $xml->selectSingleNode('//rss/channel/webMaster')->firstChild->nodeValue
   );
 
-  is( $xml->selectSingleNode('//rss/channel/webMaster')->firstChild->nodeValue,
-    "OKAMURA Naoki aka nyarla" );
-
   is( $xml->selectSingleNode('//rss/channel/copyright')->firstChild->nodeValue,
-    "(c) 2006-2021 OKAMURA Naoki" );
+    '(c) 2006-2021 OKAMURA Naoki' );
+
+  is(
+    $xml->selectSingleNode('//rss/channel/link')->firstChild->nodeValue,
+    $xml->selectSingleNode('//rss/channel/atom:link')->getAttribute('href'),
+  );
+
+  if ( $section eq q{} ) {
+    relpath_is(
+      $xml->selectSingleNode('//rss/channel/link')->firstChild->nodeValue,
+      '/', );
+    relpath_is(
+      $xml->selectSingleNode('//rss/channel/atom:link[@rel="self"]')
+        ->getAttribute('href'),
+      '/index.xml'
+    );
+  }
+  else {
+    relpath_is(
+      $xml->selectSingleNode('//rss/channel/link')->firstChild->nodeValue,
+      '/' . $section . '/',
+    );
+    relpath_is(
+      $xml->selectSingleNode('//rss/channel/atom:link[@rel="self"]')
+        ->getAttribute('href'),
+      '/' . $section . '/index.xml',
+    );
+  }
 
   like(
     $xml->selectSingleNode('//rss/channel/lastBuildDate')
@@ -58,42 +68,36 @@ sub testing_feed {
 sub testing_entry {
   my ( $xml, $section ) = @_;
 
-  ok( $xml->getElementsByTagName('title')->[0]->firstChild->nodeValue );
-  ok( $xml->getElementsByTagName('description')->[0]->firstChild->nodeValue );
-
-  is( $xml->getElementsByTagName('author')->[0]->firstChild->nodeValue,
-    'OKAMURA Naoki aka nyarla nyarla@kalaclista.com' );
+  ok( $xml->selectSingleNode('//title')->firstChild->nodeValue );
+  ok( $xml->selectSingleNode('//link')->firstChild->nodeValue );
 
   like(
-    $xml->getElementsByTagName('pubDate')->[0]->firstChild->nodeValue,
+    $xml->selectSingleNode('//pubDate')->firstChild->nodeValue,
     qr<[^ ]+?, \d{2} [^ ]+? \d{4} \d{2}:\d{2}:\d{2} [-+]\d{4}>
   );
 
-  if ( $section eq q{} ) {
-    like(
-      $xml->getElementsByTagName('link')->[0]->firstChild->nodeValue,
-qr<^https://the.kalaclista.com/[^/]+/(?:\d{4}/\d{2}/\d{2}/\d{6}/|[^/]+/)$>,
-    );
-  }
-  else {
-    if ( $section ne 'notes' ) {
-      like(
-        $xml->getElementsByTagName('link')->[0]->firstChild->nodeValue,
-        qr<^https://the.kalaclista.com/${section}/\d{4}/\d{2}/\d{2}/\d{6}/$>
-      );
-    }
-    else {
-      like(
-        $xml->getElementsByTagName('link')->[0]->firstChild->nodeValue,
-        qr<^https://the.kalaclista.com/${section}/[^/]+/$>
-      );
-    }
-  }
+  is(
+    $xml->selectSingleNode('//author')->firstChild->nodeValue,
+    'nyarla@kalaclista.com (OKAMURA Naoki aka nyarla)'
+  );
 
   is(
-    $xml->getElementsByTagName('link')->[0]->firstChild->nodeValue,
-    $xml->getElementsByTagName('guid')->[0]->firstChild->nodeValue
+    $xml->selectSingleNode('//link')->firstChild->nodeValue,
+    $xml->selectSingleNode('//guid')->firstChild->nodeValue,
   );
+
+  if ( $section eq q{} ) {
+    is_entries( $xml->selectSingleNode('//link')->firstChild->nodeValue );
+  }
+  elsif ( $section eq q{posts} ) {
+    is_posts( $xml->selectSingleNode('//link')->firstChild->nodeValue );
+  }
+  elsif ( $section eq q{echos} ) {
+    is_echos( $xml->selectSingleNode('//link')->firstChild->nodeValue );
+  }
+  elsif ( $section eq q{notes} ) {
+    is_notes( $xml->selectSingleNode('//link')->firstChild->nodeValue );
+  }
 }
 
 sub main {

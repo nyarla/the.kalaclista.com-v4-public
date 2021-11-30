@@ -6,68 +6,63 @@ use Test2::V0;
 use XML::DOM::Lite qw(Parser XPath);
 
 use Kalaclista::Path;
+use Kalaclista::Test
+  qw(relpath_is is_datetime is_entries is_posts is_notes is_echos);
 
-sub testing_feed {
+sub atomfeed_ok {
   my ( $xml, $section ) = @_;
 
   ok( $xml->selectSingleNode('//feed/title')->firstChild->nodeValue );
-  ok( $xml->selectSingleNode('//feed/summary')->firstChild->nodeValue );
+  ok( $xml->selectSingleNode('//feed/subtitle')->firstChild->nodeValue );
 
-  my $URI = "https://the.kalaclista.com";
+  my $path = ( $section ne q{} ) ? '/' . $section . '' : '';
 
-  if ( $section ne q{} ) {
-    $URI = "${URI}/${section}";
-  }
+  relpath_is( $xml->selectNodes('//feed/link')->[0]->getAttribute('href'),
+    $path . '/' );
 
-  is( $xml->selectNodes('//feed/link')->[0]->getAttribute('href'), "${URI}/" );
-  is( $xml->selectNodes('//feed/link')->[1]->getAttribute('href'),
-    "${URI}/atom.xml", );
+  relpath_is( $xml->selectNodes('//feed/link')->[1]->getAttribute('href'),
+    $path . '/atom.xml' );
 
-  is( $xml->selectSingleNode('//feed/icon')->firstChild->nodeValue,
-    "https://the.kalaclista.com/assets/avatar.png" );
+  relpath_is( $xml->selectSingleNode('//feed/icon')->firstChild->nodeValue,
+    '/assets/avatar.png' );
 
   is( $xml->selectSingleNode('//feed/author/name')->firstChild->nodeValue,
-    "OKAMURA Naoki aka nyarla" );
+    'OKAMURA Naoki aka nyarla' );
 
   is( $xml->selectSingleNode('//feed/author/email')->firstChild->nodeValue,
     'nyarla@kalaclista.com' );
 
-  is( $xml->selectSingleNode('//feed/author/uri')->firstChild->nodeValue,
-    'https://the.kalaclista.com/nyarla/' );
+  relpath_is(
+    $xml->selectSingleNode('//feed/author/uri')->firstChild->nodeValue,
+    '/nyarla/' );
 
   my $entries = $xml->getElementsByTagName('entry');
-
   ok( $entries->length <= 5 );
 
   for my $entry ( $entries->@* ) {
-    testing_entry( $entry, $section );
+    entry_ok( $entry, $section );
   }
 }
 
-sub testing_entry {
+sub entry_ok {
   my ( $xml, $section ) = @_;
 
   ok( $xml->getElementsByTagName('title')->[0]->firstChild->nodeValue );
   ok( $xml->getElementsByTagName('content')->[0]->firstChild->nodeValue );
 
+  my $link = $xml->getElementsByTagName('link')->[0]->getAttribute('href');
   if ( $section eq q{} ) {
-    like(
-      $xml->getElementsByTagName('link')->[0]->getAttribute('href'),
-qr<^https://the.kalaclista.com/[^/]+/(?:\d{4}/\d{2}/\d{2}/\d{6}/|[^/]+/)$>,
-    );
+    is_entries($link);
   }
   else {
-    if ( $section ne 'notes' ) {
-      like(
-        $xml->getElementsByTagName('link')->[0]->getAttribute('href'),
-        qr<^https://the.kalaclista.com/${section}/\d{4}/\d{2}/\d{2}/\d{6}/$>
-      );
+    if ( $section eq q{notes} ) {
+      is_notes($link);
     }
-    else {
-      like(
-        $xml->getElementsByTagName('link')->[0]->getAttribute('href'),
-        qr<^https://the.kalaclista.com/${section}/[^/]+/$>
-      );
+    elsif ( $section eq q{posts} ) {
+      is_posts($link);
+    }
+    elsif ( $section eq q{echos} ) {
+      is_echos($link);
     }
   }
 
@@ -81,21 +76,15 @@ qr<^https://the.kalaclista.com/[^/]+/(?:\d{4}/\d{2}/\d{2}/\d{6}/|[^/]+/)$>,
       ->[0]->firstChild->nodeValue,
     'nyarla@kalaclista.com'
   );
-  is(
+
+  relpath_is(
     $xml->getElementsByTagName('author')->[0]->getElementsByTagName('uri')->[0]
       ->firstChild->nodeValue,
-    "https://the.kalaclista.com/nyarla/"
+    "/nyarla/"
   );
 
-  like(
-    $xml->getElementsByTagName('published')->[0]->firstChild->nodeValue,
-    qr<^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:[-+]\d{2}:\d{2}|Z)$>
-  );
-  like(
-    $xml->getElementsByTagName('lastmod')->[0]->firstChild->nodeValue,
-    qr<^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:[-+]\d{2}:\d{2}|Z)$>
-  );
-
+  is_datetime(
+    $xml->getElementsByTagName('updated')->[0]->firstChild->nodeValue );
 }
 
 sub main {
@@ -103,13 +92,13 @@ sub main {
     my $feed = Kalaclista::Path->build_dir->child( $section, 'atom.xml' );
     my $xml  = Parser->parse( $feed->slurp );
 
-    testing_feed( $xml, $section );
+    atomfeed_ok( $xml, $section );
   }
 
   my $feed = Kalaclista::Path->build_dir->child('atom.xml');
   my $xml  = Parser->parse( $feed->slurp );
 
-  testing_feed( $xml, q{} );
+  atomfeed_ok( $xml, q{} );
 
   done_testing;
 }

@@ -14,7 +14,7 @@
 -->
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>{{ $meta.siteTitle }}</title>
-  <summary>{{ $meta.summary }}</summary>
+  <subtitle>{{ $meta.summary }}</subtitle>
   <link href="{{ .Page.Permalink }}"/>
   <link rel="self" href="{{ absURL $feed }}" />
   <id>{{ .Page.Permalink }}</id>
@@ -24,18 +24,19 @@
     <email>nyarla@kalaclista.com</email>
     <uri>https://the.kalaclista.com/nyarla/</uri>
   </author>
+  <updated>{{ (index $pages 0).Date.Format `2006-01-02T15:04:05Z07:00` }}</updated>
   <!-- {{ range $item := first 5 $pages }} -->
   <!-- {{ $entry := partialCached `data/entry.fn` (slice $global $item) $item.RelPermalink }} -->
   <entry>
     <title>{{ $entry.title }}</title>
+    <id>{{ $entry.url }}</id>
     <link href="{{ $entry.url }}"/>
     <author>
       <name>OKAMURA Naoki aka nyarla</name>
       <email>nyarla@kalaclista.com</email>
       <uri>https://the.kalaclista.com/nyarla/</uri>
     </author>
-    <published>{{ $entry.date_published }}</published>
-    <lastmod>{{ $entry.date_modified }}</lastmod>
+    <updated>{{ $entry.date_published }}</updated>
     <content type="text">{{ $entry.content_html }}</content>
   </entry>
   <!-- {{ end }} -->

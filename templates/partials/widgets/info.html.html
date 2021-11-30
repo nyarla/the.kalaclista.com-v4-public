@@ -1,27 +1,5 @@
-<!--
-  {{ $global := index . 0 }}
-  {{ $section := index . 1 }}
-  {{ $website := $global.Site }}
-  {{ $search := $global.Site.Params.menus.search }}
--->
-<nav id="website__informations" aria-label="運営者などについての情報">
-  <div>
-    <span
-      ><a href="{{ $search.url }}" aria-label="{{ $search.aria }}"
-        >{{ $search.name }}</a
-      ></span
-    >
-  </div>
-  <div>
-    <!-- prettier-ignore -->
-    {{ range $type := (slice "nyarla" "policies" "licenses") }}
-    <!-- {{ $menu := (index $website.Params.menus $type) }} -->
-    {{ if eq $section $type }}
-    <!-- prettier-ignore -->
-    <em><a href="{{ absURL $type }}/" aria-label="{{ $menu.aria }}">{{ $menu.name }}</a></em>
-    {{ else }}
-    <!-- prettier-ignore -->
-    <span><a href="{{ absURL $type }}/" aria-label="{{ $menu.aria }}">{{ $menu.name }}</a></span>
-    {{ end }}{{ end }}
-  </div>
-</nav>
+<footer id="copyright">
+  <p>
+    (C) 2006-2021 <a href="{{absURL `/nyarla/` }}">OKAMURA Naoki aka nyarla</a>
+  </p>
+</footer>

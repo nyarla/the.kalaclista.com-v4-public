@@ -2,6 +2,11 @@
   {{ $global := index . 0 }}
   {{ $section := index . 1 }}
   {{ $pages := where $global.Site.RegularPages.ByDate.Reverse ".Type" $section }}
+  {{ $year := index (split $global.Page.RelPermalink `/`) 2 }}
+  {{ if not $year }}
+    {{ $year = printf `%d` (index $pages 0).Date.Year }}
+  {{ end }}
+  {{ $year = int $year }}
 -->
 
 <article class="entry entry__archives">
@@ -14,19 +19,18 @@
   </header>
   <section class="entry__content">
     <p>{{ index $global.Site.Params.descriptions $section | markdownify }}</p>
-    <!-- prettier-ignore -->
-    {{ range $idx, $year := seq (int ((index $pages 0).Date.Format `2006`)) 2006 }}
-    <!-- prettier-ignore -->
-    {{ $entries := where $pages ".Date.Year" $year }}
-    <!-- prettier-ignore -->
-    {{ if ne (len $entries) 0 }}
-    <!-- prettier-ignore -->
+    <!-- {{ $entries := where $pages ".Date.Year" $year }} -->
+    <!-- {{ if eq $section `notes` }} -->
+    <!-- {{ $entries = $pages }} -->
+    <!-- {{ end }} -->
+    <!-- {{ if ne (len $entries) 0 }} -->
     <hr />
+    <!-- {{ if ne $section `notes` }} -->
     <p><strong>{{ $year }}年：</strong></p>
-    {{ $month := `` }}
-    <!-- prettier-ignore -->
-    <ul>
-      {{ range $page := $entries }}
+    <!-- {{ end }} -->
+    <!-- {{ $month := `` }} -->
+    <ul class="archives">
+      <!-- {{ range $page := $entries }} -->
       <!-- {{ $entry := partialCached `data/entry.fn` (slice $global $page) $page.RelPermalink }} -->
       <li>
         <time datetime="{{ dateFormat `2006-01-02` $entry.date_published }}"
@@ -34,9 +38,31 @@
         >
         <a href="{{ $entry.url }}">{{ $entry.title }}</a>
       </li>
-      {{ end }}
-      <!-- prettier-ignore -->
+      <!-- {{ end }} -->
     </ul>
-    {{ end }} {{ end }}
+
+    <hr />
+
+    <!-- {{ if ne $section `notes` }} -->
+    <p>
+      過去ログ：
+      <!-- {{ $begin := (index $pages 0).Date.Year }} -->
+      <!-- {{ $end := (index $pages.Reverse 0).Date.Year }} -->
+
+      <!-- {{ range $idx, $yr := seq $begin $end }} -->
+      <!-- {{ if ne $idx 0 }} -->
+      /
+      <!-- {{ end }} -->
+      <!-- {{ if eq $yr $year }} -->
+      <strong>{{ printf `%d` $yr }}</strong>
+      <!-- {{ else }} -->
+      <a href="{{ absURL (printf `/%s/%d/` $section $yr) }}"
+        >{{ printf `%d` $yr }}</a
+      >
+      <!-- {{ end }} -->
+      <!-- {{ end }} -->
+    </p>
+    <!-- {{ end }} -->
+    <!-- {{ end }} -->
   </section>
 </article>

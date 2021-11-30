@@ -21,14 +21,21 @@
   {{ $data = merge $data (dict `datetime` $entry.date_published) }}
   {{ $data = merge $data (dict `lastmod` $entry.date_modified) }}
 
-
 {{ else if $page.IsHome }}
   {{ $data = merge $data (dict `combinedTitle` $global.Site.Title) }}
   {{ $data = merge $data (dict `title` $global.Site.Title) }}
   {{ $data = merge $data (dict `summary` ($global.Site.Params.descriptions.home | markdownify | plainify | chomp)) }}
   {{ $data = merge $data (dict `url` $page.Permalink) }}
   {{ $data = merge $data (dict `type` `website`) }}
-    {{ $data = merge $data (dict `siteTitle` $global.Site.Title) }}
+  {{ $data = merge $data (dict `siteTitle` $global.Site.Title) }}
+
+{{ else if eq $page.Type `archive` }}
+  {{ $data = merge $data (dict `combinedTitle` (printf `%s - %s` $page.Title (index $global.Site.Params.titles $section))) }}
+  {{ $data = merge $data (dict `title` $page.Title) }}
+  {{ $data = merge $data (dict `summary` ($page.Title)) }}
+  {{ $data = merge $data (dict `url` $page.Permalink) }}
+  {{ $data = merge $data (dict `type` `website`) }}
+  {{ $data = merge $data (dict `siteTitle` (index $global.Site.Params.titles $section)) }}
 {{ else }}
   {{ $data = merge $data (dict `title` (index $global.Site.Params.titles $section)) }}
   {{ $data = merge $data (dict `combinedTitle` $data.title) }}

@@ -27,7 +27,7 @@
     {{ $tree = $tree | append $item }}
   {{ else }}
     {{ $self = merge $self (dict `@type` (index $global.Site.Params.jsonld.types.home 1)) }}
-    {{ $self = merge $self (dict `mainEntryOfPage` $global.Site.Params.jsonld.items.home) }}
+    {{ $self = merge $self (dict `mainEntryOfPage` $global.Site.Params.jsonld.root.home) }}
 
     {{ $item = merge $item (dict `position` 2) }}
     {{ $tree = $tree | append $item }}
@@ -35,7 +35,13 @@
 {{ else }}
   {{ if ne $section `home` }}
     {{ $self = merge $self (dict `@type` (index (index $global.Site.Params.jsonld.types $section) 0)) }}
+    {{ $self = merge $self (dict `mainEntryOfPage` (index $global.Site.Params.jsonld.root $section)) }}
     {{ $tree = $tree | append (index $global.Site.Params.jsonld.items $section) }}
+
+    {{ if eq $global.Page.Type `archive` }}
+      {{ $item = merge $item (dict `position` 3) }}
+      {{ $tree = $tree | append $item }}
+    {{ end }}
   {{ else }}
     {{ $self = merge $self (dict `@type` (index $global.Site.Params.jsonld.types.home 0)) }}
   {{ end }}

@@ -1,25 +1,16 @@
-<!--
-  {{ $global := index . 0 }}
-  {{ $section := index . 1 }}
-  {{ $website := $global.Site }}
--->
-<nav class="widgets__nav" id="global" aria-label="ナビゲーション">
-  <p id="website__name">
-    <strong>
-      <a href="{{ absURL `/` }}" aria-label="Web サイト名"
-        >{{ $website.Title }}</a
-      >
-    </strong>
+<nav id="menu" class="entry__content">
+  <hr />
+  <p class="kind">
+    <a href="{{ absURL `/posts/` }}">ブログ</a>
+    <a href="{{ absURL `/echos/` }}">日記</a>
+    <a href="{{ absURL `/notes/` }}">メモ帳</a>
   </p>
-  <div id="website__contents">
-    {{ range $type := (slice "posts" "echos" "notes") }}
-    <!-- {{ $menu := (index $website.Params.menus $type) }} -->
-    {{ if eq $section $type }}
-    <!-- prettier-ignore -->
-    <em><a href="{{ absURL $type }}/" aria-label="{{ $menu.aria }}">{{ $menu.name }}</a></em>
-    {{ else }}
-    <!-- prettier-ignore -->
-    <span><a href="{{ absURL $type }}/" aria-label="{{ $menu.aria }}">{{ $menu.name }}</a></span>
-    {{ end }}{{ end }}
-  </div>
+  <p class="links">
+    <a href="{{ absURL `/policies/` }}">運営方針</a>
+    <a href="{{ absURL `/licenses/` }}">権利情報</a>
+    <a
+      href="https://cse.google.com/cse?cx=018101178788962105892:toz3mvb2bhr#gsc.tab=0"
+      >検索</a
+    >
+  </p>
 </nav>

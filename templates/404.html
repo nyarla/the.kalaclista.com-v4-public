@@ -7,7 +7,13 @@
 <html lang="ja">
   <head>
     <meta charset="utf-8" />
-
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="{{ absURL `/assets/Inconsolata.subset.woff2` }}"
+      crossorigin
+    />
     <title>404 page not found - {{ .Site.Title }}</title>
     <meta
       name="description"
@@ -72,26 +78,31 @@
   </head>
   <body>
     <!-- prettier-ignore -->
-    {{ partialCached `widgets/menu.html.html` (slice $global $section) $section }}
-    <article class="entry entry__archives">
-      <header>
-        <h1>404 page not found</h1>
-      </header>
-      <section class="entry__content">
-        <p>申し分けないんですが、 要求されたページが見つかりませんでした。</p>
-        <p>
-          この URL にあったはずのページはこの Web
-          サイトの歴史的経緯により、行方不明になっている可能性があります。
-        </p>
-        <p>
-          もし断片的なキーワードをお持ちでしたら、
-          <a href="{{ .Site.Params.menus.search.url }}"
-            >Google Custom Search Engine</a
-          >
-          で検索するとお探しのページが見付かるかもしれません。
-        </p>
-      </section>
-    </article>
+    {{ partialCached `widgets/title.html.html` $global.Site true }}
+    {{ partialCached `widgets/profile.html.html` true true }}
+    {{ partialCached `widgets/menu.html.html` true true }}
+    <main>
+      <article class="entry entry__archives">
+        <header>
+          <h1>404 page not found</h1>
+        </header>
+        <section class="entry__content">
+          <p>申し分けありませんが要求されたページが見つかりませんでした。</p>
+          <p>
+            この URL にあったはずのページはこの Web
+            サイトの歴史的経緯により、行方不明になっている可能性があります。
+          </p>
+          <p>
+            もし断片的なキーワードをお持ちでしたら、
+            <a href="{{ .Site.Params.menus.search.url }}"
+              >Google Custom Search Engine</a
+            >
+            で検索するとお探しのページが見付かるかもしれません。
+          </p>
+          <hr />
+        </section>
+      </article>
+    </main>
     <!-- prettier-ignore -->
     {{ partialCached `widgets/info.html.html` (slice $global $section) $section }}
     <!-- {{ if hugo.IsProduction }} -->
