@@ -1,5 +1,6 @@
 JOBS = $(shell cat /proc/cpuinfo | grep processor | tail -n1 | cut -d\  -f2)
-NIX = nix-shell -I nixpkgs=/etc/nixpkgs
+NIX = nix-shell
+HUGO = env LANG=en_US.UTF-8 hugo
 
 .PHONY: clean pre-build dist test up
 
@@ -11,12 +12,12 @@ clean:
 	@(test ! -e dist || rm -rf dist) && (test -e dist || mkdir -p dist)
 
 pre-build:
-	hugo --minify -e production -b 'https://the.kalaclista.com' -d build
+	@$(HUGO) --minify -e production -b 'https://the.kalaclista.com' -d build
 	@bash scripts/htaccess.sh build
 
 dist:
 	@cat config.yml| grep -v '\- Test' | grep -v '\- Fixture' >config.dist.yaml
-	@hugo --minify -e production -b 'https://the.kalaclista.com' -d dist --config config.dist.yaml
+	@$(HUGO) --minify -e production -b 'https://the.kalaclista.com' -d dist --config config.dist.yaml
 	@bash scripts/htaccess.sh dist
 
 test: pre-build
@@ -74,7 +75,7 @@ shell:
 	@$(NIX) --run "env SHELL=zsh zsh"
 
 serve:
-	hugo serve --minify -D -E -F -e development -b 'http://nixos:1313' --bind 0.0.0.0 --port 1313 --disableLiveReload
+	@$(HUGO) serve --minify -D -E -F -e development -b 'http://nixos:1313' --bind 0.0.0.0 --port 1313 --disableLiveReload
 
 check:
 	find scripts -type f -name '*.pl' -exec perl -c {} \;
@@ -88,11 +89,11 @@ cpan-nix: cpan-deps
 .PHONY: posts echos amazon rakuten
 
 posts:
-	hugo new posts/$(shell date +%Y/%m/%d/%H%M%S.md)
+	$(HUGO) new posts/$(shell date +%Y/%m/%d/%H%M%S.md)
 	$(NIX) --run "env SHELL=zsh nvim private/content/posts/$(shell date +%Y/%m/%d/%H%M%S.md)"
 
 echos:
-	hugo new echos/$(shell date +%Y/%m/%d/%H%M%S.md)
+	$(HUGO) new echos/$(shell date +%Y/%m/%d/%H%M%S.md)
 	$(NIX) --run "env SHELL=zsh nvim private/content/echos/$(shell date +%Y/%m/%d/%H%M%S.md)"
 
 amazon:
