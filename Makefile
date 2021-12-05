@@ -86,7 +86,7 @@ cpan-deps:
 cpan-nix: cpan-deps
 	@perl scripts/cpanfile-nix.pl 2>/dev/null
 
-.PHONY: posts echos amazon rakuten
+.PHONY: posts echos amazon rakuten lint
 
 posts:
 	$(HUGO) new posts/$(shell date +%Y/%m/%d/%H%M%S.md)
@@ -101,3 +101,8 @@ amazon:
 
 rakuten:
 	@cat - | perl scripts/edit-affiliate.pl rakuten
+
+lint:
+	@test -d resources/_textlint || mkdir -p resources/_textlint
+	@(find private/content -type f -name '*.md' | sort -r ) | fzy --query=$(shell cat resources/_textlint/log) | cat - >resources/_textlint/log
+	@npm run textlint $$(cat resources/_textlint/log | head -n1) 

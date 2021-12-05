@@ -7,6 +7,7 @@ rules:
     max: 6
     allow:
       - 自立支援医療制度
+      - 障害者基礎年金
   preset-jtf-style:
     "2.2.2.算用数字と漢数字の使い分け": false
     "3.1.1.全角文字と半角文字の間": false
