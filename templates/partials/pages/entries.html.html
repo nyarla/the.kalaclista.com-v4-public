@@ -36,7 +36,7 @@
         <time datetime="{{ dateFormat `2006-01-02` $entry.date_published }}"
           >{{ dateFormat `2006-01-02` $entry.date_published }}：</time
         >
-        <a href="{{ $entry.url }}">{{ $entry.title }}</a>
+        <a class="title" href="{{ $entry.url }}">{{ $entry.title }}</a>
       </li>
       <!-- {{ end }} -->
     </ul>

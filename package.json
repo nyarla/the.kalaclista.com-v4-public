@@ -16,6 +16,7 @@
   "dependencies": {
     "@textlint-rule/textlint-rule-no-invalid-control-character": "^2.0.0",
     "@textlint-rule/textlint-rule-no-unmatched-pair": "^1.0.8",
+    "budoux": "^0.0.3",
     "textlint": "^12.0.2",
     "textlint-rule-ja-no-abusage": "github:textlint-ja/textlint-rule-ja-no-abusage",
     "textlint-rule-ja-no-mixed-period": "^2.1.1",

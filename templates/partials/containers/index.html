@@ -101,6 +101,9 @@
     <!-- {{ end }} -->
 
     <!-- Stylesheet -->
+    <!-- {{ $script := (resources.Get "scripts/budoux.js" | js.Build (dict)).Content }} -->
+    <!-- prettier-ignore -->
+    <script>{{ $script | safeJS }}</script>
     <meta
       name="viewport"
       content="width=device-width,minimum-scale=1,initial-scale=1"

@@ -44,7 +44,10 @@
           >
           （<a href="{{ absURL (printf `/%s/` $section) }}"
             >{{ (index $global.Site.Params.menus $section).name }}</a
-          >） <a href="{{ absURL $entry.RelPermalink }}">{{ $entry.Title }}</a>
+          >）
+          <a class="title" href="{{ absURL $entry.RelPermalink }}"
+            >{{ $entry.Title }}</a
+          >
         </li>
         <!-- {{ end }} -->
       </ul>
