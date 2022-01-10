@@ -88,6 +88,10 @@ sub decode_content {
   my $content = $res->content;
   my $charset = q{};
 
+  if ( !defined $content || $content eq q{} ) {
+    return "", 1;
+  }
+
   # by header
   if ( defined( $charset = ( $res->content_type =~ m{charset=([^ ;]+)} )[0] ) )
   {
@@ -315,7 +319,9 @@ sub fetch {
 
   my %options = ( UserAgent => $client );
   $options{'LastModified'} = $data->{'LastModified'}
-    if ( $data->{'LastModified'} != 0 );
+    if ( exists $data->{'LastModified'}
+    && defined $data->{'LastModified'}
+    && $data->{'LastModified'} != 0 );
 
   $updated++;
   my $res = URI::Fetch->fetch( $url, %options );
