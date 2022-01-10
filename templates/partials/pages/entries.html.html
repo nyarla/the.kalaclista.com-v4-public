@@ -21,7 +21,7 @@
     <p>{{ index $global.Site.Params.descriptions $section | markdownify }}</p>
     <!-- {{ $entries := where $pages ".Date.Year" $year }} -->
     <!-- {{ if eq $section `notes` }} -->
-    <!-- {{ $entries = $pages }} -->
+    <!-- {{ $entries = $pages.ByLastmod.Reverse }} -->
     <!-- {{ end }} -->
     <!-- {{ if ne (len $entries) 0 }} -->
     <hr />
