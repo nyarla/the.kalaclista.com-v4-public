@@ -17,7 +17,7 @@
 {{ $jsonfeed = merge $jsonfeed (dict "authors" (slice .Site.Params.jsonfeed.author)) }}
 {{ $jsonfeed = merge $jsonfeed (dict "language" "ja_JP") }}
 
-{{ $pages := where .Site.RegularPages.ByDate.Reverse `.Type` `!=` `home` }}
+{{ $pages := where .Site.RegularPages.ByLastmod.Reverse `.Type` `!=` `home` }}
 {{ if ne $section `home` }}
   {{ $pages = where $pages `.Type` $section }}
 {{ end }}
