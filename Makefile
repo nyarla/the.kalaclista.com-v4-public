@@ -12,6 +12,7 @@ clean:
 	@(test ! -e dist || rm -rf dist) && (test -e dist || mkdir -p dist)
 
 pre-build:
+	@bash scripts/content-date.sh
 	@$(HUGO) --minify -e production -b 'https://the.kalaclista.com' -d build
 	@bash scripts/htaccess.sh build
 
@@ -19,20 +20,25 @@ dist:
 	@cat config.yml| grep -v '\- Test' | grep -v '\- Fixture' >config.dist.yaml
 	@$(HUGO) --minify -e production -b 'https://the.kalaclista.com' -d dist --config config.dist.yaml
 	@bash scripts/htaccess.sh dist
+	@find dist/*/*/ -type f -name "jsonfeed.json" -exec rm {} \;
+	@find dist/*/*/ -type f -name "index.xml" -exec rm {} \;
+	@find dist/*/*/ -type f -name "atom.xml" -exec rm {} \;
 
 test: pre-build
 	@prove -Ilib -j$(JOBS) t/*.t
 
 build: clean related webfont dist
 
-up: build
-	@rsync -crvz -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
+sync:
+	@rsync -crvz --delete -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
 	  dist/ \
 	  nyarla@nyarla.sakura.ne.jp:/home/nyarla/www/the.kalaclista.com/ \
 	  | head --lines=-3 | tail --lines=+2 >resources/_gen/purge.txt
+	@bash scripts/purge_cache.sh
 	@echo Updated:
 	@cat resources/_gen/purge.txt
-	@bash scripts/purge_cache.sh
+
+up: build sync
 
 .PHONY: tokenize terms tfidf scoring related
 
