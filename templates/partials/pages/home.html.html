@@ -45,7 +45,7 @@
       ブログと日記、メモ帳の中身がごった返していますが、最近の更新は下記の通りです：
     </p>
     <ul class="archives">
-      <!-- {{ range $page := first 30 (where ($global.Site.RegularPages.ByDate.Reverse) `.Type` `!=` `home`)}} -->
+      <!-- {{ range $page := first 30 (where ($global.Site.RegularPages.ByLastmod.Reverse) `.Type` `!=` `home`)}} -->
       <!-- {{ $entry := partialCached `data/entry.fn` (slice $global $page) $page.RelPermalink }} -->
       <!-- {{ $section := partialCached `data/section.fn` $page $entry.id }} -->
       <li>
