@@ -533,7 +533,6 @@ sub header_ok {
   is( $links->[0]->getAttribute('href'), 'https://github.com/nyarla' );
   is( $links->[1]->getAttribute('href'), 'https://zenn.dev/nyarla' );
   is( $links->[2]->getAttribute('href'), 'https://twitter.com/kalaclista' );
-  is( $links->[3]->getAttribute('href'), 'https://raindrop.io/kalaclista' );
 
   my $kind = $dom->find('#menu .kind a');
   relpath_is( $kind->[0]->getAttribute('href'), '/posts/' );
