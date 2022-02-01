@@ -14,7 +14,6 @@ clean:
 pre-build:
 	@bash scripts/content-date.sh
 	@$(HUGO) --minify -e production -b 'https://the.kalaclista.com' -d build
-	@bash scripts/htaccess.sh build
 
 dist:
 	@cat config.yml| grep -v '\- Test' | grep -v '\- Fixture' >config.dist.yaml
@@ -29,8 +28,7 @@ test: pre-build
 build: clean related webfont dist
 
 sync:
-	@gsutil -m rsync -c -d -e -J -R dist/ gs://the.kalaclista.com/ 2>resources/_gen/_purge.txt 2>&1 || true
-	@cat resources/_gen/_purge.txt | tail --lines=+3 | sed 's!.\+gs://the\.kalaclista\.com/\(.\+\)!\1!' >resources/_gen/purge.txt
+	@gsutil -m -h "Cache-Control:public, s-maxage=3153600000" rsync -c -d -e -J -R dist/ gs://the.kalaclista.com/
 	@bash scripts/purge_cache.sh
 
 up: build sync
@@ -73,10 +71,10 @@ webfont:
 .PHONY: edit shell serve check cpan-deps cpan-nix
 
 shell:
-	@$(NIX) --run "env SHELL=zsh zsh"
+	@nix develop -c env SHELL=zsh zsh
 
 serve:
-	@$(HUGO) serve --minify -D -E -F -e development -b 'http://nixos:1313' --bind 0.0.0.0 --port 1313 --disableLiveReload
+	@$(HUGO) serve --minify -D -E -F -e development -b 'http://nixos:1313' --bind 0.0.0.0 --port 1313
 
 check:
 	find scripts -type f -name '*.pl' -exec perl -c {} \;
