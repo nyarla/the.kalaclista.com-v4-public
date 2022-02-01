@@ -2,11 +2,6 @@
   {{ $global := . }}
   {{ $page := $global.Page }}
   {{ $entry := partialCached `data/entry.fn` $global $page.RelPermalink }}
-
-  {{ $ads := $global.Site.Params.ads.development }}
-  {{ if hugo.IsProduction }}
-    {{ $ads = $global.Site.Params.ads.outside }}
-  {{ end }}
 -->
 <article class="entry">
   <header>
@@ -26,10 +21,6 @@
   <section class="entry__content" aria-label="記事本文">
     {{- $entry.content_html | safeHTML -}}
   </section>
-
-  <!-- {{ if ne $page.Type `home` }}  -->
-  {{ $ads | safeHTML }}
-  <!-- {{ end }} -->
 
   <!-- {{ with (index $global.Site.Data.related $page.RelPermalink) }} -->
   <aside class="entry__related">

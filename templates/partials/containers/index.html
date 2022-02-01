@@ -84,21 +84,6 @@
     <link rel="apple-touch-icon" href="{{ absURL `/apple-touch-icon.png` }}" />
 
     <meta http-equiv="x-dns-prefetch-control" content="on" />
-    <!-- {{ if hugo.IsProduction }} -->
-    <link rel="preconnect dns-prefetch" href="//googleads.g.doubleclick.net" />
-    <link rel="preconnect dns-prefetch" href="//www.google-analytics.com" />
-    <link rel="preconnect dns-prefetch" href="//stats.g.doubleclick.net" />
-    <link rel="preconnect dns-prefetch" href="//www.google.com" />
-    <link rel="preconnect dns-prefetch" href="//www.google.co.jp" />
-    <link
-      rel="preconnect dns-prefetch"
-      href="//pagead2.googlesyndication.com"
-    />
-
-    <link rel="preconnect dns-prefetch" href="//tpc.googlesyndication.com" />
-    <link rel="preconnect dns-prefetch" href="//accounts.google.com" />
-    <link rel="preconnect dns-prefetch" href="//www.googletagmanager.com" />
-    <!-- {{ end }} -->
 
     <!-- Stylesheet -->
     <!-- {{ $script := (resources.Get "scripts/budoux.js" | js.Build (dict)).Content }} -->
@@ -134,62 +119,5 @@
     </main>
     <!-- prettier-ignore -->
     {{ partialCached `widgets/info.html.html` (slice $global $section) $section }}
-
-    <!-- {{ if and hugo.IsProduction }} -->
-    <script async>
-      "use strict";
-
-      let events = "scroll mousemove mousedown touchstart keydown".split(" ");
-      let loaded = false;
-      function lazyload() {
-        if (loaded) {
-          for (let ev of events) {
-            window.removeEventListener(ev, lazyload);
-          }
-        } else {
-          loaded = true;
-          inject();
-        }
-      }
-
-      function inject() {
-        let adsense = document.createElement("script");
-        adsense.setAttribute("async", "async");
-        adsense.setAttribute(
-          "src",
-          "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1273544194033160"
-        );
-        adsense.setAttribute("crossorigin", "anonymouse");
-
-        let analytics = document.createElement("script");
-        analytics.setAttribute("async", "async");
-        analytics.setAttribute(
-          "src",
-          "https://www.googletagmanager.com/gtag/js?id=G-18GLHBH79E"
-        );
-
-        document.body.appendChild(adsense);
-        document.body.appendChild(analytics);
-      }
-
-      for (let ev of events) {
-        window.addEventListener(ev, lazyload);
-      }
-      window.addEventListener("load", function () {
-        if (window.pageYOffset) {
-          lazyload();
-        }
-      });
-    </script>
-    <script async>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-
-      gtag("config", "G-18GLHBH79E");
-    </script>
-    <!-- {{ end }} -->
   </body>
 </html>
