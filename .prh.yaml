@@ -9,6 +9,10 @@ rules:
     patterns:
       - Web Card
       - Webcard
+  - expected: Twitter カード
+    patterns:
+      - twitter カード
+      - Twitter Card
 
   - expected: 方達
     patterns:
