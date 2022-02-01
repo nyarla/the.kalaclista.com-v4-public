@@ -1,4 +1,11 @@
 # vim: ft=perl
+requires 'Canary::Stability',      0;
+requires 'ExtUtils::Helpers',      0;
+requires 'ExtUtils::InstallPaths', 0;
+requires 'Module::Depends',        0;
+requires 'B::Hooks::OP::Check',    0;
+requires 'Module::Build::Tiny',    0;
+
 requires 'Encode',                          0;
 requires 'Encode::Detect',                  0;
 requires 'HTML5::DOM',                      0;
