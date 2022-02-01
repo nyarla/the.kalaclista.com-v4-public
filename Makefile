@@ -80,10 +80,10 @@ check:
 	find scripts -type f -name '*.pl' -exec perl -c {} \;
 
 cpan-deps:
-	@perl scripts/cpanfile-deps.pl 2>/dev/null
+	@perl scripts/cpanfile-deps.pl
 
-cpan-nix: cpan-deps
-	@perl scripts/cpanfile-nix.pl 2>/dev/null
+cpan-nix:
+	@perl scripts/cpanfile-nix.pl
 
 .PHONY: posts echos amazon rakuten lint
 

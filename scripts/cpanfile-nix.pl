@@ -7,10 +7,7 @@ sub find {
   my $module = shift;
   $module = "perlPackages.${module}";
 
-  return
-    system(
-    "sh -c 'nix search -I nixpkgs=/etc/nixpkgs --quiet ${module} >/dev/null'")
-    == 0;
+  return system("sh -c 'nix search nixpkgs perlPackages.${module}'") == 0;
 }
 
 sub generate {
@@ -44,7 +41,7 @@ sub generate {
       push @outs, $out;
     }
 
-    print "added: perlPackage.${name}\n";
+    print "added: perlPackages.${name}\n";
     push @deps, $name;
   }
 
@@ -56,7 +53,7 @@ sub main {
 
   open( my $fh, '>', 'cpan2.nix' );
   print $fh <<_NIX_;
-{ pkgs ? import <nixpkgs> { } }:
+{ pkgs }:
 
 with pkgs;
 
