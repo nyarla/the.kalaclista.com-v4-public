@@ -20,8 +20,6 @@ sub main {
   ok( $dir->child('icon-512.png')->is_file );
   ok( $dir->child('icon.svg')->is_file );
 
-  ok( $dir->child('.htaccess')->is_file );
-
   ok( $dir->child('manifest.webmanifest')->is_file );
 
   is(
