@@ -3,65 +3,54 @@
 use strict;
 use warnings;
 
+use Kalaclista::Parallel;
+
 use HTML5::DOM;
-use Parallel::Fork::BossWorkerAsync;
-use Path::Tiny::Glob;
-use Path::Tiny;
 use YAML::XS qw( LoadFile DumpFile );
+use Path::Tiny;
 
 my $parser = HTML5::DOM->new;
 
-sub extract {
-  my ( $src, $dest ) = @_;
+sub prepare {
+  my ($file) = @_;
 
-  my $data = LoadFile($src);
+  my $path = $file->stringify;
+  $path =~ s{^build}{resources/_website/links};
+  $path =~ s{/fixture}{};
+
+  return [ $file, path($path) ];
+}
+
+sub process {
+  my ( $src, $dest ) = $_[0]->@*;
+
+  my $data = LoadFile( $src->stringify );
   my $dom  = $parser->parse( $data->{'content'} );
 
   my @links;
-  for my $link ( ( $dom->find('.content__card--website a') || [] )->@* ) {
+  my $nodes = $dom->find('.content__card--website a') || [];
+  for my $link ( $nodes->@* ) {
     push @links, $link->getAttribute('href');
   }
 
-  path($dest)->parent->mkpath;
+  $dest->parent->mkpath;
 
-  DumpFile( $dest, \@links );
+  DumpFile( $dest->stringify, \@links );
 
-  return { path => $dest };
+  return { message => $dest->stringify };
 }
 
 sub main {
-  my $files = pathglob( [ 'build', '**', 'fixture.yaml' ] );
-
-  my @tasks;
-  while ( defined( my $file = $files->next ) ) {
-    my $src  = $file->stringify;
-    my $dest = $src;
-    $dest =~ s{^build}{resources/_website/links};
-    $dest =~ s{/fixture}{};
-
-    push @tasks, [ $src, $dest ];
-  }
-
-  my $bw = Parallel::Fork::BossWorkerAsync->new(
-    work_handler  => sub { return extract( $_[0]->@* ) },
-    handle_result => sub { return $_[0] },
-    worker_count  => 31,
+  my $parallel = Kalaclista::Parallel->new(
+    processor => \&process,
+    prepare   => \&prepare,
   );
 
-  $bw->add_work(@tasks);
-  while ( $bw->pending ) {
-    my $ref = $bw->get_result;
-    if ( $ref->{'ERROR'} ) {
-      print STDERR $ref->{'ERROR'}, "\n";
-    }
-    else {
-      print $ref->{'path'}, "\n";
-    }
-  }
+  return $parallel->run( 'build', '**', 'fixture.yaml' );
+}
 
-  $bw->shut_down();
-
+if ( main(@ARGV) ) {
   exit 0;
 }
 
-main;
+exit 1;
