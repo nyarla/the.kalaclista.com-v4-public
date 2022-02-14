@@ -7,3 +7,4 @@ build
 config.dist.yaml
 .env
 static/assets/*.subset.woff2
+.hugo_build.lock
