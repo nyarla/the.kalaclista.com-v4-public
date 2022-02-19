@@ -5,7 +5,7 @@ rules:
   - expected: TypeScript
 
   # 単語表現
-  - expected: Webカード
+  - expected: Web カード
     patterns:
       - Web Card
       - Webcard
