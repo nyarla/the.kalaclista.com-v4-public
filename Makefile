@@ -31,8 +31,6 @@ sync:
 	@gsutil -m -h "Cache-Control:public, s-maxage=3153600000" rsync -c -d -e -J -R dist/ gs://the.kalaclista.com/
 	@bash scripts/purge_cache.sh
 
-up: build sync
-
 .PHONY: tokenize terms tfidf scoring related
 
 tokenize: pre-build
