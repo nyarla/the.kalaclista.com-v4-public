@@ -28,7 +28,7 @@ test: pre-build
 build: clean related webfont dist
 
 sync:
-	@gsutil -m -h "Cache-Control:public, s-maxage=3153600000" rsync -c -d -e -J -R dist/ gs://the.kalaclista.com/
+	@gsutil -m -h "Cache-Control:public, max-age=3600, s-maxage=3153600000" rsync -c -d -e -J -R dist/ gs://the.kalaclista.com/
 	@bash scripts/purge_cache.sh
 
 .PHONY: tokenize terms tfidf scoring related
