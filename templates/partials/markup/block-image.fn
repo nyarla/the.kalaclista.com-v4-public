@@ -12,8 +12,14 @@
   {{- $alt := (index ($found | findRE `alt="[^"]+"`) 0)  -}}
 
   {{- with resources.Get $path -}}
-    {{- $small := .Resize `720x` -}}
-    {{- $medium := .Resize `1440x` -}}
+    {{- $small := . -}}
+    {{- $medium := . -}}
+    {{- if gt $small.Width 720 -}}
+      {{- $small = .Resize `720x` -}}
+    {{- end -}}
+    {{- if gt $medium.Width 1440 -}}
+      {{- $medium = .Resize `1440x` -}}
+    {{- end -}}
 
     {{- $src := printf `src="%s"` $origin -}}
     {{- $srcset := printf `srcset="%s 1x, %s 2x"` $small.Permalink $medium.Permalink -}}
