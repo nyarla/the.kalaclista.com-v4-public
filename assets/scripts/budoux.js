@@ -17,7 +17,7 @@ window.addEventListener("DOMContentLoaded", () => {
       ".archives li a.title",
     ].join(", ")
   );
-  for (el of elements) {
+  for (let el of elements) {
     parser.applyElement(el);
   }
 });
