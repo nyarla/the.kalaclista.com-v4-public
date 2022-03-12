@@ -21,28 +21,4 @@
   <section class="entry__content" aria-label="記事本文">
     {{- $entry.content_html | safeHTML -}}
   </section>
-
-  <!-- {{ with (index $global.Site.Data.related $page.RelPermalink) }} -->
-  <aside class="entry__related">
-    <section class="entry__content">
-      <h1>似たような記事一覧</h1>
-      <ul class="archives">
-        <!-- {{ range $entry := . }} -->
-        <!-- {{ $section := partial `data/section.fn` $entry }} -->
-        <li>
-          <time datetime="{{ dateFormat `2006-01-02` $entry.UnixTime }}"
-            >{{ dateFormat `2006-01-02` $entry.UnixTime }}：</time
-          >
-          （<a href="{{ absURL (printf `/%s/` $section) }}"
-            >{{ (index $global.Site.Params.menus $section).name }}</a
-          >）
-          <a class="title" href="{{ absURL $entry.RelPermalink }}"
-            >{{ $entry.Title }}</a
-          >
-        </li>
-        <!-- {{ end }} -->
-      </ul>
-    </section>
-  </aside>
-  <!-- {{ end }} -->
 </article>

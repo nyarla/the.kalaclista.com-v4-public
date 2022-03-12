@@ -9,11 +9,13 @@ all: clean build
 clean:
 	@rm -rf resources/*
 	@(test ! -e build || rm -rf build) && (test -e build || mkdir -p build)
-	@(test ! -e dist || rm -rf dist) && (test -e dist || mkdir -p dist)
+	@(cd dist && rm -r *)
 
 pre-build:
 	@bash scripts/content-date.sh
 	@$(HUGO) --minify -e production -b 'https://the.kalaclista.com' -d build
+	@test -d static/images || mkdir -p static/images
+	@cp -R private/assets/images/* static/images/
 
 dist:
 	@cat config.yml| grep -v '\- Test' | grep -v '\- Fixture' >config.dist.yaml
@@ -21,15 +23,15 @@ dist:
 	@find dist/*/*/ -type f -name "jsonfeed.json" -exec rm {} \;
 	@find dist/*/*/ -type f -name "index.xml" -exec rm {} \;
 	@find dist/*/*/ -type f -name "atom.xml" -exec rm {} \;
+	@rm -rf static/images/assets
 
 test: pre-build
 	@prove -Ilib -j$(JOBS) t/*.t
 
-build: clean related webfont dist
+build: clean webfont dist
 
-sync:
-	@gsutil -m -h "Cache-Control:public, max-age=3600, s-maxage=3153600000" rsync -c -d -e -J -R dist/ gs://the.kalaclista.com/
-	@bash scripts/purge_cache.sh
+push:
+	cd dist &8 git add . && git ci -m "feat(update): $(shell date +%%m-%m-%d)" && git push origin main
 
 .PHONY: tokenize terms tfidf scoring related
 

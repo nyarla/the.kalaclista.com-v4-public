@@ -1,10 +1,12 @@
+.env
+.hugo_build.lock
 assets/images
+build
+config.dist.yaml
+dist
 dist
 extlib
 private
 resources
-build
-config.dist.yaml
-.env
 static/assets/*.subset.woff2
-.hugo_build.lock
+static/images/
