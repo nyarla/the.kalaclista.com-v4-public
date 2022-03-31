@@ -31,7 +31,7 @@ test: pre-build
 build: clean webfont dist
 
 push:
-	cd dist &8 git add . && git ci -m "feat(update): $(shell date +%%m-%m-%d)" && git push origin main
+	cd dist && git add . && git ci -m "feat(update): $(shell date "+%Y-%m-%d %H:%M:%S")" && git push origin main
 
 .PHONY: tokenize terms tfidf scoring related
 
